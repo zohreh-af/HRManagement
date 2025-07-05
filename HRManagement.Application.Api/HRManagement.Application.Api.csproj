@@ -22,4 +22,10 @@
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="9.0.6" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\HRManagement.Application.Abstraction\HRManagement.Application.Abstraction.csproj" />
+    <ProjectReference Include="..\HRManagement.Application.Web\HRManagement.Application.Web.csproj" />
+    <ProjectReference Include="..\HRManagement.Persistence\HRManagement.Persistence.csproj" />
+  </ItemGroup>
+
 </Project>

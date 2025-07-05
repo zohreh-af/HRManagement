@@ -1,13 +1,14 @@
 ﻿using HRManagement.Domain.Entities;
-using BlazorHRManagement.Api.Dtos;
+using HRManagement.Application.Web.Features;
+using BlazorHRManagement.Application.Web.Features;
 
 namespace BlazorHRManagement.Api;
 
 public static class UserMappingExtensions
 {
-    public static UserDto ToDto(this User user)
+    public static CreateUserCommand CreateUserCommandToUser(this User user)
     {
-        return new UserDto
+        return new CreateUserCommand
         {
             Id = user.Id,
             CreatorIdentityID = user.CreatorIdentityID,
@@ -22,6 +23,26 @@ public static class UserMappingExtensions
             Name = user.Name,   
             Details = user.Details,
             Password = user.PasswordHash,   
+
+        };
+    }
+    public static User UserToCreateUserCommand(this CreateUserCommand command)
+    {
+        return new User
+        {
+            Id = command.Id,
+            CreatorIdentityID = command.CreatorIdentityID,
+            UserName = command.UserName,
+            Email = command.Email,
+            CreateDate = command.CreateDate,
+            LastModifierIdentityID = command.LastModifierIdentityID,
+            EmailConfirmed = command.EmailConfirmed,
+            PhoneNumberConfirmed = command.PhoneNumberConfirmed,
+            PhoneNumber = command.PhoneNumber,
+            IsActive = command.IsActive,
+            Name = command.Name,
+            Details = command.Details,
+            PasswordHash = command.Password,
 
         };
     }
