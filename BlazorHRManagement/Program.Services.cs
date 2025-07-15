@@ -1,23 +1,16 @@
-﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+﻿using HRManagement.Application;
+using HRManagement.Persistence;
 
-namespace BlazorHRManagement
+namespace BlazorHRManagement;
+
+public static partial class Program
 {
-    public static partial class Program
+    public static void ConfigureServices(this IServiceCollection services
+    , IConfiguration configuration)
     {
-        public static void ConfigureServices(IServiceCollection services
-            , IConfiguration config)
-        {
-            services.AddRazorComponents()
-                .AddInteractiveServerComponents();
-
-            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-            .AddJwtBearer();
-
-            services.AddAuthorization();
-            
-
-
-
-        }
+        services.AddApplicationApiServices();
+        services.AddApplicationWebServices();
+        services.AddUserMapperServices();
+        services.AddPersistenceServices(configuration);
     }
 }

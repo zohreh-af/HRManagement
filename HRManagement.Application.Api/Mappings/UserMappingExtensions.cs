@@ -1,12 +1,10 @@
-﻿using HRManagement.Domain.Entities;
-using HRManagement.Application.Web.Features;
-using BlazorHRManagement.Application.Web.Features;
-
-namespace BlazorHRManagement.Api;
+﻿using HRManagement.Application.Web.Features;
+using HRManagement.Domain.Entities;
+namespace BlazorHRManagement.Application.Api;
 
 public static class UserMappingExtensions
 {
-    public static CreateUserCommand CreateUserCommandToUser(this User user)
+    public static CreateUserCommand UserToCreateUserCommand(this User user)
     {
         return new CreateUserCommand
         {
@@ -26,7 +24,7 @@ public static class UserMappingExtensions
 
         };
     }
-    public static User UserToCreateUserCommand(this CreateUserCommand command)
+    public static User CreateUserCommandToUser(this CreateUserCommand command)
     {
         return new User
         {

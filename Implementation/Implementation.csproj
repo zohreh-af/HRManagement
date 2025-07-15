@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\BlazorHRManagement.Api\BlazorHRManagement.Api.csproj" />
+    <ProjectReference Include="..\HRManagement.Application.Api\HRManagement.Application.Api.csproj" />
   </ItemGroup>
 
 </Project>

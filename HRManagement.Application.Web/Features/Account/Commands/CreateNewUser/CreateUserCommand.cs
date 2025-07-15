@@ -1,7 +1,6 @@
-﻿using BlazorHRManagement.Api.Abstraction;
-using HRManagement.Application.Web.Features;
+﻿using HRManagement.Application.Api.Abstraction;
 
-namespace BlazorHRManagement.Application.Web.Features;
+namespace HRManagement.Application.Web.Features;
 
 public record CreateUserCommand : ICommand<CreateUserVm>
 {

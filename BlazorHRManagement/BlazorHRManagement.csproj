@@ -7,12 +7,26 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Program.Middlewares.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="9.0.6" />
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="Components\Pages\Account\" />
     <Folder Include="Components\Pages\Employee\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="Program.Middlewares.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\HRManagement.Application.Api\HRManagement.Application.Api.csproj" />
+    <ProjectReference Include="..\HRManagement.Persistence\HRManagement.Persistence.csproj" />
+    <ProjectReference Include="..\HRManagement.Shared\HRManagement.Shared.csproj" />
   </ItemGroup>
 
 </Project>

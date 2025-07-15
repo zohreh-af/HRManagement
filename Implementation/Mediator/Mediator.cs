@@ -1,4 +1,5 @@
-﻿using BlazorHRManagement.Api.Abstraction;
+﻿using BlazorHRManagement.Application;
+using HRManagement.Application.Api.Abstraction;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Implementation.Mediator;
