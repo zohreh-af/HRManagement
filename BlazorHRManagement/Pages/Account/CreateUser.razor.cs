@@ -1,13 +1,19 @@
 ﻿using HRManagement.Application.Web.Features;
+using HRManagement.Shared.Dtos;
 
 namespace BlazorHRManagement.Pages.Account;
 
 public partial class CreateUser
 {
+    public bool IsSuccessful = false;
     public bool IsInvalid = false;
-    public string MassageTitle = string.Empty;
-    public CreateUserCommand _Request { get; set; } = new CreateUserCommand();   
+    public string MassageText = string.Empty;
+    public string SuccessMassageText = string.Empty;
+
+    public CreateUserCommand _Request { get; set; } = new CreateUserCommand();
+    [Inject] public IHttpClientFactory HttpClientFactory { get; set; }
     
+
     public async Task OnValidSubmit(EditContext context)
     {
         AddNewUser();
@@ -18,12 +24,37 @@ public partial class CreateUser
         IsInvalid = true;
         foreach (var message in context.GetValidationMessages())
         {
-            MassageTitle = message;
+            MassageText = message;
         }
     }
 
     public async Task AddNewUser()
     {
+        var httpClient = HttpClientFactory.CreateClient("MyApiClient");
 
+        var response = await httpClient.PostAsJsonAsync("HR/User/CreateUser", _Request);
+
+        if (response.IsSuccessStatusCode)
+        {
+            var result = await response.Content.ReadFromJsonAsync<ApiResponse<CreateUserVm>>();
+            if (result.Data.Result)
+            {
+                IsInvalid = false;
+                IsSuccessful = true;
+                SuccessMassageText = "User created successfully.";
+                _Request = new CreateUserCommand(); // Reset the form
+            }
+            else
+            {
+                IsInvalid = true;
+                MassageText = "An error occurred while creating the user.";
+            }
+        }
+        else
+        {
+            IsInvalid = true;
+            MassageText = "An error occurred while creating the user.";
+
+        }
     }
 }

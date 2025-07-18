@@ -1,23 +1,17 @@
-﻿
-
-using BlazorHRManagement.Application.Api;
-using HRManagement.Application.Api.Abstraction;
+﻿using HRManagement.Application.Api.Abstraction;
 using HRManagement.Application.Web.Features;
+using HRManagement.Domain.Entities;
 using HRManagement.Persistence.Contexts;
 namespace HRManagement.Application.Api.Features;
 
-public class CreateUserHandler : ICommandHandler<CreateUserCommand,CreateUserVm>
+public class CreateUserHandler(IMapper mapper, HRManagementContext dbContext) : ICommandHandler<CreateUserCommand,CreateUserVm>
 {
-    private readonly HRManagementContext _dbContext;
-
-    public CreateUserHandler(HRManagementContext dbContext) => _dbContext = dbContext;
-
     public async Task<CreateUserVm> HandleAsync(CreateUserCommand command, CancellationToken cancellationToken)
     {
-        var newUser = command.CreateUserCommandToUser();
+        var newUser = mapper.Map<User>(command); // map command to User entity  
 
-        _dbContext.Users.Add(newUser);  // add user
-        var result = await _dbContext.SaveChangesAsync(cancellationToken) > 0; // save to DB
+        dbContext.Users.Add(newUser);  // add user
+        var result = await dbContext.SaveChangesAsync(cancellationToken) > 0; // save to DB
 
         return new CreateUserVm
         {

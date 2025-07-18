@@ -12,7 +12,9 @@ public static partial class Program
 			app.UseHsts();
 		}
 
-		app.UseHttpsRedirection();
+        app.UseCors();
+
+        app.UseHttpsRedirection();
 
 		app.UseAntiforgery();
 

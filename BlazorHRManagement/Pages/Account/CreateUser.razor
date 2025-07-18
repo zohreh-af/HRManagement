@@ -31,5 +31,10 @@
 </div>
 @if (IsInvalid)
 {
-    <MudAlert Severity="Severity.Error" Dense="true" Class="my-2">@MassageTitle</MudAlert>
+    <MudAlert Severity="Severity.Error" Dense="true" Class="my-2">@MassageText</MudAlert>
 }
+
+@if (IsSuccessful)
+{
+    <MudAlert Severity="Severity.Success" Dense="true" Class="my-2">@SuccessMassageText</MudAlert>
+})
