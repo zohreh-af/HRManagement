@@ -16,7 +16,7 @@ public partial class CreateUser
 
     public async Task OnValidSubmit(EditContext context)
     {
-        AddNewUser();
+        await AddNewUser();
     }
 
     public async Task OnInvalidSubmit(EditContext context)
@@ -30,7 +30,7 @@ public partial class CreateUser
 
     public async Task AddNewUser()
     {
-        var httpClient = HttpClientFactory.CreateClient("MyApiClient");
+        var httpClient = HttpClientFactory.CreateClient("HRApi");
 
         var response = await httpClient.PostAsJsonAsync("HR/User/CreateUser", _Request);
 

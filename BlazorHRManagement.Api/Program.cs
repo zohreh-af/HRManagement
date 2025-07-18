@@ -17,7 +17,7 @@ namespace BlazorHRManagement.Api
             {
                 options.AddPolicy("AllowBlazorClient", policy =>
                 {
-                    policy.WithOrigins("https://localhost:7079", "http://localhost:7079")
+                    policy.WithOrigins("https://localhost:7080", "http://localhost:7080")
                           .WithMethods("GET", "POST")
                           .AllowAnyHeader();
                 });
@@ -32,7 +32,7 @@ namespace BlazorHRManagement.Api
 
             app.UseHttpsRedirection();
 
-            app.UseCors("AllowBlazorClient"); // ?? Must be here
+            app.UseCors("AllowBlazorClient"); 
             app.UseAuthentication();
             app.UseAuthorization();
 

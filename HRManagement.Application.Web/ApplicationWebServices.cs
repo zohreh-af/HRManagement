@@ -7,6 +7,6 @@ public static class ApplicationWebServices
 {
     public static void AddApplicationWebServices(this IServiceCollection service)
     {
-
+        service.AddAutoMapper(Assembly.GetExecutingAssembly());
     }
 }
