@@ -21,6 +21,5 @@ public static partial class Program
 		app.MapStaticAssets();
 		app.MapRazorComponents<App>()
 			.AddInteractiveServerRenderMode();
-
-	}
+    }
 }

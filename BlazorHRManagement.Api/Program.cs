@@ -13,6 +13,15 @@ namespace BlazorHRManagement.Api
             // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
             builder.Services.AddOpenApi();
 
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy("AllowBlazorClient", policy =>
+                {
+                    policy.WithOrigins("https://localhost:7079", "http://localhost:7079")
+                          .WithMethods("GET", "POST")
+                          .AllowAnyHeader();
+                });
+            });
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
@@ -23,8 +32,9 @@ namespace BlazorHRManagement.Api
 
             app.UseHttpsRedirection();
 
+            app.UseCors("AllowBlazorClient"); // ?? Must be here
+            app.UseAuthentication();
             app.UseAuthorization();
-
 
             app.MapControllers();
 

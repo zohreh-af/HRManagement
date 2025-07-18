@@ -2,9 +2,12 @@
 using HRManagement.Application;
 using HRManagement.Persistence;
 using Implementation.Mediator;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.IdentityModel.Tokens;
 using MudBlazor.Services;
 using System.Reflection;
+using System.Text;
 
 namespace BlazorHRManagement;
 
@@ -15,6 +18,18 @@ public static partial class Program
     {
         var baseUri = configuration["Api:BaseUrl"];
 
+        services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
+    {
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = false,
+            ValidateAudience = false,
+            ValidateLifetime = true,
+            ValidateIssuerSigningKey = true,
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("YourSuperSecretKeyHere"))
+        };
+    });
         services.AddAutoMapper(Assembly.GetExecutingAssembly());
 
         services.AddScoped<IMediator, Mediator>();
@@ -26,16 +41,6 @@ public static partial class Program
         services.AddApplicationApiServices();
         services.AddApplicationWebServices();
         services.AddPersistenceServices(configuration);
-
-        services.AddCors(options =>
-        {
-            options.AddPolicy("AllowBlazorClient", policy =>
-            {
-                policy.WithOrigins("https://localhost:7079", ("http://localhost:7079"))  //"https://client2.com"
-                      .WithMethods("Get", "Post")
-                      .AllowAnyHeader();
-            });
-        });
 
         services.AddScoped<HttpClientHandler>();
 
