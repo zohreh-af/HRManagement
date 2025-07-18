@@ -1,0 +1,35 @@
+﻿@using  MudBlazor
+@page "/Account/CreateUser";
+
+
+<PageTitle>.App_StringKeys_Location_Management</PageTitle>
+
+<div>
+
+    <EditForm Model=_Request OnValidSubmit="OnValidSubmit" OnInvalidSubmit="OnInvalidSubmit">
+        <DataAnnotationsValidator />
+        <MudGrid>
+            <MudItem xs="12" sm="7">
+                <MudCard>
+                    <MudCardContent>
+                        <MudTextField Label="First name" HelperText="Max. 8 characters"
+                        @bind-Value="_Request.UserName" />
+                        <MudTextField Label="Email" Class="mt-3"
+                        @bind-Value="_Request.Email" />
+                        <MudTextField Label="Password" HelperText="Choose a strong password" Class="mt-3"
+                        @bind-Value="_Request.Password" InputType="InputType.Password" />
+
+                    </MudCardContent>
+                    <MudCardActions>
+                        <MudIconButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto">Register</MudIconButton>
+                    </MudCardActions>
+                </MudCard>
+            </MudItem>
+
+        </MudGrid>
+    </EditForm>
+</div>
+@if (IsInvalid)
+{
+    <MudAlert Severity="Severity.Error" Dense="true" Class="my-2">@MassageTitle</MudAlert>
+}

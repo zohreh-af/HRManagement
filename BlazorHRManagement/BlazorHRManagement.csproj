@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>net9.0</TargetFramework>
@@ -12,11 +12,13 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="9.0.6" />
+    <PackageReference Include="Microsoft.AspNetCore.Components" Version="9.0.7" />
+    <PackageReference Include="Microsoft.JSInterop" Version="9.0.7" />
+    <PackageReference Include="MudBlazor" Version="8.9.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Components\Pages\Account\" />
-    <Folder Include="Components\Pages\Employee\" />
+    <Folder Include="Pages\Employee\" />
   </ItemGroup>
 
   <ItemGroup>

@@ -8,7 +8,6 @@ public static class UserMappingExtensions
     {
         return new CreateUserCommand
         {
-            Id = user.Id,
             CreatorIdentityID = user.CreatorIdentityID,
             UserName = user.UserName,
             Email = user.Email,
@@ -28,7 +27,6 @@ public static class UserMappingExtensions
     {
         return new User
         {
-            Id = command.Id,
             CreatorIdentityID = command.CreatorIdentityID,
             UserName = command.UserName,
             Email = command.Email,

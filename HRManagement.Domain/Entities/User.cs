@@ -13,7 +13,7 @@ public class User
 
     [Column("UserName")]
     [StringLength(100)]
-    public string? UserName { get; set; }
+    public string UserName { get; set; }
 
     [Column("Email")]
     [StringLength(100)]
@@ -21,17 +21,17 @@ public class User
 
     [Column("EmailConfirmed")]
     [DefaultValue(false)]
-    public bool EmailConfirmed { get; set; }
+    public bool? EmailConfirmed { get; set; }
 
     [Column("CreateDate")]
     public DateTime? CreateDate { get; set; }
 
     [Column("PhoneNumber")]
-    public int PhoneNumber { get; set; }
+    public int? PhoneNumber { get; set; }
 
     [Column("PhoneNumberConfirmed")]
     [DefaultValue(false)]
-    public bool PhoneNumberConfirmed { get; set; }
+    public bool? PhoneNumberConfirmed { get; set; }
 
     [Column("IsActive")]
     [DefaultValue(false)]
@@ -50,7 +50,7 @@ public class User
     public string Name { get; set; }
 
     [Column("PasswordHash")]
-    public string? PasswordHash { get; set; }
+    public string PasswordHash { get; set; }
 
     [Column("SecurityStamp")]
     public string? SecurityStamp { get; set; }
