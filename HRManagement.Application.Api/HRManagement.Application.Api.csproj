@@ -17,9 +17,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="AutoMapper" Version="15.0.0" />
-    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.1" />
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="9.0.6" />
+    <ProjectReference Include="..\BlazorHRManagement.Api\BlazorHRManagement.Api.csproj" />
+    <ProjectReference Include="..\HRManagement.Application.Abstraction\HRManagement.Application.Abstraction.csproj" />
+    <ProjectReference Include="..\HRManagement.Application.Web\HRManagement.Application.Web.csproj" />
+    <ProjectReference Include="..\HRManagement.Persistence\HRManagement.Persistence.csproj" />
   </ItemGroup>
 
 </Project>

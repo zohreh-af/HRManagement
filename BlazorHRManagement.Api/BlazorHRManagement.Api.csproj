@@ -12,6 +12,11 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Controllers\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\HRManagement.Application.Web\HRManagement.Application.Web.csproj" />
     <ProjectReference Include="..\HRManagement.Domain\HRManagement.Domain.csproj" />
     <ProjectReference Include="..\HRManagement.Shared\HRManagement.Shared.csproj" />
   </ItemGroup>
