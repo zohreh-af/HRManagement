@@ -7,7 +7,6 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<Folder Include="Features\Account\Queries\" />
 		<Folder Include="Features\ArrivalExits\Commands\" />
 		<Folder Include="Features\ArrivalExits\Queries\" />
 		<Folder Include="Features\Employee\Commands\" />

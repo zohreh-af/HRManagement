@@ -1,6 +1,3 @@
-using MudBlazor.Services;
-
-
 namespace BlazorHRManagement
 {
     public static partial class Program
@@ -14,7 +11,6 @@ namespace BlazorHRManagement
 
             var app = builder.Build();
 
-          
             app.Run();
         }
     }

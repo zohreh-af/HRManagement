@@ -40,6 +40,11 @@ public static partial class Program
 
         services.AddScoped<HttpClientHandler>();
 
+        services.AddScoped(sp =>
+                new HttpClient {
+                    BaseAddress = new Uri("https://localhost:7081/") 
+                });
+
         services.AddHttpClient("HRApi")
                 .ConfigureHttpClient((services, client) =>
                 {
@@ -49,4 +54,5 @@ public static partial class Program
                 })
                 .ConfigurePrimaryHttpMessageHandler<HttpClientHandler>();
                 }
+
 }

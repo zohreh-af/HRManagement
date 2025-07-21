@@ -15,13 +15,12 @@ namespace BlazorHRManagement.Api
 
             builder.Services.AddCors(options =>
             {
-                options.AddPolicy("AllowBlazorClient", policy =>
-                {
-                    policy.WithOrigins("https://localhost:7080", "http://localhost:7080")
-                          .WithMethods("GET", "POST")
-                          .AllowAnyHeader();
-                });
+                options.AddPolicy("AllowBlazor",
+                    builder => builder.WithOrigins("https://localhost:7082", "http://localhost:5164")
+                                      .AllowAnyHeader()
+                                      .AllowAnyMethod());
             });
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
