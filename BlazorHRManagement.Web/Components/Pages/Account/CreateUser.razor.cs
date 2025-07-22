@@ -1,7 +1,9 @@
 ﻿using HRManagement.Application.Web.Features;
 using HRManagement.Shared.Dtos;
+using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Forms;
 
-namespace BlazorHRManagement.Pages.Account;
+namespace BlazorHRManagement.Web.Components.Pages.Account;
 
 public partial class CreateUser
 {

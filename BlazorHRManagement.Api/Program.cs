@@ -16,7 +16,7 @@ namespace BlazorHRManagement.Api
             builder.Services.AddCors(options =>
             {
                 options.AddPolicy("AllowBlazor",
-                    builder => builder.WithOrigins("https://localhost:7082", "http://localhost:5164")
+                    builder => builder.WithOrigins("https://localhost:7270;http://localhost:5129")
                                       .AllowAnyHeader()
                                       .AllowAnyMethod());
             });
@@ -31,7 +31,7 @@ namespace BlazorHRManagement.Api
 
             app.UseHttpsRedirection();
 
-            app.UseCors("AllowBlazorClient"); 
+            app.UseCors("AllowBlazor"); 
             app.UseAuthentication();
             app.UseAuthorization();
 

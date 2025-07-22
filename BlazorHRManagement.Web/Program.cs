@@ -1,4 +1,4 @@
-namespace BlazorHRManagement;
+namespace BlazorHRManagement.Web;
 
 public static partial class Program
 {

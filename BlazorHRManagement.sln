@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.13.35931.197
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlazorHRManagement", "BlazorHRManagement\BlazorHRManagement.csproj", "{2DBB8DEF-D20E-4367-ACF0-66960B699D85}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlazorHRManagement.Api", "BlazorHRManagement.Api\BlazorHRManagement.Api.csproj", "{06DEC505-091B-4141-A094-1513B3CC78C5}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HRManagement.Domain", "HRManagement.Domain\HRManagement.Domain.csproj", "{2C8179F5-EBC5-4FA9-9E0F-085225B3EA2F}"
@@ -48,9 +46,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HRManagement.Persistence", 
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Implementation", "Implementation", "{42C94E83-6DB8-4D23-AA38-77373C5BF33C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Implementation", "Implementation\Implementation.csproj", "{B27C4BE7-F120-44F0-BA8A-F4878099A856}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlazorHRManagement.Implementation", "Implementation\BlazorHRManagement.Implementation.csproj", "{B27C4BE7-F120-44F0-BA8A-F4878099A856}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HRManagement.Application.Abstraction", "HRManagement.Application.Abstraction\HRManagement.Application.Abstraction.csproj", "{838F1341-A8E7-4D1F-9DC9-9AE317719986}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlazorHRManagement.Web", "BlazorHRManagement.Web\BlazorHRManagement.Web.csproj", "{449443DF-2B2C-4803-ABD6-F41B192DB89F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -58,10 +58,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{2DBB8DEF-D20E-4367-ACF0-66960B699D85}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{2DBB8DEF-D20E-4367-ACF0-66960B699D85}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{2DBB8DEF-D20E-4367-ACF0-66960B699D85}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{2DBB8DEF-D20E-4367-ACF0-66960B699D85}.Release|Any CPU.Build.0 = Release|Any CPU
 		{06DEC505-091B-4141-A094-1513B3CC78C5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{06DEC505-091B-4141-A094-1513B3CC78C5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{06DEC505-091B-4141-A094-1513B3CC78C5}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -110,12 +106,15 @@ Global
 		{838F1341-A8E7-4D1F-9DC9-9AE317719986}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{838F1341-A8E7-4D1F-9DC9-9AE317719986}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{838F1341-A8E7-4D1F-9DC9-9AE317719986}.Release|Any CPU.Build.0 = Release|Any CPU
+		{449443DF-2B2C-4803-ABD6-F41B192DB89F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{449443DF-2B2C-4803-ABD6-F41B192DB89F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{449443DF-2B2C-4803-ABD6-F41B192DB89F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{449443DF-2B2C-4803-ABD6-F41B192DB89F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{2DBB8DEF-D20E-4367-ACF0-66960B699D85} = {19639BB8-12B5-46FF-AB27-8F0C804BA1DF}
 		{06DEC505-091B-4141-A094-1513B3CC78C5} = {8C2BC6A1-98AD-495E-8BE0-5C09CC5271B8}
 		{2C8179F5-EBC5-4FA9-9E0F-085225B3EA2F} = {694A2F28-769E-4040-9E6E-C132CECBD117}
 		{F93946A8-940B-48B0-91CB-93E7E5B4D16C} = {820541E0-BE3F-4EB1-974A-34C7A99FF21B}
@@ -137,6 +136,7 @@ Global
 		{42C94E83-6DB8-4D23-AA38-77373C5BF33C} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 		{B27C4BE7-F120-44F0-BA8A-F4878099A856} = {42C94E83-6DB8-4D23-AA38-77373C5BF33C}
 		{838F1341-A8E7-4D1F-9DC9-9AE317719986} = {807D4680-0169-4B81-8A57-A7CB35F9A64C}
+		{449443DF-2B2C-4803-ABD6-F41B192DB89F} = {19639BB8-12B5-46FF-AB27-8F0C804BA1DF}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {76653F11-FCC2-41D0-B4D2-47085CAEC227}

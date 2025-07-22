@@ -1,13 +1,13 @@
 ﻿using BlazorHRManagement.Application;
 using HRManagement.Application;
-using HRManagement.Persistence;
+using HRManagement.Infrastructure.Api;
 using Implementation.Mediator;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using MudBlazor.Services;
 using System.Text;
 
-namespace BlazorHRManagement;
+namespace BlazorHRManagement.Web;
 
 public static partial class Program
 {
@@ -16,18 +16,27 @@ public static partial class Program
     {
         var baseApiUri = configuration["Api:BaseUrl"];
 
-        services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-                .AddJwtBearer(options =>
-                {
-                    options.TokenValidationParameters = new TokenValidationParameters
-                    {
-                        ValidateIssuer = false,
-                        ValidateAudience = false,
-                        ValidateLifetime = true,
-                        ValidateIssuerSigningKey = true,
-                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("YourSuperSecretKeyHere"))
-                    };
-                });
+        //services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+        //        .AddJwtBearer(options =>
+        //        {
+        //            options.TokenValidationParameters = new TokenValidationParameters
+        //            {
+        //                ValidateIssuer = false,
+        //                ValidateAudience = false,
+        //                ValidateLifetime = true,
+        //                ValidateIssuerSigningKey = true,
+        //                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("YourSuperSecretKeyHere"))
+        //            };
+        //        });
+
+        services.AddDistributedMemoryCache(); 
+        services.AddSession(options =>
+        {
+            options.IdleTimeout = TimeSpan.FromMinutes(20);
+            options.Cookie.HttpOnly = true;
+            options.Cookie.IsEssential = true;
+        });
+
         services.AddScoped<IMediator, Mediator>();
         services.AddMudServices();
 
@@ -36,14 +45,9 @@ public static partial class Program
 
         services.AddApplicationApiServices();
         services.AddApplicationWebServices();
-        services.AddPersistenceServices(configuration);
+      //  services.AddPersistenceServices(configuration);
 
         services.AddScoped<HttpClientHandler>();
-
-        services.AddScoped(sp =>
-                new HttpClient {
-                    BaseAddress = new Uri("https://localhost:7082/") 
-                });
 
         services.AddHttpClient("HRApi")
                 .ConfigureHttpClient((services, client) =>
@@ -53,6 +57,7 @@ public static partial class Program
                     client.BaseAddress = new Uri(baseUri!);
                 })
                 .ConfigurePrimaryHttpMessageHandler<HttpClientHandler>();
-                }
 
+
+    }
 }

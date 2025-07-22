@@ -19,7 +19,5 @@ public static partial class Program
 		app.UseAntiforgery();
 
 		app.MapStaticAssets();
-		app.MapRazorComponents<App>()
-			.AddInteractiveServerRenderMode();
     }
 }
