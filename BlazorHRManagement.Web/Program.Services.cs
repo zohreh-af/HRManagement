@@ -1,11 +1,11 @@
 ﻿using BlazorHRManagement.Application;
-using HRManagement.Application;
-using HRManagement.Infrastructure.Api;
+using HRManagement.Application.Web;
 using Implementation.Mediator;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.IdentityModel.Tokens;
+using System.Net;
+using HRManagement.Persistence;
 using MudBlazor.Services;
-using System.Text;
+using HRManagement.Application.Api;
+
 
 namespace BlazorHRManagement.Web;
 
@@ -14,7 +14,8 @@ public static partial class Program
     public static void ConfigureServices(this IServiceCollection services
     , IConfiguration configuration)
     {
-        var baseApiUri = configuration["Api:BaseUrl"];
+        var baseApiUri = "https://localhost:7072";
+        System.Net.ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 | SecurityProtocolType.Tls13;
 
         //services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         //        .AddJwtBearer(options =>
@@ -45,7 +46,7 @@ public static partial class Program
 
         services.AddApplicationApiServices();
         services.AddApplicationWebServices();
-      //  services.AddPersistenceServices(configuration);
+        services.AddPersistenceServices(configuration);
 
         services.AddScoped<HttpClientHandler>();
 

@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
 
-namespace HRManagement.Application;
+namespace HRManagement.Application.Web;
 
 public static class ApplicationWebServices
 {

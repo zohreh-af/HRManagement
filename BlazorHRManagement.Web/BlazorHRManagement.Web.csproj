@@ -13,6 +13,10 @@
     <PackageReference Include="Microsoft.AspNetCore.Http.Extensions" Version="2.3.0" />
     <PackageReference Include="Microsoft.AspNetCore.Http.Features" Version="5.0.17" />
     <PackageReference Include="Microsoft.AspNetCore.Session" Version="2.3.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.7">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
     <PackageReference Include="MudBlazor" Version="8.*" />
   </ItemGroup>
 
@@ -23,9 +27,8 @@
 
 
   <ItemGroup>
-    <ProjectReference Include="..\HRManagement.Application.Api\HRManagement.Application.Api.csproj" />
+    <ProjectReference Include="..\HRManagement.Application.Abstraction\HRManagement.Application.Abstraction.csproj" />
     <ProjectReference Include="..\HRManagement.Application.Web\HRManagement.Application.Web.csproj" />
-    <ProjectReference Include="..\HRManagement.Infrastructure.Api\HRManagement.Infrastructure.Api.csproj" />
     <ProjectReference Include="..\HRManagement.Persistence\HRManagement.Persistence.csproj" />
     <ProjectReference Include="..\HRManagement.Shared\HRManagement.Shared.csproj" />
     <ProjectReference Include="..\Implementation\BlazorHRManagement.Implementation.csproj" />

@@ -10,7 +10,7 @@ public class Employee
     [Key]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     [Column("Id")]
-    public int Id { get; set; }
+    public int EmployeeId { get; set; }
 
     [Column("FirstName")]
     [StringLength(100)]

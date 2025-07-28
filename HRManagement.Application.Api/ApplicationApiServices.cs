@@ -2,7 +2,7 @@
 using System.Reflection;
 
 
-namespace HRManagement.Application;
+namespace HRManagement.Application.Api;
 
 public static class ApplicationApiServices
 {

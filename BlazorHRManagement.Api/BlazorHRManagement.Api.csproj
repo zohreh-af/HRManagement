@@ -9,11 +9,17 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.4" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.7">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="9.0.7" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\HRManagement.Application.Web\HRManagement.Application.Web.csproj" />
     <ProjectReference Include="..\HRManagement.Domain\HRManagement.Domain.csproj" />
+    <ProjectReference Include="..\HRManagement.Persistence\HRManagement.Persistence.csproj" />
     <ProjectReference Include="..\HRManagement.Shared\HRManagement.Shared.csproj" />
   </ItemGroup>
 
