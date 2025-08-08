@@ -25,6 +25,7 @@
 
 	<ItemGroup>
 		<ProjectReference Include="..\HRManagement.Application.Abstraction\HRManagement.Application.Abstraction.csproj" />
+		<ProjectReference Include="..\HRManagement.Shared\HRManagement.Shared.csproj" />
 	</ItemGroup>
 
 </Project>

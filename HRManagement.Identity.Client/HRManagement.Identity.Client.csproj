@@ -7,7 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Services\" />
+    <ProjectReference Include="..\HRManagement.Application.Web\HRManagement.Application.Web.csproj" />
   </ItemGroup>
 
 </Project>

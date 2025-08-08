@@ -8,17 +8,25 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="JWT" Version="11.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="9.0.6" />
+    <PackageReference Include="Microsoft.AspNetCore.Authorization" Version="9.0.7" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="9.0.8" />
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.4" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.7">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="9.0.7" />
+    <PackageReference Include="Microsoft.Extensions.Identity.Core" Version="9.0.8" />
+    <PackageReference Include="Microsoft.Extensions.Identity.Stores" Version="9.0.8" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\HRManagement.Application.Abstraction\HRManagement.Application.Abstraction.csproj" />
     <ProjectReference Include="..\HRManagement.Application.Web\HRManagement.Application.Web.csproj" />
     <ProjectReference Include="..\HRManagement.Domain\HRManagement.Domain.csproj" />
+    <ProjectReference Include="..\HRManagement.Infrastructure.Api\HRManagement.Infrastructure.Api.csproj" />
     <ProjectReference Include="..\HRManagement.Persistence\HRManagement.Persistence.csproj" />
     <ProjectReference Include="..\HRManagement.Shared\HRManagement.Shared.csproj" />
   </ItemGroup>

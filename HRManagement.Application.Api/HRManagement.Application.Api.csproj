@@ -25,6 +25,7 @@
     <ProjectReference Include="..\HRManagement.Application.Abstraction\HRManagement.Application.Abstraction.csproj" />
     <ProjectReference Include="..\HRManagement.Application.Web\HRManagement.Application.Web.csproj" />
     <ProjectReference Include="..\HRManagement.Persistence\HRManagement.Persistence.csproj" />
+    <ProjectReference Include="..\HRManagement.Shared\HRManagement.Shared.csproj" />
   </ItemGroup>
 
 </Project>
