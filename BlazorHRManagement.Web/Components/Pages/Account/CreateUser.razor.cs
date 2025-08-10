@@ -1,4 +1,5 @@
 ﻿using HRManagement.Application.Web.Features;
+using HRManagement.Infrastructure.Web.Services;
 using HRManagement.Shared.Dtos;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
@@ -14,7 +15,8 @@ public partial class CreateUser
 
     public CreateUserCommand _Request { get; set; } = new CreateUserCommand();
     [Inject] public IHttpClientFactory HttpClientFactory { get; set; }
-    
+    [Inject] public ApiHandler Api { get; set; }
+
 
     public async Task OnValidSubmit(EditContext context)
     {
@@ -32,31 +34,31 @@ public partial class CreateUser
 
     public async Task AddNewUser()
     {
-        var httpClient = HttpClientFactory.CreateClient("HRApi");
+        //var httpClient = HttpClientFactory.CreateClient("HRApi");
 
-        var response = await httpClient.PostAsJsonAsync("HR/User/CreateUser", _Request);
+        //var response = await httpClient.PostAsJsonAsync("HR/User/CreateUser", _Request);
 
-        if (response.IsSuccessStatusCode)
-        {
-            var result = await response.Content.ReadFromJsonAsync<ApiResponse<CreateUserVm>>();
-            if (result.Data.Result)
-            {
-                IsInvalid = false;
-                IsSuccessful = true;
-                SuccessMassageText = "User created successfully.";
-                _Request = new CreateUserCommand(); // Reset the form
-            }
-            else
-            {
-                IsInvalid = true;
-                MassageText = "An error occurred while creating the user.";
-            }
-        }
-        else
-        {
-            IsInvalid = true;
-            MassageText = "An error occurred while creating the user.";
+        //if (response.IsSuccessStatusCode)
+        //{
+        //    var result = await response.Content.ReadFromJsonAsync<ApiResponse<CreateUserVm>>();
+        //    if (result.Data.Result)
+        //    {
+        //        IsInvalid = false;
+        //        IsSuccessful = true;
+        //        SuccessMassageText = "User created successfully.";
+        //        _Request = new CreateUserCommand(); // Reset the form
+        //    }
+        //    else
+        //    {
+        //        IsInvalid = true;
+        //        MassageText = "An error occurred while creating the user.";
+        //    }
+        //}
+        //else
+        //{
+        //    IsInvalid = true;
+        //    MassageText = "An error occurred while creating the user.";
 
-        }
+        //}
     }
 }

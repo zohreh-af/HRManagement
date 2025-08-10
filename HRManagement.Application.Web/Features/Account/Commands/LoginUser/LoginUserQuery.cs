@@ -1,9 +1,10 @@
-﻿using HRManagement.Shared;
+﻿using BlazorHRManagement.Application;
+using HRManagement.Shared;
 using System.ComponentModel.DataAnnotations;
 
 namespace HRManagement.Application.Web.Features;
 
-public class LoginUserQuery
+public class LoginUserQuery : IQuery<LoginUserVm>
 {
         [Required(ErrorMessageResourceType = typeof(TextResources), ErrorMessageResourceName = nameof(TextResources.APP_StringKeys_Validation_Required))]
     [Display(ResourceType = typeof(TextResources), Name = nameof(TextResources.APP_StringKeys_Username))]

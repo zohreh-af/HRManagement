@@ -1,21 +1,25 @@
-﻿using HRManagement.Application.Web.Features;
+﻿using HRManagement.Application.Web.Contracts.Identity;
+using HRManagement.Application.Web.Features;
+using HRManagement.Infrastructure.Web.Services;
+using System.Net.Http;
+using System.Net.Http.Json;
 
 namespace HRManagement.Identity.Client.Services;
 
-public class AuthenticationService
+public class AuthenticationService(ApiHandler api, AppAuthenticationStateProvider appAuthenticationStateProvider) :IAuthenticationService
 {
-    public async Task<LoginResult> Authenticate(LoginQuery query)
+    public async Task<LoginResult> Authenticate(LoginUserQuery query)
     {
-        var httpClient = HttpClientFactory.CreateClient("HRApi");
+        var response = await api.SendAsyncObjectByUri<LoginUserVm>(HttpMethod.Post
+            , "Account/LoginUser", query);
 
-        var authenticationResponse = await httpClient.PostAsJsonAsync("HR/User/CreateUser", query);
 
-        if (authenticationResponse.Value.Result == LoginResult.Success)
+        if (response.Data.Result == LoginResult.Success)
         {
-            await AuthenticationStateProvider.SetUserAuthenticated(authenticationResponse.Value.JwtToken);
+            await authenticationStateProvider.SetUserAuthenticated(authenticationResponse.Value.JwtToken);
         }
 
-        return authenticationResponse.Value.Result;
+        return response.Data.Result;
 
     }
 }
