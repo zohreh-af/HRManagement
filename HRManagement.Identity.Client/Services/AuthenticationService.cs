@@ -16,7 +16,7 @@ public class AuthenticationService(ApiHandler api, AppAuthenticationStateProvide
 
         if (response.Data.Result == LoginResult.Success)
         {
-            await authenticationStateProvider.SetUserAuthenticated(authenticationResponse.Value.JwtToken);
+            await appAuthenticationStateProvider.SetUserAuthenticated(response.Data.JwtToken);
         }
 
         return response.Data.Result;

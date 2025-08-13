@@ -85,11 +85,11 @@ public partial class ApiHandler(IConfiguration configuration
 
     private async Task ManageHeader(HttpRequestMessage request)
     {
-        var storageAuthResult = await localStorage.SetItemAsync<string>(SessionStorageKeys.AuthToken);
+        var storageAuthResult = await localStorage.GetItemAsync<string>(SessionStorageKeys.AuthToken);
 
-        if (storageAuthResult.Success)
+        if (storageAuthResult=="Success")
         {
-            request.Headers.Authorization = new("Bearer", storageAuthResult.Value);
+            request.Headers.Authorization = new("Bearer", storageAuthResult);
         }
         else
         {
