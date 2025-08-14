@@ -141,4 +141,13 @@
   <data name="App_StringKeys_ٍFailed_Message" xml:space="preserve">
     <value>عملیات موفقیت امیز نبود.</value>
   </data>
+  <data name="App_StringKeys_ٍFailed_Message_DuplicateUsername" xml:space="preserve">
+    <value>نام کاربری تکراری است.</value>
+  </data>
+  <data name="App_StringKeys_ٍFailed_Message_PasswordAndUsernameDuplicate" xml:space="preserve">
+    <value>نام کاربری و رمزعبور نباید یکسان باشند.</value>
+  </data>
+  <data name="App_StringKeys_ٍFailed_Message_PasswordValidation" xml:space="preserve">
+    <value>رمز عبور باید شامل حداقل یک عدد، یک حرف بزرگ و یک علامت خاص (!@#$&amp;*) باشد</value>
+  </data>
 </root>

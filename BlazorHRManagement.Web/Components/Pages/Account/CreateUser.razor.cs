@@ -39,18 +39,33 @@ public partial class CreateUser
             HttpMethod.Post,
             "Account/CreateUser",
             _Request);
-        if (result.Data.Result)
+        if (result.Data.Result==CreateUserResult.Success)
         {
             Response.Message = TextResources.App_StringKeys_Success_Message;
             Response.Result = true;
         }
-        else
+        else if(result.Data.Result == CreateUserResult.FailedToRegister)
         {
             Response.Message = TextResources.App_StringKeys_ٍFailed_Message;
             Response.Result = false;
         }
+        else if(result.Data.Result == CreateUserResult.PasswordValidation)
+        {
+            Response.Message = TextResources.App_StringKeys_ٍFailed_Message_PasswordValidation;
+            Response.Result = false;
+        }
+        else if(result.Data.Result == CreateUserResult.PasswordAndUsernameDuplicate)
+        {
+            Response.Message = TextResources.App_StringKeys_ٍFailed_Message_PasswordAndUsernameDuplicate;
+            Response.Result = false;
+        }
+        else if(result.Data.Result == CreateUserResult.DuplicateUsername)
+        {
+            Response.Message = TextResources.App_StringKeys_ٍFailed_Message_DuplicateUsername;
+            Response.Result = false;
+        }
 
-        IsLoading = false;
+            IsLoading = false;
 
     }
 }

@@ -1,5 +1,6 @@
 using BlazorHRManagement.Infrastructure.Api.Utilities;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
 
 
 namespace BlazorHRManagement.Api
@@ -15,29 +16,53 @@ namespace BlazorHRManagement.Api
             builder.Services.AddControllers();
 
 
-            builder.Services.AddAuthentication(x =>
-            {
-                x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            })
-            .AddJwtBearer(option =>
-            {
-                option.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
+            builder.Services
+                .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(o =>
                 {
-                    //IssuerSigningKey = new SymmetricSecurityKey()             //you most give it a byte array. 
+                    o.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuer = true,
+                        ValidIssuer = "HRIdentity",
+
+                        ValidateAudience = true,
+                        ValidAudience = "HRTicketIdentityUser",
+
+                        ValidateIssuerSigningKey = true,
+                        IssuerSigningKey = CryptoTools.GetSymmetricKey(
+                            "L11wA7R4JD2SqlMObNYDXeXtB0tvreWxp5UA7w_XT6E"),
+
+                        ValidateLifetime = true,
+                        ClockSkew = TimeSpan.Zero
+                    };
+                    o.RequireHttpsMetadata = true;
+                });
+
+            builder.Services.AddAuthorization();
+
+            //builder.Services.AddAuthentication(x =>
+            //{
+            //    x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+            //    x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            //})
+            //.AddJwtBearer(option =>
+            //{
+            //    option.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
+            //    {
+            //        //IssuerSigningKey = new SymmetricSecurityKey()             //you most give it a byte array. 
 
 
-                    //??? ? ??? ????? ?? ?? ???? ????? ?????? 
-                    //????? asymmetric ?? privatekey and for decoding and public key for encoding it
-                    RequireExpirationTime = true,
-                    ValidateIssuer = true,
-                    ValidIssuer = "HRIdentity",
-                    ValidateAudience = true,
-                    ValidAudience = "HRTicketIdentityUser",
-                    IssuerSigningKey = CryptoTools.GetSymmetricKey("L11wA7R4JD2SqlMObNYDXeXtB0tvreWxp5UA7w_XT6E"),
+            //        //??? ? ??? ????? ?? ?? ???? ????? ?????? 
+            //        //????? asymmetric ?? privatekey and for decoding and public key for encoding it
+            //        RequireExpirationTime = true,
+            //        ValidateIssuer = true,
+            //        ValidIssuer = "HRIdentity",
+            //        ValidateAudience = true,
+            //        ValidAudience = "HRTicketIdentityUser",
+            //        IssuerSigningKey = CryptoTools.GetSymmetricKey("L11wA7R4JD2SqlMObNYDXeXtB0tvreWxp5UA7w_XT6E"),
 
-                };
-            });
+            //    };
+            //});
 
             // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
             builder.Services.AddOpenApi();

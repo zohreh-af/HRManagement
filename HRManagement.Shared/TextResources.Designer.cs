@@ -70,6 +70,33 @@ namespace HRManagement.Shared {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to نام کاربری تکراری است..
+        /// </summary>
+        public static string App_StringKeys_ٍFailed_Message_DuplicateUsername {
+            get {
+                return ResourceManager.GetString("App_StringKeys_ٍFailed_Message_DuplicateUsername", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to نام کاربری و رمزعبور نباید یکسان باشند..
+        /// </summary>
+        public static string App_StringKeys_ٍFailed_Message_PasswordAndUsernameDuplicate {
+            get {
+                return ResourceManager.GetString("App_StringKeys_ٍFailed_Message_PasswordAndUsernameDuplicate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to رمز عبور باید شامل حداقل یک عدد، یک حرف بزرگ و یک علامت خاص (!@#$&amp;*) باشد.
+        /// </summary>
+        public static string App_StringKeys_ٍFailed_Message_PasswordValidation {
+            get {
+                return ResourceManager.GetString("App_StringKeys_ٍFailed_Message_PasswordValidation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Loading....
         /// </summary>
         public static string APP_StringKeys_Loading {

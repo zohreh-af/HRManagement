@@ -6,7 +6,7 @@
 
 <div>
 
-    <EditForm Model=_Request OnValidSubmit="OnValidSubmit" OnInvalidSubmit="OnInvalidSubmit">
+    <EditForm FormName="CreateUserForm" Model=_Request OnValidSubmit="OnValidSubmit" OnInvalidSubmit="OnInvalidSubmit">
         <DataAnnotationsValidator />
         <MudGrid>
             <MudItem xs="12" sm="7">
@@ -15,7 +15,7 @@
                         <MudTextField Label="First name" HelperText="Max. 8 characters"
                         @bind-Value="_Request.Username" />
                         <MudTextField Label="Password" HelperText="Choose a strong password" Class="mt-3"
-                        @bind-Value="_Request.Password" InputType="InputType.Password" />
+                                      @bind-Value="_Request.Password" InputType="InputType.Password" />
 
                     </MudCardContent>
                     <MudCardActions>
@@ -32,9 +32,9 @@
     <MudAlert Severity="Severity.Error" Dense="true" Class="my-2">@MassageText</MudAlert>
 }
 
-@if (!string.IsNullOrWhiteSpace(Response?.Message))
+@if (!string.IsNullOrWhiteSpace(Response.Message))
 {
-    <MudAlert Severity="@(Response?.Result ? Severity.Success : Severity.Error)" Dense="true" Class="my-2">@Response?.Message</MudAlert>
+    <MudAlert Severity="@(Response.Result ? Severity.Success : Severity.Error)" Dense="true" Class="my-2">@Response.Message</MudAlert>
 }
 
 @if (IsLoading)

@@ -12,10 +12,8 @@ using System.Security.Claims;
 
 namespace HRManagement.Application.Api.Features.Account.Queries.LoginUser;
 
-public class LoginUserHandler(HRManagementContext context
-    , IPasswordHasher<User> passwordHasher
-    , IConfiguration configuration)
-    : IQueryHandler<LoginUserQuery, LoginUserVm>
+public class LoginUserHandler(HRManagementContext context,IConfiguration configuration
+    , IPasswordHasher<User> passwordHasher): IQueryHandler<LoginUserQuery, LoginUserVm>
 {
     public async Task<LoginUserVm> HandleAsync(LoginUserQuery query, CancellationToken cancellationToken)
     {

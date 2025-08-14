@@ -2,5 +2,5 @@
 
 public record CreateUserVm
 {
-    public bool Result { get; set; }
+    public CreateUserResult Result { get; set; }    
 }

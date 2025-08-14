@@ -6,7 +6,7 @@
 
 <div>
 
-    <EditForm Model=_Request OnValidSubmit="OnValidSubmit" OnInvalidSubmit="OnInvalidSubmit">
+    <EditForm Formname="UserLoginForm" Model=_Request OnValidSubmit="OnValidSubmit" OnInvalidSubmit="OnInvalidSubmit">
         <DataAnnotationsValidator />
         <MudGrid>
             <MudItem xs="12" sm="7">
@@ -33,9 +33,9 @@
     <MudAlert Severity="Severity.Error" Dense="true" Class="my-2">@MassageText</MudAlert>
 }
 
-@if (!string.IsNullOrWhiteSpace(Response?.Message))
+@if (!string.IsNullOrWhiteSpace(Response.Message))
 {
-    <MudAlert Severity="@(Response?.Result ? Severity.Success : Severity.Error)" Dense="true" Class="my-2">@Response?.Message</MudAlert>
+    <MudAlert Severity="@(Response.Result ? Severity.Success : Severity.Error)" Dense="true" Class="my-2">@Response.Message</MudAlert>
 }
 
 @if (IsLoading)
