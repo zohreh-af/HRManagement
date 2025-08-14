@@ -1,0 +1,75 @@
+﻿using Azure.Core;
+using BlazorHRManagement.Application;
+using BlazorHRManagement.Infrastructure.Api.Utilities;
+using HRManagement.Application.Web.Features;
+using HRManagement.Domain.Entities;
+using HRManagement.Persistence.Contexts;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+
+namespace HRManagement.Application.Api.Features.Account.Queries.LoginUser;
+
+public class LoginUserHandler(HRManagementContext context
+    , IPasswordHasher<User> passwordHasher
+    ,IConfiguration configuration) 
+    : IQueryHandler<LoginUserQuery,LoginUserVm>
+{
+    public async Task<LoginUserVm> HandleAsync(LoginUserQuery query, CancellationToken cancellationToken)
+    {
+        var user = await context.Users.FirstOrDefaultAsync
+                            (u => u.Username.ToLower() == query.Username.ToLower(),
+                             cancellationToken);
+
+        if (user is null)
+        {
+            return new()
+            {
+                JwtToken = null,
+                Result = LoginResult.UserNotFound
+            };
+        }
+       var isPasswordValid = passwordHasher.VerifyHashedPassword(user,user.PasswordHash,query.Password);
+
+        if (isPasswordValid!= PasswordVerificationResult.Success)
+        {
+            return new()
+            {
+                JwtToken = null,
+                Result = LoginResult.FailedToLogin
+            };
+        }
+
+        return new()
+        {
+            JwtToken = GetJwtToken(),
+            Result = LoginResult.Success
+        };
+
+    }
+    private string GetJwtToken()
+    {
+        SecurityTokenDescriptor descriptor = new()
+        {
+            Issuer = "HRIdentity",
+            Audience = "HRTicketIdentityUser",
+            IssuedAt = DateTime.UtcNow,
+            NotBefore = DateTime.UtcNow.AddMinutes(0),
+            Expires = DateTime.UtcNow.AddHours(10),
+            SigningCredentials = CryptoTools.GetJwtCredential(configuration["Jwt:Secret"]),
+         
+        };
+
+        JwtSecurityTokenHandler tokenHandler = new();
+
+        SecurityToken securityToken = tokenHandler.CreateToken(descriptor);
+
+        string jwt = tokenHandler.WriteToken(securityToken);
+
+        return jwt;
+    }
+
+}

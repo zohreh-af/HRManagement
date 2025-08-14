@@ -5,6 +5,7 @@ using System.Net;
 using HRManagement.Persistence;
 using MudBlazor.Services;
 using HRManagement.Application.Api;
+using HRManagement.Infrastructure;
 
 
 namespace BlazorHRManagement.Web;
@@ -47,6 +48,7 @@ public static partial class Program
         services.AddApplicationApiServices();
         services.AddApplicationWebServices();
         services.AddPersistenceServices(configuration);
+        services.AddInfrastructureWebServices(configuration);
 
         services.AddScoped<HttpClientHandler>();
 

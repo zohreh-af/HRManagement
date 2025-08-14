@@ -13,7 +13,7 @@ public class User
 
     [Column("UserName")]
     [StringLength(100)]
-    public string UserName { get; set; }
+    public string Username { get; set; }
 
     [Column("Email")]
     [StringLength(100)]

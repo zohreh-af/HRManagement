@@ -30,7 +30,7 @@ namespace BlazorHRManagement.Api
                     //????? asymmetric ?? privatekey and for decoding and public key for encoding it
                     RequireExpirationTime= true,
                     ValidateIssuer = true,
-                    ValidIssuer = "AvizheIdentity",
+                    ValidIssuer = "HRIdentity",
                     ValidateAudience = true,
                     ValidAudience = "HRTicketIdentityUser",
                     IssuerSigningKey = CryptoTools.GetSymmetricKey("L11wA7R4JD2SqlMObNYDXeXtB0tvreWxp5UA7w_XT6E"),

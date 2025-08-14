@@ -5,4 +5,5 @@ public enum LoginResult
     Success,
     UserNotFound,
     Error,
+    FailedToLogin,
 }
