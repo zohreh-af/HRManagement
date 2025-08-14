@@ -1,11 +1,11 @@
 ﻿using BlazorHRManagement.Application;
-using HRManagement.Application.Web;
-using Implementation.Mediator;
-using System.Net;
-using HRManagement.Persistence;
-using MudBlazor.Services;
 using HRManagement.Application.Api;
+using HRManagement.Application.Web;
 using HRManagement.Infrastructure;
+using HRManagement.Persistence;
+using Implementation.Mediator;
+using MudBlazor.Services;
+using System.Net;
 
 
 namespace BlazorHRManagement.Web;
@@ -31,7 +31,7 @@ public static partial class Program
         //            };
         //        });
 
-        services.AddDistributedMemoryCache(); 
+        services.AddDistributedMemoryCache();
         services.AddSession(options =>
         {
             options.IdleTimeout = TimeSpan.FromMinutes(20);

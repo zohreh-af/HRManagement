@@ -8,7 +8,7 @@ public class AccountController(IMediator mediator) : HRManagementBaseController
     public async Task<IActionResult> CreateUser([FromBody] CreateUserCommand command, CancellationToken cancellationToken)
     => Ok(new ApiResponse<CreateUserVm>()
     {
-        Success = true,
+        Successful = true,
         Data = await mediator.SendCommandAsync<CreateUserCommand, CreateUserVm>(command, cancellationToken)
     });
 
@@ -18,7 +18,7 @@ public class AccountController(IMediator mediator) : HRManagementBaseController
     public async Task<IActionResult> LoginUser([FromBody] LoginUserQuery query, CancellationToken cancellationToken)
     => Ok(new ApiResponse<LoginUserVm>()
     {
-        Success = true,
+        Successful = true,
         Data = await mediator.SendQueryAsync<LoginUserQuery, LoginUserVm>(query, cancellationToken)
     });
 

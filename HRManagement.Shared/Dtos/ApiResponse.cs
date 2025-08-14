@@ -1,31 +1,17 @@
-﻿namespace HRManagement.Shared.Dtos;
+﻿using System.Text.Json.Serialization;
+
+namespace HRManagement.Shared.Dtos;
 
 public class ApiResponse<T>
 {
-    public bool Success { get; set; }
-    public string[] Message { get; set; } 
+    [JsonPropertyName("successful")]
+    public bool Successful { get; set; }
+
+    [JsonPropertyName("messages")]
+    public string[] Message { get; set; }
+
+    [JsonPropertyName("value")]
     public T? Data { get; set; }
-    //public IEnumerable<string>? Errors { get; set; }
-
-    //public ApiResponse() { }
-
-    //public ApiResponse(bool success, string message, T? data , IEnumerable<string>? errors = null)
-    //{
-    //    Success = success;
-    //    Message = message;
-    //    Data = data;
-    //    Errors = errors;
-    //}
-
-    //public static ApiResponse<T> SuccessResponse<T>(T data, string message = "Operation successful")
-    //{
-    //    return new ApiResponse<T>(true, message, data);
-    //}
-
-    //public static ApiResponse<T> ErrorResponse<T>(string message = "Operation Failed", IEnumerable<string>? errors = null)
-    //{
-    //    return new ApiResponse<T>(false, message, default, errors);
-    //}
 }
 
 public class ApiResponse
@@ -33,4 +19,22 @@ public class ApiResponse
     public bool Success { get; set; }
     public string[] Message { get; set; }
     public object Data { get; set; }
+}
+
+public class ApiRequest
+{
+    /// <summary>
+    /// Should be: RestAPI
+    /// </summary>
+    [JsonPropertyName("interface")]
+    public string Interface { get; set; }
+
+    /// <summary>
+    /// Name of your method in current project
+    /// </summary>
+    [JsonPropertyName("method")]
+    public string Method { get; set; }
+
+    [JsonPropertyName("parameters")]
+    public object Parameters { get; set; }
 }

@@ -14,13 +14,14 @@ namespace BlazorHRManagement.Api
 
             builder.Services.AddControllers();
 
-            
+
             builder.Services.AddAuthentication(x =>
             {
                 x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
                 x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
             })
-            .AddJwtBearer(option => {
+            .AddJwtBearer(option =>
+            {
                 option.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
                 {
                     //IssuerSigningKey = new SymmetricSecurityKey()             //you most give it a byte array. 
@@ -28,7 +29,7 @@ namespace BlazorHRManagement.Api
 
                     //??? ? ??? ????? ?? ?? ???? ????? ?????? 
                     //????? asymmetric ?? privatekey and for decoding and public key for encoding it
-                    RequireExpirationTime= true,
+                    RequireExpirationTime = true,
                     ValidateIssuer = true,
                     ValidIssuer = "HRIdentity",
                     ValidateAudience = true,

@@ -1,5 +1,4 @@
-﻿using Azure.Core;
-using BlazorHRManagement.Application;
+﻿using BlazorHRManagement.Application;
 using BlazorHRManagement.Infrastructure.Api.Utilities;
 using HRManagement.Application.Web.Features;
 using HRManagement.Domain.Entities;
@@ -15,8 +14,8 @@ namespace HRManagement.Application.Api.Features.Account.Queries.LoginUser;
 
 public class LoginUserHandler(HRManagementContext context
     , IPasswordHasher<User> passwordHasher
-    ,IConfiguration configuration) 
-    : IQueryHandler<LoginUserQuery,LoginUserVm>
+    , IConfiguration configuration)
+    : IQueryHandler<LoginUserQuery, LoginUserVm>
 {
     public async Task<LoginUserVm> HandleAsync(LoginUserQuery query, CancellationToken cancellationToken)
     {
@@ -32,9 +31,9 @@ public class LoginUserHandler(HRManagementContext context
                 Result = LoginResult.UserNotFound
             };
         }
-       var isPasswordValid = passwordHasher.VerifyHashedPassword(user,user.PasswordHash,query.Password);
+        var isPasswordValid = passwordHasher.VerifyHashedPassword(user, user.PasswordHash, query.Password);
 
-        if (isPasswordValid!= PasswordVerificationResult.Success)
+        if (isPasswordValid != PasswordVerificationResult.Success)
         {
             return new()
             {
@@ -43,14 +42,17 @@ public class LoginUserHandler(HRManagementContext context
             };
         }
 
+        ClaimsIdentity claimsIdentity = await GetUserClaims(user);
+
         return new()
         {
-            JwtToken = GetJwtToken(),
+            JwtToken = GetJwtToken(claimsIdentity),
             Result = LoginResult.Success
         };
 
     }
-    private string GetJwtToken()
+
+    private string GetJwtToken(ClaimsIdentity? claimsIdentity)
     {
         SecurityTokenDescriptor descriptor = new()
         {
@@ -60,7 +62,7 @@ public class LoginUserHandler(HRManagementContext context
             NotBefore = DateTime.UtcNow.AddMinutes(0),
             Expires = DateTime.UtcNow.AddHours(10),
             SigningCredentials = CryptoTools.GetJwtCredential(configuration["Jwt:Secret"]),
-         
+            Claims = claimsIdentity.Claims.ToDictionary(c => c.Type, c => (object)c.Value)
         };
 
         JwtSecurityTokenHandler tokenHandler = new();
@@ -72,4 +74,15 @@ public class LoginUserHandler(HRManagementContext context
         return jwt;
     }
 
+    private async Task<ClaimsIdentity> GetUserClaims(User user)
+    {
+        var claims = new List<Claim>();
+
+        claims.Add(new(ClaimTypes.Name, user.Username));
+        claims.Add(new(ClaimTypes.NameIdentifier, user.Id.ToString()));
+        //user rolle 
+        claims.Add(new(ClaimTypes.Surname, user.PersianName));
+
+        return new ClaimsIdentity(claims);
+    }
 }

@@ -61,11 +61,56 @@ namespace HRManagement.Shared {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to عملیات موفقیت امیز نبود..
+        /// </summary>
+        public static string App_StringKeys_ٍFailed_Message {
+            get {
+                return ResourceManager.GetString("App_StringKeys_ٍFailed_Message", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Loading....
+        /// </summary>
+        public static string APP_StringKeys_Loading {
+            get {
+                return ResourceManager.GetString("APP_StringKeys_Loading", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to رمز عبور.
         /// </summary>
         public static string APP_StringKeys_Password {
             get {
                 return ResourceManager.GetString("APP_StringKeys_Password", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to عملیات با موفقیت انجام شد..
+        /// </summary>
+        public static string App_StringKeys_Success_Message {
+            get {
+                return ResourceManager.GetString("App_StringKeys_Success_Message", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ورود.
+        /// </summary>
+        public static string App_StringKeys_User_Login {
+            get {
+                return ResourceManager.GetString("App_StringKeys_User_Login", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to افزودن کاربر.
+        /// </summary>
+        public static string App_StringKeys_User_Register {
+            get {
+                return ResourceManager.GetString("App_StringKeys_User_Register", resourceCulture);
             }
         }
         

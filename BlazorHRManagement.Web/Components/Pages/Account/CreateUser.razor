@@ -2,20 +2,18 @@
 @page "/account/createuser"
 
 
-<PageTitle>.App_StringKeys_Location_Management</PageTitle>
+<PageTitle>@TextResources.App_StringKeys_User_Register</PageTitle>
 
 <div>
 
-    <EditForm FormName="createUserForm" Model=_Request OnValidSubmit="OnValidSubmit" OnInvalidSubmit="OnInvalidSubmit">
+    <EditForm Model=_Request OnValidSubmit="OnValidSubmit" OnInvalidSubmit="OnInvalidSubmit">
         <DataAnnotationsValidator />
         <MudGrid>
             <MudItem xs="12" sm="7">
                 <MudCard>
                     <MudCardContent>
                         <MudTextField Label="First name" HelperText="Max. 8 characters"
-                        @bind-Value="_Request.UserName" />
-                        <MudTextField Label="Email" Class="mt-3"
-                        @bind-Value="_Request.Email" />
+                        @bind-Value="_Request.Username" />
                         <MudTextField Label="Password" HelperText="Choose a strong password" Class="mt-3"
                         @bind-Value="_Request.Password" InputType="InputType.Password" />
 
@@ -34,7 +32,17 @@
     <MudAlert Severity="Severity.Error" Dense="true" Class="my-2">@MassageText</MudAlert>
 }
 
-@if (IsSuccessful)
+@if (!string.IsNullOrWhiteSpace(Response?.Message))
 {
-    <MudAlert Severity="Severity.Success" Dense="true" Class="my-2">@SuccessMassageText</MudAlert>
+    <MudAlert Severity="@(Response?.Result ? Severity.Success : Severity.Error)" Dense="true" Class="my-2">@Response?.Message</MudAlert>
 }
+
+@if (IsLoading)
+{
+    <MudOverlay Visible=true DarkBackground="true" Absolute="true">
+        <MudProgressCircular Size="Size.Large" Indeterminate="true" Color="Color.Primary">
+            <ChildContent>@TextResources.APP_StringKeys_Loading</ChildContent>
+        </MudProgressCircular>
+    </MudOverlay>
+
+}                       

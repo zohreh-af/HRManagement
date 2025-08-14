@@ -12,7 +12,7 @@ public class User
     public Guid Id { get; set; }
 
     [Column("UserName")]
-    [StringLength(100)]
+    [StringLength(50)]
     public string Username { get; set; }
 
     [Column("Email")]
@@ -39,15 +39,17 @@ public class User
 
     [Column("CreatorIdentityID")]
     [StringLength(50)]
-    public string CreatorIdentityID { get; set; }
+    public Guid? CreatorIdentityID { get; set; }
+    public User? Creator { get; set; }
 
     [Column("LastModifierIdentityID")]
     [StringLength(128)]
-    public string? LastModifierIdentityID { get; set; }
+    public Guid? LastModifierIdentityID { get; set; }
+    public User? LastModifier { get; set; }
 
     [Column("Name")]
     [StringLength(128)]
-    public string Name { get; set; }
+    public string PersianName { get; set; }
 
     [Column("PasswordHash")]
     public string PasswordHash { get; set; }
@@ -57,4 +59,8 @@ public class User
 
     [Column("Details")]
     public string? Details { get; set; }
+
+    public ICollection<User> CreatedUsers { get; set; }
+
+    public ICollection<User> ModifiedUsers { get; set; }
 }

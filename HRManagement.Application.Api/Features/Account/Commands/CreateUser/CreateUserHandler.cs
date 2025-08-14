@@ -4,7 +4,7 @@ using HRManagement.Domain.Entities;
 using HRManagement.Persistence.Contexts;
 namespace HRManagement.Application.Api.Features;
 
-public class CreateUserHandler(IMapper mapper, HRManagementContext dbContext) : ICommandHandler<CreateUserCommand,CreateUserVm>
+public class CreateUserHandler(IMapper mapper, HRManagementContext dbContext) : ICommandHandler<CreateUserCommand, CreateUserVm>
 {
     public async Task<CreateUserVm> HandleAsync(CreateUserCommand command, CancellationToken cancellationToken)
     {

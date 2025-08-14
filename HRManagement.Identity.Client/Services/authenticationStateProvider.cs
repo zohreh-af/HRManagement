@@ -1,11 +1,8 @@
 ﻿using Blazored.LocalStorage;
 using HRManagement.Infrastructure.Web.Utilities;
 using Microsoft.AspNetCore.Components.Authorization;
-using System.Net.Http.Headers;
-using System.Net.Http;
-using System.Security.Claims;
 using System.IdentityModel.Tokens.Jwt;
-using System.Threading.Channels;
+using System.Security.Claims;
 
 namespace HRManagement.Identity.Client.Services;
 
@@ -16,7 +13,7 @@ public class AppAuthenticationStateProvider(ILocalStorageService localStorage) :
         try
         {
             var token = await localStorage.GetItemAsync<string>(SessionStorageKeys.AuthToken);
-            if (token is null)
+            if (string.IsNullOrEmpty(token))
             {
                 return new AuthenticationState(new ClaimsPrincipal(new ClaimsIdentity()));
             }
@@ -29,7 +26,7 @@ public class AppAuthenticationStateProvider(ILocalStorageService localStorage) :
                     return new(new(new ClaimsIdentity()));
                 }
             }
-             return new(new(new ClaimsIdentity(GetClaims(token), SessionStorageKeys.AuthToken)));
+            return new(new(new ClaimsIdentity(GetClaims(token), SessionStorageKeys.AuthToken)));
         }
         catch (Exception ex)
         {
@@ -59,13 +56,13 @@ public class AppAuthenticationStateProvider(ILocalStorageService localStorage) :
 
         //  await ClaimManager.ClearDataLists();
 
-        var authUser = new ClaimsPrincipal(new ClaimsIdentity(claims));
+        var authUser = new ClaimsPrincipal(new ClaimsIdentity(claims, "jwt"));
 
         var authState = Task.FromResult(new AuthenticationState(authUser));
-       // we need to sent this token to  NotifyAuthenticationStateChanged in a async way but now we already have this value 
+        // we need to sent this token to  NotifyAuthenticationStateChanged in a async way but now we already have this value 
         //(Task<AuthenticationState> task); ==> so we need to transform it to a async value and then give it to the method.
 
-         NotifyAuthenticationStateChanged(authState);
+        NotifyAuthenticationStateChanged(authState);
 
     }
 
@@ -83,12 +80,12 @@ public class AppAuthenticationStateProvider(ILocalStorageService localStorage) :
         var anonUser = new ClaimsPrincipal(new ClaimsIdentity());
         //An empty ClaimsIdentity means IsAuthenticated == false.
 
-       // Wrapping it in ClaimsPrincipal gives you a “no logged-in user” object.
+        // Wrapping it in ClaimsPrincipal gives you a “no logged-in user” object.
 
         var authState = Task.FromResult(new AuthenticationState(anonUser));
 
         NotifyAuthenticationStateChanged(authState);
-       // Task.FromResult wraps the AuthenticationState in a completed task(since this isn’t async work).
+        // Task.FromResult wraps the AuthenticationState in a completed task(since this isn’t async work).
 
         //NotifyAuthenticationStateChanged tells Blazor:
 

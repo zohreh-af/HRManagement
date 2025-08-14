@@ -1,12 +1,13 @@
-﻿using Microsoft.EntityFrameworkCore;
-using HRManagement.Domain.Entities;
+﻿using HRManagement.Domain.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace HRManagement.Persistence.Contexts;
 
 public class HRManagementContext : DbContext
 {
     public HRManagementContext(DbContextOptions<HRManagementContext> options)
-     : base(options){
+     : base(options)
+    {
     }
 
     public DbSet<User> Users { get; set; }
@@ -16,5 +17,20 @@ public class HRManagementContext : DbContext
     {
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(HRManagementContext).Assembly);
         base.OnModelCreating(modelBuilder);
+
+        modelBuilder.Entity<User>(b =>
+        {
+            b.HasOne(u => u.Creator)               
+             .WithMany(u => u.CreatedUsers)         
+             .HasForeignKey(u => u.CreatorIdentityID)
+             .OnDelete(DeleteBehavior.Restrict);   
+        });
+        modelBuilder.Entity<User>(b =>
+        {
+            b.HasOne(u => u.LastModifier)            
+             .WithMany(u => u.ModifiedUsers)          
+             .HasForeignKey(u => u.LastModifierIdentityID)
+             .OnDelete(DeleteBehavior.Restrict);     
+        });
     }
 }

@@ -4,23 +4,22 @@ using HRManagement.Shared.Dtos;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
-using System.Buffers.Text;
 using System.Net;
-using System.Net.Http.Json;
-using System.Text.Json.Serialization;
-using System.Text.Json;
-using System.Text;
 using System.Net.Http.Headers;
+using System.Net.Http.Json;
+using System.Text;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 namespace HRManagement.Infrastructure.Web.Services;
 
 public partial class ApiHandler(IConfiguration configuration
         , ILocalStorageService localStorage
         , ILogger<ApiHandler> logger
-        , NavigationManager navigationManager  ) : HttpClientHandler
+        , NavigationManager navigationManager) : HttpClientHandler
 {
     private string baseUri;
 
-    public async Task<ApiResponse<T>>SendAsyncObjectByUri<T>(HttpMethod method, string uri,object data = null)
+    public async Task<ApiResponse<T>> SendAsyncObjectByUri<T>(HttpMethod method, string uri, object data = null)
     {
         if (!string.IsNullOrEmpty(baseUri))
         {
@@ -37,15 +36,15 @@ public partial class ApiHandler(IConfiguration configuration
             //}
         };
         var passedDataJsonString = JsonSerializer.Serialize(data, option);
-        var buffer = Encoding.UTF8.GetBytes( passedDataJsonString );
-        var byteContent = new ByteArrayContent( buffer );
-        byteContent.Headers.ContentType = new MediaTypeHeaderValue("application/json" );
+        var buffer = Encoding.UTF8.GetBytes(passedDataJsonString);
+        var byteContent = new ByteArrayContent(buffer);
+        byteContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
 
         HttpRequestMessage request = new(method, baseUri + uri);
 
         request.Content = byteContent;
-        
-        var resultStream = await SendAsync(request,new CancellationToken());
+
+        var resultStream = await SendAsync(request, new CancellationToken());
 
         Stream httpStream = await resultStream.Content.ReadAsStreamAsync();
         //using StreamReader sr = new (httpStream);   
@@ -87,7 +86,7 @@ public partial class ApiHandler(IConfiguration configuration
     {
         var storageAuthResult = await localStorage.GetItemAsync<string>(SessionStorageKeys.AuthToken);
 
-        if (storageAuthResult=="Success")
+        if (storageAuthResult == "Success")
         {
             request.Headers.Authorization = new("Bearer", storageAuthResult);
         }
