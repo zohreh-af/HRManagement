@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Cors;
 namespace BlazorHRManagement.Api.Controllers;
 
 [ApiController]
-[Authorize]
 [EnableCors("OpenCors")]
 [Route("HR/[controller]")]
 

@@ -1,10 +1,9 @@
-﻿using HRManagement.Application.Api.Abstraction;
+﻿using HRManagement.Application.Abstraction;
 using HRManagement.Application.Web.Features;
 using HRManagement.Domain.Entities;
 using HRManagement.Persistence.Contexts;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 namespace HRManagement.Application.Api.Features;
 
 public class CreateUserHandler(

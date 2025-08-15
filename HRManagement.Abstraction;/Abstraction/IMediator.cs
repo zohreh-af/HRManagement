@@ -1,6 +1,4 @@
-﻿using HRManagement.Application.Api.Abstraction;
-
-namespace BlazorHRManagement.Application;
+﻿namespace HRManagement.Abstractio.Abstraction;
 
 public interface IMediator
 {

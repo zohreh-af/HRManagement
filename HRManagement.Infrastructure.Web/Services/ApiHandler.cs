@@ -21,10 +21,11 @@ public partial class ApiHandler(IConfiguration configuration
 
     public async Task<ApiResponse<T>> SendAsyncObjectByUri<T>(HttpMethod method, string uri, object data = null)
     {
-        if (!string.IsNullOrEmpty(baseUri))
-        {
-            baseUri = configuration["Api:BaseUrl"]; //if baseUri was empty, fetch data from configuration
-        }
+        baseUri = baseUri = configuration["Api:BaseUrl"]?.Trim();
+       
+        if (string.IsNullOrWhiteSpace(baseUri))
+            throw new InvalidOperationException("Api:BaseUrl is not configured.");
+       
         JsonSerializerOptions option = new()
         {
             PropertyNameCaseInsensitive = true,
@@ -35,6 +36,11 @@ public partial class ApiHandler(IConfiguration configuration
             //    new NullableDateTimeConverter()
             //}
         };
+
+
+        if (method == HttpMethod.Get || data is null)
+            throw new InvalidOperationException($"Invalid Get Request or Null Data");
+
         var passedDataJsonString = JsonSerializer.Serialize(data, option);
         var buffer = Encoding.UTF8.GetBytes(passedDataJsonString);
         var byteContent = new ByteArrayContent(buffer);
@@ -44,14 +50,34 @@ public partial class ApiHandler(IConfiguration configuration
 
         request.Content = byteContent;
 
-        var resultStream = await SendAsync(request, new CancellationToken());
+        var response = await SendAsync(request, new CancellationToken());
 
-        Stream httpStream = await resultStream.Content.ReadAsStreamAsync();
-        //using StreamReader sr = new (httpStream);   
+        var mediaType = response.Content?.Headers?.ContentType?.MediaType;
 
-        var result = await JsonSerializer.DeserializeAsync<ApiResponse<T>>(httpStream, option);
+        var body = response.Content is null ? null : await response.Content.ReadAsStringAsync();
+
+        if (!response.IsSuccessStatusCode)
+        {
+            if (string.Equals(mediaType, "application/json", StringComparison.OrdinalIgnoreCase) && !string.IsNullOrWhiteSpace(body))
+            {
+                var err = JsonSerializer.Deserialize<ApiResponse<string>>(body, option);
+                throw new HttpRequestException($"HTTP {(int)response.StatusCode} {response.ReasonPhrase}. Server says: {string.Join(" | ", err?.Message ?? Array.Empty<string>())}");
+            }
+            else
+            {
+                throw new HttpRequestException(
+                    $"HTTP {(int)response.StatusCode} {response.ReasonPhrase}. Expected JSON but got '{mediaType ?? "no content"}'. Body: {Truncate(body, 200)}");
+            }
+        }
+        if (!string.Equals(mediaType, "application/json", StringComparison.OrdinalIgnoreCase) || string.IsNullOrWhiteSpace(body))
+            throw new InvalidOperationException($"Expected JSON response but got '{mediaType ?? "no content"}'. Body: {Truncate(body, 200)}");
+
+
+        var result = JsonSerializer.Deserialize<ApiResponse<T>>(body, option)
+                 ?? throw new InvalidOperationException("Failed to deserialize server response.");
         return result;
     }
+
     protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
     {
         await ManageHeader(request);
@@ -84,15 +110,17 @@ public partial class ApiHandler(IConfiguration configuration
 
     private async Task ManageHeader(HttpRequestMessage request)
     {
-        var storageAuthResult = await localStorage.GetItemAsync<string>(SessionStorageKeys.AuthToken);
+        var token = await localStorage.GetItemAsync<string>(SessionStorageKeys.AuthToken);
 
-        if (storageAuthResult == "Success")
+        if (!string.IsNullOrEmpty(token))
         {
-            request.Headers.Authorization = new("Bearer", storageAuthResult);
+            request.Headers.Authorization = new("Bearer", token);
         }
         else
         {
             request.Headers.Remove("Authorization");
         }
     }
+    private static string Truncate(string? s, int max) =>
+    string.IsNullOrEmpty(s) ? "" : (s.Length <= max ? s : s.Substring(0, max));
 }

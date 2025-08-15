@@ -1,5 +1,4 @@
-﻿using BlazorHRManagement.Application;
-using HRManagement.Application.Api;
+﻿using HRManagement.Application.Api;
 using HRManagement.Application.Web;
 using HRManagement.Infrastructure;
 using HRManagement.Persistence;

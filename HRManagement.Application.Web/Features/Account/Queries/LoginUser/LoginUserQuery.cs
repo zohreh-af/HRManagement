@@ -1,4 +1,4 @@
-﻿using BlazorHRManagement.Application;
+﻿using HRManagement.Abstraction.Abstraction;
 using HRManagement.Shared;
 using System.ComponentModel.DataAnnotations;
 

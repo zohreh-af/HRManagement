@@ -1,4 +1,5 @@
-﻿namespace BlazorHRManagement.Api.Controllers;
+﻿
+namespace BlazorHRManagement.Api.Controllers;
 
 public class AccountController(IMediator mediator) : HRManagementBaseController
 {

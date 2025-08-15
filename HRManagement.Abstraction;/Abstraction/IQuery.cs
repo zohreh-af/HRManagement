@@ -1,4 +1,4 @@
-﻿namespace BlazorHRManagement.Application;
+﻿namespace HRManagement.Abstraction.Abstraction;
 
 public interface IQuery<TResult> { }
 

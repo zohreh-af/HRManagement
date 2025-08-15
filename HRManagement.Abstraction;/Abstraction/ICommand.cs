@@ -1,5 +1,4 @@
-﻿
-namespace HRManagement.Application.Api.Abstraction;
+﻿namespace HRManagement.Application.Abstraction;
 
 public interface ICommand<TResult> { }
 

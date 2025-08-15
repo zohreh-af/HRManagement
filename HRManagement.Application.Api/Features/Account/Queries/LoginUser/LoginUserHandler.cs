@@ -1,5 +1,5 @@
-﻿using BlazorHRManagement.Application;
-using BlazorHRManagement.Infrastructure.Api.Utilities;
+﻿using BlazorHRManagement.Infrastructure.Api.Utilities;
+using HRManagement.Application.Abstraction;
 using HRManagement.Application.Web.Features;
 using HRManagement.Domain.Entities;
 using HRManagement.Persistence.Contexts;

@@ -1,6 +1,7 @@
 ﻿using Blazored.LocalStorage;
 using HRManagement.Infrastructure.Web.Utilities;
 using Microsoft.AspNetCore.Components.Authorization;
+using Microsoft.AspNetCore.Components.Web;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 
@@ -44,6 +45,9 @@ public class AppAuthenticationStateProvider(ILocalStorageService localStorage) :
 
         string username = claims.FirstOrDefault(p => p.Type == "unique_name").Value;
 
+        //add this for local storage <!-- Components/App.razor -->
+        //< HeadOutlet @rendermode = "new InteractiveServerRenderMode(prerender: false)" />
+        //< Routes     @rendermode = "new InteractiveServerRenderMode(prerender: false)" />
 
         await localStorage.SetItemAsync(SessionStorageKeys.SecureToken, userId);
 
