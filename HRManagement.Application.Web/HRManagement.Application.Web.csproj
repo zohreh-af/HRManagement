@@ -18,19 +18,12 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.1" />
+	  <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.1" />
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\BlazorHRManagement.Application.Abstraction\HRManagement.Application.Abstraction.csproj" />
-		<ProjectReference Include="..\HRManagement.Abstraction" />
-		<ProjectReference Include="..\HRManagement.Shared\HRManagement.Shared.csproj" />
-		<ProjectReference Include="\HRManagement.Abstraction">
-		  <T></T>
-		</ProjectReference>
-		<ProjectReference Include=".csproj">
-		  <T></T>
-		</ProjectReference>
+	  <ProjectReference Include="..\Abstraction\Abstraction.csproj" />
+	  <ProjectReference Include="..\HRManagement.Shared\HRManagement.Shared.csproj" />
 	</ItemGroup>
 
 </Project>

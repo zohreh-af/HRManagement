@@ -1,7 +1,6 @@
-﻿using HRManagement.Application.Api;
+﻿using Abstraction;
 using HRManagement.Application.Web;
 using HRManagement.Infrastructure;
-using HRManagement.Persistence;
 using Implementation.Mediator;
 using MudBlazor.Services;
 using System.Net;
@@ -15,8 +14,7 @@ public static partial class Program
     , IConfiguration configuration)
     {
         var baseApiUri = "https://localhost:7072";
-        System.Net.ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 | SecurityProtocolType.Tls13;
-
+   
         //services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         //        .AddJwtBearer(options =>
         //        {
@@ -44,9 +42,7 @@ public static partial class Program
         services.AddRazorComponents()
             .AddInteractiveServerComponents();
 
-        services.AddApplicationApiServices();
         services.AddApplicationWebServices();
-        services.AddPersistenceServices(configuration);
         services.AddInfrastructureWebServices(configuration);
 
         services.AddScoped<HttpClientHandler>();

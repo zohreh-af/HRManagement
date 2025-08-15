@@ -21,8 +21,8 @@
   <ItemGroup>
     <ProjectReference Include="..\HRManagement.Application.Web\HRManagement.Application.Web.csproj" />
     <ProjectReference Include="..\HRManagement.Infrastructure.Web\HRManagement.Infrastructure.Web.csproj" />
-    <ProjectReference Include="..\HRManagement.Persistence\HRManagement.Persistence.csproj" />
     <ProjectReference Include="..\HRManagement.Shared\HRManagement.Shared.csproj" />
     <ProjectReference Include="..\Implementation\BlazorHRManagement.Implementation.csproj" />
   </ItemGroup>
+	
 </Project>

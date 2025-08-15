@@ -16,11 +16,13 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Abstraction\Abstraction.csproj" />
     <ProjectReference Include="..\HRManagement.Application.Web\HRManagement.Application.Web.csproj" />
     <ProjectReference Include="..\HRManagement.Domain\HRManagement.Domain.csproj" />
     <ProjectReference Include="..\HRManagement.Infrastructure.Api\HRManagement.Infrastructure.Api.csproj" />
     <ProjectReference Include="..\HRManagement.Persistence\HRManagement.Persistence.csproj" />
     <ProjectReference Include="..\HRManagement.Shared\HRManagement.Shared.csproj" />
+    <ProjectReference Include="..\Implementation\BlazorHRManagement.Implementation.csproj" />
   </ItemGroup>
 
 </Project>

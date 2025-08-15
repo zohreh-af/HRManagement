@@ -1,5 +1,4 @@
-﻿
-using HRManagement.Application.Abstraction;
+﻿using Abstraction;
 
 namespace HRManagement.Application.Web.Features;
 

@@ -1,4 +1,4 @@
-﻿namespace HRManagement.Application.Abstraction;
+﻿namespace Abstraction;
 
 public interface ICommand<TResult> { }
 

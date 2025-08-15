@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Abstraction;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Implementation.Mediator;
 

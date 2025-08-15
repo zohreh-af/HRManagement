@@ -1,4 +1,4 @@
-﻿namespace HRManagement.Abstractio.Abstraction;
+﻿namespace Abstraction;
 
 public interface IMediator
 {

@@ -1,4 +1,4 @@
-﻿using HRManagement.Abstraction.Abstraction;
+﻿using Abstraction;
 using HRManagement.Shared;
 using System.ComponentModel.DataAnnotations;
 

@@ -1,4 +1,4 @@
-﻿using HRManagement.Application.Abstraction;
+﻿using Abstraction;
 using HRManagement.Application.Web.Features;
 using HRManagement.Domain.Entities;
 using HRManagement.Persistence.Contexts;

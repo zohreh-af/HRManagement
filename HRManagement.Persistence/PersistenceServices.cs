@@ -9,9 +9,9 @@ public static class PersistenceServices
 {
     public static void AddPersistenceServices(this IServiceCollection services, IConfiguration configuration)
     {
-        services.AddDbContext<HRManagementContext>(option =>
-        {
-            option.UseSqlServer(configuration.GetConnectionString("SqlDefaultConnectionString"));
-        });
+        //services.AddDbContext<HRManagementContext>(option =>
+        //{
+        //    option.UseSqlServer(configuration.GetConnectionString("SqlDefaultConnectionString"));
+        //});
     }
 }

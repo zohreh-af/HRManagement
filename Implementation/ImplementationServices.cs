@@ -1,5 +1,14 @@
-﻿namespace HRManagement.Implementation;
+﻿using Abstraction;
+using Implementation.Mediator;
+using Microsoft.Extensions.DependencyInjection;
 
-public class ImplementationServices
+namespace HRManagement.Implementation;
+
+public static class ImplementationServices
 {
+    public static void AddImplementationServices(this IServiceCollection service)
+    {
+
+        service.AddScoped<IMediator, Mediator>();
+    }
 }

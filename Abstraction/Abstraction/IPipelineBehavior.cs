@@ -1,4 +1,4 @@
-﻿namespace HRManagement.Abstraction.Abstraction;
+﻿namespace Abstraction;
 
 public interface IPipelineBehavior<in TInput, TOutput>
 {
