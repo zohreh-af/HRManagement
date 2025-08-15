@@ -59,7 +59,7 @@ public class LoginUserHandler(HRManagementContext context,IConfiguration configu
             IssuedAt = DateTime.UtcNow,
             NotBefore = DateTime.UtcNow.AddMinutes(0),
             Expires = DateTime.UtcNow.AddHours(10),
-            SigningCredentials = CryptoTools.GetJwtCredential(configuration["Jwt:Secret"]),
+            SigningCredentials = CryptoTools.GetJwtCredential(configuration["Jwt:Key"]),
             Claims = claimsIdentity.Claims.ToDictionary(c => c.Type, c => (object)c.Value)
         };
 

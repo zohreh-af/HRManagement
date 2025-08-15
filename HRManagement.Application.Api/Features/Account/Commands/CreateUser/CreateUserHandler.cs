@@ -32,6 +32,7 @@ public class CreateUserHandler(
         //  var newUser = mapper.Map<User>(command);
         var newUser = new User
         {
+            Id = Guid.NewGuid(),
             Username = command.Username,
             IsActive = true,
             PersianName = "Zohreh Abbasifar",

@@ -17,20 +17,21 @@ public class HRManagementContext : DbContext
     {
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(HRManagementContext).Assembly);
         base.OnModelCreating(modelBuilder);
-
+        
         modelBuilder.Entity<User>(b =>
         {
-            b.HasOne(u => u.Creator)               
-             .WithMany(u => u.CreatedUsers)         
+            b.HasOne(u => u.Creator)
+             .WithMany(u => u.CreatedUsers)
              .HasForeignKey(u => u.CreatorIdentityID)
-             .OnDelete(DeleteBehavior.Restrict);   
-        });
-        modelBuilder.Entity<User>(b =>
-        {
-            b.HasOne(u => u.LastModifier)            
-             .WithMany(u => u.ModifiedUsers)          
+             .IsRequired(false)
+             .OnDelete(DeleteBehavior.Restrict);
+
+            b.HasOne(u => u.LastModifier)
+             .WithMany(u => u.ModifiedUsers)
              .HasForeignKey(u => u.LastModifierIdentityID)
-             .OnDelete(DeleteBehavior.Restrict);     
+             .IsRequired(false)
+             .OnDelete(DeleteBehavior.Restrict);
         });
+
     }
 }

@@ -4,7 +4,6 @@ using HRManagement.Persistence.Contexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -12,15 +11,13 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HRManagement.Persistence.Migrations
 {
     [DbContext(typeof(HRManagementContext))]
-    [Migration("20250724212626_InitialCreate2")]
-    partial class InitialCreate2
+    partial class HRManagementContextModelSnapshot : ModelSnapshot
     {
-        /// <inheritdoc />
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "9.0.7")
+                .HasAnnotation("ProductVersion", "9.0.8")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -64,21 +61,19 @@ namespace HRManagement.Persistence.Migrations
                     b.ToTable("Employees");
                 });
 
-            modelBuilder.Entity("HRManagement.Domain.Entities.User", b =>
+            modelBuilder.Entity("User", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier")
                         .HasColumnName("Id");
 
-                    b.Property<DateTime?>("CreateDate")
+                    b.Property<DateTime>("CreateDate")
                         .HasColumnType("datetime2")
                         .HasColumnName("CreateDate");
 
-                    b.Property<string>("CreatorIdentityID")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)")
+                    b.Property<Guid?>("CreatorIdentityID")
+                        .HasColumnType("uniqueidentifier")
                         .HasColumnName("CreatorIdentityID");
 
                     b.Property<string>("Details")
@@ -90,7 +85,7 @@ namespace HRManagement.Persistence.Migrations
                         .HasColumnType("nvarchar(100)")
                         .HasColumnName("Email");
 
-                    b.Property<bool?>("EmailConfirmed")
+                    b.Property<bool>("EmailConfirmed")
                         .HasColumnType("bit")
                         .HasColumnName("EmailConfirmed");
 
@@ -98,27 +93,27 @@ namespace HRManagement.Persistence.Migrations
                         .HasColumnType("bit")
                         .HasColumnName("IsActive");
 
-                    b.Property<string>("LastModifierIdentityID")
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)")
+                    b.Property<Guid?>("LastModifierIdentityID")
+                        .HasColumnType("uniqueidentifier")
                         .HasColumnName("LastModifierIdentityID");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)")
-                        .HasColumnName("Name");
 
                     b.Property<string>("PasswordHash")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)")
                         .HasColumnName("PasswordHash");
 
-                    b.Property<int?>("PhoneNumber")
-                        .HasColumnType("int")
+                    b.Property<string>("PersianName")
+                        .IsRequired()
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)")
+                        .HasColumnName("Name");
+
+                    b.Property<string>("PhoneNumber")
+                        .HasMaxLength(32)
+                        .HasColumnType("nvarchar(32)")
                         .HasColumnName("PhoneNumber");
 
-                    b.Property<bool?>("PhoneNumberConfirmed")
+                    b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("bit")
                         .HasColumnName("PhoneNumberConfirmed");
 
@@ -126,25 +121,53 @@ namespace HRManagement.Persistence.Migrations
                         .HasColumnType("nvarchar(max)")
                         .HasColumnName("SecurityStamp");
 
-                    b.Property<string>("UserName")
+                    b.Property<string>("Username")
                         .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)")
                         .HasColumnName("UserName");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CreatorIdentityID");
+
+                    b.HasIndex("LastModifierIdentityID");
 
                     b.ToTable("tbl_User");
                 });
 
             modelBuilder.Entity("HRManagement.Domain.Entities.Employee", b =>
                 {
-                    b.HasOne("HRManagement.Domain.Entities.User", "User")
+                    b.HasOne("User", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Restrict);
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("User", b =>
+                {
+                    b.HasOne("User", "Creator")
+                        .WithMany("CreatedUsers")
+                        .HasForeignKey("CreatorIdentityID")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("User", "LastModifier")
+                        .WithMany("ModifiedUsers")
+                        .HasForeignKey("LastModifierIdentityID")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("Creator");
+
+                    b.Navigation("LastModifier");
+                });
+
+            modelBuilder.Entity("User", b =>
+                {
+                    b.Navigation("CreatedUsers");
+
+                    b.Navigation("ModifiedUsers");
                 });
 #pragma warning restore 612, 618
         }
