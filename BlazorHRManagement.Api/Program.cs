@@ -1,17 +1,12 @@
-
 namespace BlazorHRManagement.Api
 {
-    public class Program
+    public static partial class Program
     {
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            // Add services to the container.
-
-            builder.Services.AddControllers();
-            // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
-            builder.Services.AddOpenApi();
+            builder.Services.ConfigureServices(builder.Configuration);
 
             var app = builder.Build();
 
@@ -23,8 +18,10 @@ namespace BlazorHRManagement.Api
 
             app.UseHttpsRedirection();
 
-            app.UseAuthorization();
+            app.UseCors("AllowBlazor");
 
+            app.UseAuthentication();
+            app.UseAuthorization();
 
             app.MapControllers();
 

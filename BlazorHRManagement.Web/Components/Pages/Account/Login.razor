@@ -1,0 +1,49 @@
+﻿@using MudBlazor
+@page "/account/Login"
+
+
+<PageTitle>@TextResources.App_StringKeys_User_Login</PageTitle>
+
+<div>
+
+    <EditForm Formname="UserLoginForm" Model=_Request OnValidSubmit="OnValidSubmit" OnInvalidSubmit="OnInvalidSubmit">
+        <DataAnnotationsValidator />
+        <MudGrid>
+            <MudItem xs="12" sm="7">
+                <MudCard>
+                    <MudCardContent>
+                        <MudTextField Label="First name" HelperText="Max. 8 characters"
+                                      @bind-Value="_Request.Username" />
+
+                        <MudTextField Label="Password" Class="mt-3"
+                                      @bind-Value="_Request.Password" InputType="InputType.Password" />
+
+                    </MudCardContent>
+                    <MudCardActions>
+                        <MudIconButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto">Register</MudIconButton>
+                    </MudCardActions>
+                </MudCard>
+            </MudItem>
+
+        </MudGrid>
+    </EditForm>
+</div>
+@if (IsInvalid)
+{
+    <MudAlert Severity="Severity.Error" Dense="true" Class="my-2">@MassageText</MudAlert>
+}
+
+@if (!string.IsNullOrWhiteSpace(Response.Message))
+{
+    <MudAlert Severity="@(Response.Result ? Severity.Success : Severity.Error)" Dense="true" Class="my-2">@Response.Message</MudAlert>
+}
+
+@if (IsLoading)
+{
+    <MudOverlay Visible=true DarkBackground="true" Absolute="true">
+        <MudProgressCircular Size="Size.Large" Indeterminate="true" Color="Color.Primary">
+            <ChildContent>@TextResources.APP_StringKeys_Loading</ChildContent>
+        </MudProgressCircular>
+    </MudOverlay>
+
+}                       

@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>net9.0</TargetFramework>
@@ -7,26 +7,28 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Program.Middlewares.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="12.0.1" />
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.1" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="9.0.6" />
+    <PackageReference Include="Microsoft.AspNetCore.Components" Version="9.0.7" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="9.0.7">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.JSInterop" Version="9.0.7" />
+    <PackageReference Include="MudBlazor" Version="8.9.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Components\Pages\Account\" />
-    <Folder Include="Components\Pages\Employee\" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Include="Program.Middlewares.cs" />
+    <Folder Include="Pages\Account\" />
+    <Folder Include="Pages\Employee\" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\HRManagement.Application.Api\HRManagement.Application.Api.csproj" />
     <ProjectReference Include="..\HRManagement.Persistence\HRManagement.Persistence.csproj" />
     <ProjectReference Include="..\HRManagement.Shared\HRManagement.Shared.csproj" />
+    <ProjectReference Include="..\Implementation\BlazorHRManagement.Implementation.csproj" />
   </ItemGroup>
 
 </Project>

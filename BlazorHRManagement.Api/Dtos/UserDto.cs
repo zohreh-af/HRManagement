@@ -1,8 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel;
-
-namespace BlazorHRManagement.Api;
+﻿namespace BlazorHRManagement.Api;
 
 public class UserDto
 {

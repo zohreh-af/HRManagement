@@ -1,11 +1,12 @@
-﻿using Microsoft.EntityFrameworkCore;
-using HRManagement.Domain.Entities;
+﻿using HRManagement.Domain.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace HRManagement.Persistence.Contexts;
 
 public class HRManagementContext : DbContext
 {
-    public HRManagementContext(DbContextOptions options) : base(options)
+    public HRManagementContext(DbContextOptions<HRManagementContext> options)
+     : base(options)
     {
     }
 
@@ -14,14 +15,23 @@ public class HRManagementContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-
-        modelBuilder.Entity<Employee>()
-                    .HasOne(u => u.User)
-                    .WithMany() 
-                    .HasForeignKey(e => e.UserId)
-                    .OnDelete(DeleteBehavior.Restrict);
-
-
+        modelBuilder.ApplyConfigurationsFromAssembly(typeof(HRManagementContext).Assembly);
         base.OnModelCreating(modelBuilder);
+        
+        modelBuilder.Entity<User>(b =>
+        {
+            b.HasOne(u => u.Creator)
+             .WithMany(u => u.CreatedUsers)
+             .HasForeignKey(u => u.CreatorIdentityID)
+             .IsRequired(false)
+             .OnDelete(DeleteBehavior.Restrict);
+
+            b.HasOne(u => u.LastModifier)
+             .WithMany(u => u.ModifiedUsers)
+             .HasForeignKey(u => u.LastModifierIdentityID)
+             .IsRequired(false)
+             .OnDelete(DeleteBehavior.Restrict);
+        });
+
     }
 }

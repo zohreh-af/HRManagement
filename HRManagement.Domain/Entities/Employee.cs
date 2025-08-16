@@ -1,5 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace HRManagement.Domain.Entities;
 
@@ -10,7 +10,7 @@ public class Employee
     [Key]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     [Column("Id")]
-    public int Id { get; set; }
+    public int EmployeeId { get; set; }
 
     [Column("FirstName")]
     [StringLength(100)]

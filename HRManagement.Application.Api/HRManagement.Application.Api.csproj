@@ -7,7 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Features\Account\Queries\" />
+    <Folder Include="Features\Account\Enums\" />
     <Folder Include="Features\ArrivalExits\Commands\" />
     <Folder Include="Features\ArrivalExits\Queries\" />
     <Folder Include="Features\Employee\Commands\" />
@@ -17,9 +17,16 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\BlazorHRManagement.Api\BlazorHRManagement.Api.csproj" />
-    <ProjectReference Include="..\HRManagement.Application.Abstraction\HRManagement.Application.Abstraction.csproj" />
+    <PackageReference Include="AutoMapper" Version="12.0.1" />
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.1" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="9.0.8" />
+    <PackageReference Include="Microsoft.Extensions.Identity.Core" Version="9.0.8" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\HRManagement.Application.Web\HRManagement.Application.Web.csproj" />
+    <ProjectReference Include="..\HRManagement.Domain\HRManagement.Domain.csproj" />
+    <ProjectReference Include="..\HRManagement.Infrastructure.Api\HRManagement.Infrastructure.Api.csproj" />
     <ProjectReference Include="..\HRManagement.Persistence\HRManagement.Persistence.csproj" />
   </ItemGroup>
 

@@ -1,12 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Blazored.LocalStorage;
+using HRManagement.Infrastructure.Web.Services;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 
-namespace HRManagement.Infrastructure.Api
+namespace HRManagement.Infrastructure;
+
+public static class InfrastructureWebServices
 {
-    internal class InfrastructureWebServices
+    public static void AddInfrastructureWebServices(this IServiceCollection services, IConfiguration configuration)
     {
+        services.AddBlazoredLocalStorage();
+        services.AddScoped<ApiHandler>();
+
     }
 }
