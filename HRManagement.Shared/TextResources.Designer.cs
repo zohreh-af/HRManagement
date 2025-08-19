@@ -61,7 +61,7 @@ namespace HRManagement.Shared {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to عملیات موفقیت امیز نبود..
+        ///   Looks up a localized string similar to در انجام عملیات مشکلی بوجود آمده است..
         /// </summary>
         public static string App_StringKeys_ٍFailed_Message {
             get {

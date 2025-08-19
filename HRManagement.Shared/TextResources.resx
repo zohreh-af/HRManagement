@@ -139,7 +139,7 @@
     <value>اطلاعات فیلد {0} الزامی است.</value>
   </data>
   <data name="App_StringKeys_ٍFailed_Message" xml:space="preserve">
-    <value>عملیات موفقیت امیز نبود.</value>
+    <value>در انجام عملیات مشکلی بوجود آمده است.</value>
   </data>
   <data name="App_StringKeys_ٍFailed_Message_DuplicateUsername" xml:space="preserve">
     <value>نام کاربری تکراری است.</value>

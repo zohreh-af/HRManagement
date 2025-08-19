@@ -1,9 +1,34 @@
-﻿<ErrorBoundary>
-   
-    <ErrorContent>
-        <MudText Typo="Typo.body1" Color="Color.Error">An error has occurred.</MudText>
-        <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="GoHome">
-            Go to Home
-        </MudButton>
-    </ErrorContent>
-</ErrorBoundary>
+﻿@inherits ErrorBoundaryBase
+@if (CurrentException is null)
+{
+    @ChildContent
+}
+else if (ErrorContent is null)
+{
+    <div class="main">
+        <div class="header">
+            <MudText Typo="Typo.body1" Color="Color.Error">An error has occurred.</MudText>
+            <MudIconButton Variant="Variant.Filled" 
+                           Color="Color.Primary"
+                           Icon="@Icons.Material.Filled.Home"
+                           OnClick="GoHome">
+
+            </MudIconButton>
+            <MudIconButton Variant="Variant.Filled"
+                           Color="Color.Warning"
+                           Icon="@Icons.Material.Filled.Home"
+                           OnClick="Recover">
+
+            </MudIconButton>
+        </div>
+        <h1 class="title">@TextResources.App_StringKeys_ٍFailed_Message</h1>
+        @if (ShowException)
+        {
+            <div class="exception">@CurrentException?.ToString()</div>
+        }
+    </div>
+}
+else
+{
+    @ErrorContent(CurrentException)
+}
