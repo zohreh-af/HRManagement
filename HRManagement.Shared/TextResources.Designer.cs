@@ -61,6 +61,15 @@ namespace HRManagement.Shared {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to  در انجام عملیات مشکلی بوجود آمده است..
+        /// </summary>
+        public static string APP_StringKeys_Error_Unexpected {
+            get {
+                return ResourceManager.GetString("APP_StringKeys_Error_Unexpected", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to در انجام عملیات مشکلی بوجود آمده است..
         /// </summary>
         public static string App_StringKeys_ٍFailed_Message {
@@ -147,6 +156,15 @@ namespace HRManagement.Shared {
         public static string APP_StringKeys_Username {
             get {
                 return ResourceManager.GetString("APP_StringKeys_Username", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to فایل وارد شده در فرمت مناسب نیست..
+        /// </summary>
+        public static string APP_StringKeys_Validation_File_Format {
+            get {
+                return ResourceManager.GetString("APP_StringKeys_Validation_File_Format", resourceCulture);
             }
         }
         

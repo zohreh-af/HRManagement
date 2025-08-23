@@ -20,11 +20,14 @@
         <NavMenu />
     </MudDrawer>
     <MudMainContent Class="pt-16 pa-4">
-        <ErrorBoundary>
-            <ErrorContent>
-                @body
-            </ErrorContent>
-        </ErrorBoundary>
+                <main>
+                   
+                     <article class="content px-4">
+                        <AppErrorBoundary>
+                            @Body
+                        </AppErrorBoundary>
+                    </article>
+                </main>
     </MudMainContent>
 </MudLayout>
 
