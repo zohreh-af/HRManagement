@@ -1,6 +1,10 @@
-﻿namespace HRManagement.Infrastructure.Api
+﻿using Microsoft.Extensions.DependencyInjection;
+
+namespace HRManagement.Infrastructure.Api;
+
+public static class InfrastructureApiServices
 {
-    internal class InfrastructureApiServices
+    public static void UseInfrastructureApiServices(this IServiceCollection services)
     {
     }
 }
