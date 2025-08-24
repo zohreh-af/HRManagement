@@ -1,5 +1,7 @@
-﻿namespace HRManagement.Application.Web.Features;
+﻿using System.Text.Json.Serialization;
 
+namespace HRManagement.Application.Web.Features;
+[JsonConverter(typeof(JsonStringEnumConverter))]
 public enum CreateUserResult
 {
     Success,
