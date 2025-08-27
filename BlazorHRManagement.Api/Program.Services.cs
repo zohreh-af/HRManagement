@@ -1,4 +1,5 @@
 ﻿using Abstraction;
+using BlazorHRManagement.Api.Logger;
 using BlazorHRManagement.Infrastructure.Api.Utilities;
 using HRManagement.Application.Api;
 using HRManagement.Application.Api.Features;
@@ -16,6 +17,7 @@ using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Serilog;
+using Serilog.Events;
 using Serilog.Sinks.MSSqlServer;
 using System.Collections.ObjectModel;
 using System.Configuration;
@@ -78,28 +80,67 @@ public static partial class Program
 
         //SeriLog setting
 
-        var logConfig = new LoggerConfiguration()
-                            .WriteTo.File("Logs/app-.log", rollingInterval: RollingInterval.Day)
-                            .WriteTo.MSSqlServer(connectionString)
-                            .CreateLogger();
-
-        Serilog.Log.Logger = logConfig;
-        // In Program.cs or Main method
-
-        // Define column options for SQL sink if needed
-        var columnOptions = new ColumnOptions
+        services.AddLogging(loggingBuilder =>
         {
-            AdditionalColumns = new Collection<SqlColumn>
-             {
-                 new SqlColumn("UserName", System.Data.SqlDbType.NVarChar, dataLength: 128),
-                 new SqlColumn("DateTime", System.Data.SqlDbType.NVarChar, dataLength: 128),
-                 new SqlColumn("UserName", System.Data.SqlDbType.NVarChar, dataLength: 128),
-                 new SqlColumn("UserName", System.Data.SqlDbType.NVarChar, dataLength: 128),
-                 new SqlColumn("UserName", System.Data.SqlDbType.NVarChar, dataLength: 128),
-             }
-        };
+            loggingBuilder.ClearProviders();
+            loggingBuilder.AddConsole();
+            loggingBuilder.AddProvider(new FileLoggerProvider());
+        });
+
+//        var logConfig = new LoggerConfiguration()
+//                            .MinimumLevel.Debug()
+//                            .WriteTo.File("Logs/app-.log", rollingInterval: RollingInterval.Minute)
+//                            .WriteTo.MSSqlServer(
+//                                connectionString: connectionString,
+//                                sinkOptions: new MSSqlServerSinkOptions
+//                                {
+//                                    AutoCreateSqlTable = true,
+//                                    TableName = "UserLoginLog" // table created automatically if not exists
+//                                })
+//                            .WriteTo.Seq("http://localhost:5341")
+//                            .CreateLogger();
 
 
+//        var customLogger = new LoggerConfiguration()
+//            .Enrich.FromLogContext().MinimumLevel.Information();
 
+//        customLogger.WriteTo.Debug();
+
+//#if DEBUG
+//        customLogger.WriteTo.Console();
+//#else
+//            customLogger
+//                .MinimumLevel.Override("Microsoft", Serilog.Events.LogEventLevel.Warning)
+//                .WriteTo.Logger(lc => lc
+//                    .Filter.ByIncludingOnly(evt => evt.Level == Serilog.Events.LogEventLevel.Warning)
+//                    .WriteTo.File($"Logs/Exceptions/Log-{PersianCalendarTools.GregorianToPersianWithManualSeprator(DateTime.Now, "")}.log"
+//                    , outputTemplate: @"-------------------Exception Begin----------------------
+//                                {NewLine}Exception Occure Time:{Timestamp:o}
+//                                {NewLine}Exception Message:{Message}
+//                                {NewLine}Exception Base:{Exception}
+//                                {NewLine}-------------------Exception End----------------------{NewLine}"))
+//                .WriteTo.Logger(lc => lc
+//                    .Filter.ByIncludingOnly(evt => evt.Level <= Serilog.Events.LogEventLevel.Information)
+//                    .WriteTo.File($"Logs/InfoLogs/Log-{PersianCalendarTools.GregorianToPersianWithManualSeprator(DateTime.Now, "")}.log"
+//                    , outputTemplate: @"-------------------Log Begin----------------------
+//                                {NewLine}Occure Time:{Timestamp:o}
+//                                {NewLine}Message:{Message}
+//                                {NewLine}-------------------Log End----------------------{NewLine}"));
+//#endif
+//        Serilog.Log.Logger = logConfig;
+//        // In Program.cs or Main method
+
+//        // Define column options for SQL sink if needed
+//        var columnOptions = new ColumnOptions
+//        {
+//            AdditionalColumns = new Collection<SqlColumn>
+//             {
+//                 new SqlColumn("UserName", System.Data.SqlDbType.NVarChar, dataLength: 128),
+//                 new SqlColumn("DateTime", System.Data.SqlDbType.NVarChar, dataLength: 128),
+//                 new SqlColumn("UserName", System.Data.SqlDbType.NVarChar, dataLength: 128),
+//                 new SqlColumn("UserName", System.Data.SqlDbType.NVarChar, dataLength: 128),
+//                 new SqlColumn("UserName", System.Data.SqlDbType.NVarChar, dataLength: 128),
+//             }
+//        };
     }
 }
