@@ -71,7 +71,7 @@ public static class InfrastructureApiServices
 
         var connectionString = configuration.GetConnectionString("SqlDefaultConnectionString");
 
-        var seqUrl = configuration["Serilog:SeqUrl"]; 
+        var seqUrl = configuration["Logging:Serilog:SeqUrl"];
 
         // Output templates (used only for text sinks, not JSON-format sinks)
         var WarningOutputTemplate =
@@ -95,17 +95,6 @@ public static class InfrastructureApiServices
                 .MinimumLevel.Override("Microsoft", LogEventLevel.Warning) // quiet framework noise
                 .Enrich.FromLogContext()
                 .Enrich.WithExceptionDetails()
-              
-                // === Primary sinks ===
-                .WriteTo.MSSqlServer(
-                    connectionString: connectionString,
-                    sinkOptions: new MSSqlServerSinkOptions
-                    {
-                        AutoCreateSqlTable = true,
-                        TableName = "UserLoginLog"
-                    })
-
-                // Seq (URL, not a “connection string”)
                 .WriteTo.Seq(seqUrl)
 
 #if DEBUG
@@ -127,9 +116,9 @@ public static class InfrastructureApiServices
             {
                 AdditionalColumns = new Collection<SqlColumn>
                 {
-                    new SqlColumn("UserId",   System.Data.SqlDbType.NVarChar, 128),
-                    new SqlColumn("UserName", System.Data.SqlDbType.NVarChar, 256),
-                    new SqlColumn("IP",       System.Data.SqlDbType.NVarChar, 64),
+                    new SqlColumn("UserId",   System.Data.SqlDbType.NVarChar,dataLength : 128),
+                    new SqlColumn("UserName", System.Data.SqlDbType.NVarChar,dataLength: 256),
+                    new SqlColumn("IP",       System.Data.SqlDbType.NVarChar,dataLength: 64),
                     new SqlColumn("Success",  System.Data.SqlDbType.Bit)
                 }
             }))
@@ -139,6 +128,7 @@ public static class InfrastructureApiServices
         .Filter.ByIncludingOnly(e => e.Properties.ContainsKey("LogType") && e.Properties["LogType"].ToString() == "\"Action\"")
         .WriteTo.MSSqlServer(
             connectionString: connectionString,
+            
             sinkOptions: new MSSqlServerSinkOptions
             {
                 AutoCreateSqlTable = true,
@@ -149,15 +139,15 @@ public static class InfrastructureApiServices
             {
                 AdditionalColumns = new Collection<SqlColumn>
                 {
-                    new SqlColumn("UserId",        System.Data.SqlDbType.NVarChar, 128),
-                    new SqlColumn("UserName",      System.Data.SqlDbType.NVarChar, 256),
-                    new SqlColumn("ActionName",    System.Data.SqlDbType.NVarChar, 256),
-                    new SqlColumn("TableName",     System.Data.SqlDbType.NVarChar, 128),
-                    new SqlColumn("FieldName",     System.Data.SqlDbType.NVarChar, 128),
-                    new SqlColumn("OldValue",      System.Data.SqlDbType.NVarChar, 512),
-                    new SqlColumn("NewValue",      System.Data.SqlDbType.NVarChar, 512),
-                    new SqlColumn("IP",            System.Data.SqlDbType.NVarChar, 64),
-                    new SqlColumn("CorrelationId", System.Data.SqlDbType.NVarChar, 64)
+                    new SqlColumn("UserId",        System.Data.SqlDbType.NVarChar,dataLength: 128),
+                    new SqlColumn("UserName",      System.Data.SqlDbType.NVarChar,dataLength : 256),
+                    new SqlColumn("ActionName",    System.Data.SqlDbType.NVarChar,dataLength : 256),
+                    new SqlColumn("TableName",     System.Data.SqlDbType.NVarChar,dataLength: 128),
+                    new SqlColumn("FieldName",     System.Data.SqlDbType.NVarChar,dataLength: 128),
+                    new SqlColumn("OldValue",      System.Data.SqlDbType.NVarChar,dataLength: 512),
+                    new SqlColumn("NewValue",      System.Data.SqlDbType.NVarChar,dataLength: 512),
+                    new SqlColumn("IP",            System.Data.SqlDbType.NVarChar,dataLength: 64),
+                    new SqlColumn("CorrelationId", System.Data.SqlDbType.NVarChar,dataLength: 64)
                 }
             }))
 

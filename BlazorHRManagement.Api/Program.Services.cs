@@ -21,6 +21,8 @@ public static partial class Program
 {
     public static void ConfigureServices(this IServiceCollection services, IConfiguration configuration)
     {
+        var apiBaseUrl = configuration["Api:BaseUrl"];
+
         var connectionString = configuration.GetConnectionString("SqlDefaultConnectionString");
 
         services.AddControllers().AddJsonOptions(o =>
@@ -61,11 +63,21 @@ public static partial class Program
 
         services.AddCors(options =>
         {
-            options.AddPolicy("AllowBlazor",
-                builder => builder.WithOrigins(
-                                   configuration.GetConnectionString("Api:BaseUrl"))
-                                  .AllowAnyHeader()
-                                  .AllowAnyMethod());
+            options.AddPolicy("MyPolicy", builder =>
+            {
+                if (!string.IsNullOrWhiteSpace(apiBaseUrl))
+                {
+                    builder.WithOrigins(apiBaseUrl)
+                           .AllowAnyHeader()
+                           .AllowAnyMethod();
+                }
+                else
+                {
+                    builder.AllowAnyOrigin() // fallback
+                           .AllowAnyHeader()
+                           .AllowAnyMethod();
+                }
+            });
         });
     }
 }
