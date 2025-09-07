@@ -17,6 +17,8 @@ public static partial class Program
             app.MapOpenApi();
         }
 
+        app.UseMiddleware<SafeHttpLoggingMiddleware>();
+
         app.UseInfrastructureApiMiddlewares();
 
         app.UseHttpsRedirection();

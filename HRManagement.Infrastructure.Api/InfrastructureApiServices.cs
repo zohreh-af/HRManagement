@@ -8,6 +8,7 @@ using Microsoft.Extensions.Configuration;
 using Serilog.Events;
 using Serilog.Exceptions;
 using System.Globalization;
+using System.Collections.ObjectModel;
 
 namespace HRManagement.Infrastructure.Api;
 
@@ -68,7 +69,7 @@ public static class InfrastructureApiServices
             return $"{pc.GetYear(now):0000}-{pc.GetMonth(now):00}-{pc.GetDayOfMonth(now):00}";
         }
 
-        var connectionString = configuration.GetConnectionString("DefaultConnection");
+        var connectionString = configuration.GetConnectionString("SqlDefaultConnectionString");
 
         var seqUrl = configuration["Serilog:SeqUrl"]; 
 
@@ -111,6 +112,54 @@ public static class InfrastructureApiServices
                 // Console (debug only) - JSON compact, one event per line (no rollingInterval here)
                 .WriteTo.Console(new RenderedCompactJsonFormatter())
 #endif
+    // === LOGIN EVENTS TABLE ===
+    .WriteTo.Logger(lc => lc
+        .Filter.ByIncludingOnly(e => e.Properties.ContainsKey("LogType") && e.Properties["LogType"].ToString() == "\"Login\"")
+        .WriteTo.MSSqlServer(
+            connectionString: connectionString,
+            sinkOptions: new MSSqlServerSinkOptions
+            {
+                AutoCreateSqlTable = true,
+                TableName = "UserLoginLog"
+            },
+            restrictedToMinimumLevel: LogEventLevel.Information,
+            columnOptions: new ColumnOptions
+            {
+                AdditionalColumns = new Collection<SqlColumn>
+                {
+                    new SqlColumn("UserId",   System.Data.SqlDbType.NVarChar, 128),
+                    new SqlColumn("UserName", System.Data.SqlDbType.NVarChar, 256),
+                    new SqlColumn("IP",       System.Data.SqlDbType.NVarChar, 64),
+                    new SqlColumn("Success",  System.Data.SqlDbType.Bit)
+                }
+            }))
+
+    // === ACTION EVENTS TABLE ===
+    .WriteTo.Logger(lc => lc
+        .Filter.ByIncludingOnly(e => e.Properties.ContainsKey("LogType") && e.Properties["LogType"].ToString() == "\"Action\"")
+        .WriteTo.MSSqlServer(
+            connectionString: connectionString,
+            sinkOptions: new MSSqlServerSinkOptions
+            {
+                AutoCreateSqlTable = true,
+                TableName = "UserActionLog"
+            },
+            restrictedToMinimumLevel: LogEventLevel.Information,
+            columnOptions: new ColumnOptions
+            {
+                AdditionalColumns = new Collection<SqlColumn>
+                {
+                    new SqlColumn("UserId",        System.Data.SqlDbType.NVarChar, 128),
+                    new SqlColumn("UserName",      System.Data.SqlDbType.NVarChar, 256),
+                    new SqlColumn("ActionName",    System.Data.SqlDbType.NVarChar, 256),
+                    new SqlColumn("TableName",     System.Data.SqlDbType.NVarChar, 128),
+                    new SqlColumn("FieldName",     System.Data.SqlDbType.NVarChar, 128),
+                    new SqlColumn("OldValue",      System.Data.SqlDbType.NVarChar, 512),
+                    new SqlColumn("NewValue",      System.Data.SqlDbType.NVarChar, 512),
+                    new SqlColumn("IP",            System.Data.SqlDbType.NVarChar, 64),
+                    new SqlColumn("CorrelationId", System.Data.SqlDbType.NVarChar, 64)
+                }
+            }))
 
                 // === Sub-loggers ===
 

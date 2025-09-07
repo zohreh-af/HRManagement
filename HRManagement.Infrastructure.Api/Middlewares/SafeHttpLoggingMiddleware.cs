@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Serilog;
 using System.Text;
 using System.Text.Json;
 using System.Text.RegularExpressions;
@@ -132,8 +133,10 @@ public sealed class SafeHttpLoggingMiddleware
                 var redacted = RedactJson(doc.RootElement);
                 return JsonSerializer.Serialize(redacted);
             }
-            catch
+            catch (Exception ex)
             {
+                Serilog.Log.Error(ex.ToString());
+                return JsonSerializer.Serialize(raw);
                 // fall through to simple masking if not valid JSON
             }
         }
