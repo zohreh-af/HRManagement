@@ -4,7 +4,7 @@ using System.Text;
 using System.Text.Json;
 using System.Text.RegularExpressions;
 
-public sealed class SafeHttpLoggingMiddleware
+public sealed class HttpLoggingMiddleware
 {
     private readonly RequestDelegate _next;
 
@@ -28,7 +28,7 @@ public sealed class SafeHttpLoggingMiddleware
 
     private const int MaxBodyBytes = 4 * 1024; // limit to 4KB
 
-    public SafeHttpLoggingMiddleware(RequestDelegate next) => _next = next;
+    public HttpLoggingMiddleware(RequestDelegate next) => _next = next;
 
     public async Task Invoke(HttpContext context)
     {
@@ -81,6 +81,8 @@ public sealed class SafeHttpLoggingMiddleware
             else
                 log.Information("HTTP {Method} {Path} -> {StatusCode} in {ElapsedMs} ms", context.Request.Method, context.Request.Path, status, sw.ElapsedMilliseconds);
         }
+        Log.Information("Serilog initialized (HttpLoggingMiddleware).");
+
     }
 
     private static bool IsAllowedContentType(string? contentType) =>

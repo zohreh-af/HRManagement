@@ -73,6 +73,27 @@ public static class InfrastructureApiServices
 
         var seqUrl = configuration["Logging:Serilog:SeqUrl"];
 
+        var rollingInterval = configuration["Logging:File:rollingInterval"];
+       
+        var rollOnFileSizeLimit = configuration["Logging:File:rollOnFileSizeLimit"];
+
+        var logRoot = configuration["Logging:File:Path"];
+        if (string.IsNullOrWhiteSpace(logRoot))
+        {
+            // Fallback to app-local Logs folder if not provided
+            logRoot = Path.Combine(AppContext.BaseDirectory, "Logs");
+        }
+        var exceptionsDir = Path.Combine(logRoot, "Exceptions");
+        var infoDir = Path.Combine(logRoot, "Information");
+        Directory.CreateDirectory(exceptionsDir);
+        Directory.CreateDirectory(infoDir);
+        
+        // Optional: file size limit in MiB (defaults to 100 MiB if not set/invalid)
+        long fileSizeLimitBytes = 100L * 1024 * 1024;
+        if (int.TryParse(configuration["Logging:File:MaxFileSize"], out var maxMiB) && maxMiB > 0)
+            fileSizeLimitBytes = (long)maxMiB * 1024 * 1024;
+
+
         // Output templates (used only for text sinks, not JSON-format sinks)
         var WarningOutputTemplate =
             "-------------------{Level:u3}----------------------{NewLine}" +
@@ -95,61 +116,33 @@ public static class InfrastructureApiServices
                 .MinimumLevel.Override("Microsoft", LogEventLevel.Warning) // quiet framework noise
                 .Enrich.FromLogContext()
                 .Enrich.WithExceptionDetails()
-                .WriteTo.Seq(seqUrl)
 
 #if DEBUG
                 // Console (debug only) - JSON compact, one event per line (no rollingInterval here)
                 .WriteTo.Console(new RenderedCompactJsonFormatter())
 #endif
-    // === LOGIN EVENTS TABLE ===
-    .WriteTo.Logger(lc => lc
-        .Filter.ByIncludingOnly(e => e.Properties.ContainsKey("LogType") && e.Properties["LogType"].ToString() == "\"Login\"")
-        .WriteTo.MSSqlServer(
-            connectionString: connectionString,
-            sinkOptions: new MSSqlServerSinkOptions
-            {
-                AutoCreateSqlTable = true,
-                TableName = "UserLoginLog"
-            },
-            restrictedToMinimumLevel: LogEventLevel.Information,
-            columnOptions: new ColumnOptions
-            {
-                AdditionalColumns = new Collection<SqlColumn>
-                {
-                    new SqlColumn("UserId",   System.Data.SqlDbType.NVarChar,dataLength : 128),
-                    new SqlColumn("UserName", System.Data.SqlDbType.NVarChar,dataLength: 256),
-                    new SqlColumn("IP",       System.Data.SqlDbType.NVarChar,dataLength: 64),
-                    new SqlColumn("Success",  System.Data.SqlDbType.Bit)
-                }
-            }))
+                // === LOGIN EVENTS TABLE ===
+                .WriteTo.Logger(lc => lc
+                    .Filter.ByIncludingOnly(e => e.Properties.ContainsKey("LogType") && e.Properties["LogType"].ToString() == "\"Login\"")
+                    .WriteTo.MSSqlServer(
+                        connectionString: connectionString,
+                        sinkOptions: new MSSqlServerSinkOptions
+                        {
+                            AutoCreateSqlTable = true,
+                            TableName = "UserLoginLog"
+                        },
+                        restrictedToMinimumLevel: LogEventLevel.Information,
+                        columnOptions: new ColumnOptions
+                        {
+                            AdditionalColumns = new Collection<SqlColumn>
+                            {
+                                new SqlColumn("UserId",   System.Data.SqlDbType.NVarChar,dataLength : 128),
+                                new SqlColumn("UserName", System.Data.SqlDbType.NVarChar,dataLength: 256),
+                                new SqlColumn("IP",       System.Data.SqlDbType.NVarChar,dataLength: 64),
+                                new SqlColumn("Success",  System.Data.SqlDbType.Bit)
+                            }
+                        }))
 
-    // === ACTION EVENTS TABLE ===
-    .WriteTo.Logger(lc => lc
-        .Filter.ByIncludingOnly(e => e.Properties.ContainsKey("LogType") && e.Properties["LogType"].ToString() == "\"Action\"")
-        .WriteTo.MSSqlServer(
-            connectionString: connectionString,
-            
-            sinkOptions: new MSSqlServerSinkOptions
-            {
-                AutoCreateSqlTable = true,
-                TableName = "UserActionLog"
-            },
-            restrictedToMinimumLevel: LogEventLevel.Information,
-            columnOptions: new ColumnOptions
-            {
-                AdditionalColumns = new Collection<SqlColumn>
-                {
-                    new SqlColumn("UserId",        System.Data.SqlDbType.NVarChar,dataLength: 128),
-                    new SqlColumn("UserName",      System.Data.SqlDbType.NVarChar,dataLength : 256),
-                    new SqlColumn("ActionName",    System.Data.SqlDbType.NVarChar,dataLength : 256),
-                    new SqlColumn("TableName",     System.Data.SqlDbType.NVarChar,dataLength: 128),
-                    new SqlColumn("FieldName",     System.Data.SqlDbType.NVarChar,dataLength: 128),
-                    new SqlColumn("OldValue",      System.Data.SqlDbType.NVarChar,dataLength: 512),
-                    new SqlColumn("NewValue",      System.Data.SqlDbType.NVarChar,dataLength: 512),
-                    new SqlColumn("IP",            System.Data.SqlDbType.NVarChar,dataLength: 64),
-                    new SqlColumn("CorrelationId", System.Data.SqlDbType.NVarChar,dataLength: 64)
-                }
-            }))
 
                 // === Sub-loggers ===
 
@@ -157,7 +150,9 @@ public static class InfrastructureApiServices
                 .WriteTo.Logger(lc => lc
                     .MinimumLevel.Error()
                     .WriteTo.File(
-                        path: $"Logs/Exceptions/Log-{PersianFileDate()}.log",
+                        path: Path.Combine(exceptionsDir, $"Log-{PersianFileDate()}.log"),
+                        rollOnFileSizeLimit: true,
+                        fileSizeLimitBytes: fileSizeLimitBytes, 
                         rollingInterval: RollingInterval.Day,
                         outputTemplate: WarningOutputTemplate,
                         shared: true))
@@ -166,14 +161,22 @@ public static class InfrastructureApiServices
                 .WriteTo.Logger(lc => lc
                     .Filter.ByIncludingOnly(e => e.Level == LogEventLevel.Information)
                     .WriteTo.File(
-                        formatter: new RenderedCompactJsonFormatter(),
-                        path: $"Logs/Informations/Log-{PersianFileDate()}.log",
+                        path: Path.Combine(infoDir, $"Log-{PersianFileDate()}.log"),
+                        rollOnFileSizeLimit: true,
+                        fileSizeLimitBytes: fileSizeLimitBytes,
                         rollingInterval: RollingInterval.Day,
-                        shared: true))
+                        outputTemplate: InformationOutputTemplate,
+                        shared: true));
 
-                .CreateLogger();
+        // Only add Seq if configured
+        if (!string.IsNullOrWhiteSpace(seqUrl))
+        {
+            logger = logger.WriteTo.Seq(seqUrl);
+        }
 
-        Log.Logger = logger;
+        Log.Logger = logger.CreateLogger();
+
+        Log.Information("Serilog initialized. Logs root: {LogRoot}", logRoot);
 
         #endregion
     }

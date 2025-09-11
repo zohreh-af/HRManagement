@@ -8,7 +8,6 @@ public static partial class Program
 
         builder.Services.ConfigureServices(builder.Configuration);
 
-
         var app = builder.Build();
         app.Configure(builder.Configuration);
         app.Run();

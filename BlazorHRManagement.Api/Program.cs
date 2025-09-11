@@ -1,3 +1,5 @@
+using Serilog;
+
 namespace BlazorHRManagement.Api
 {
     public static partial class Program
@@ -7,8 +9,12 @@ namespace BlazorHRManagement.Api
             var builder = WebApplication.CreateBuilder(args);
 
             builder.Services.ConfigureServices(builder.Configuration);
+            
+            builder.Host.UseSerilog(Log.Logger);
 
             var app = builder.Build();
+
+            app.UseSerilogRequestLogging();
 
             app.Configure();
 

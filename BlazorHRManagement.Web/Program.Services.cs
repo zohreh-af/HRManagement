@@ -15,19 +15,6 @@ public static partial class Program
     {
         var baseApiUri = "https://localhost:7072";
    
-        //services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-        //        .AddJwtBearer(options =>
-        //        {
-        //            options.TokenValidationParameters = new TokenValidationParameters
-        //            {
-        //                ValidateIssuer = false,
-        //                ValidateAudience = false,
-        //                ValidateLifetime = true,
-        //                ValidateIssuerSigningKey = true,
-        //                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("YourSuperSecretKeyHere"))
-        //            };
-        //        });
-
         services.AddDistributedMemoryCache();
         services.AddSession(options =>
         {

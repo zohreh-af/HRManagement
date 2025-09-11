@@ -1,4 +1,5 @@
 ﻿using HRManagement.Infrastructure.Api;
+using Serilog;
 
 namespace BlazorHRManagement.Api;
 
@@ -16,14 +17,15 @@ public static partial class Program
         {
             app.MapOpenApi();
         }
+        app.UseSerilogRequestLogging();
 
-        app.UseMiddleware<SafeHttpLoggingMiddleware>();
+        app.UseMiddleware<HttpLoggingMiddleware>();
 
         app.UseInfrastructureApiMiddlewares();
 
         app.UseHttpsRedirection();
 
-        app.UseCors("AllowBlazor");
+        app.UseCors("MyPolicy");
 
         app.UseAuthentication();
         app.UseAuthorization();

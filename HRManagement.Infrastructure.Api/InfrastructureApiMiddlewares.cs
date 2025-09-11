@@ -8,8 +8,9 @@ public static class InfrastructureApiMiddlewares
 {
     public static IApplicationBuilder UseInfrastructureApiMiddlewares(this IApplicationBuilder app)
     {
+   
         app.UseMiddleware<ExceptionHandlerMiddleware>();
-        app.UseMiddleware<SafeHttpLoggingMiddleware>();
+        app.UseMiddleware<HttpLoggingMiddleware>();
 
         return app;
     }
