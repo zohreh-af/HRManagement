@@ -3,31 +3,55 @@
 
 
 <PageTitle>@TextResources.App_StringKeys_User_Login</PageTitle>
+<div class="container">
+	<div class="screen">
+		<div class="screen__content">
+    <EditForm class="login" 
+			  Formname="UserLoginForm" 
+			  Model=_Request 
+			  OnValidSubmit="OnValidSubmit" 
+			  OnInvalidSubmit="OnInvalidSubmit">
 
-<div>
-
-    <EditForm Formname="UserLoginForm" Model=_Request OnValidSubmit="OnValidSubmit" OnInvalidSubmit="OnInvalidSubmit">
         <DataAnnotationsValidator />
-        <MudGrid>
-            <MudItem xs="12" sm="7">
-                <MudCard>
-                    <MudCardContent>
-                        <MudTextField Label="First name" HelperText="Max. 8 characters"
-                                      @bind-Value="_Request.Username" />
 
-                        <MudTextField Label="Password" Class="mt-3"
-                                      @bind-Value="_Request.Password" InputType="InputType.Password" />
+						<div class="login__field">
 
-                    </MudCardContent>
-                    <MudCardActions>
-                        <MudIconButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto">Register</MudIconButton>
-                    </MudCardActions>
-                </MudCard>
-            </MudItem>
+							<MudTextField Label="@TextResources.APP_StringKeys_Username"
+										  InputType="InputType.Text"
+										  @bind-Value="_Request.Username"
+										  Adornment="Adornment.Start" 
+										  AdornmentIcon="@Icons.Material.Filled.Person" 
+										  AdornmentColor="Color.Primary" />
+						</div>
+						<div class="login__field">
 
-        </MudGrid>
-    </EditForm>
-</div>
+							<MudTextField Label="@TextResources.APP_StringKeys_Password"
+										  InputType="InputType.Password"
+										  @bind-Value="_Request.Password"
+										  Adornment="Adornment.Start" 
+										  AdornmentIcon="@Icons.Material.Filled.Person" 
+										  AdornmentColor="Color.Primary" />
+						</div>
+						  <MudIconButton class="login__submit"
+							  ButtonType="ButtonType.Submit" 
+							  StartIcon ="@Icons.Material.Filled.ArrowForwardIos"
+							  Variant="Variant.Filled" 
+							  Color="Color.Primary">
+							  <span class="button__text">
+								  @TextResources.App_StringKeys_User_Login
+								  </span>
+								  </MudIconButton>				
+			  </EditForm>
+			</div>
+		</div>
+		<div class="screen__background">
+			<span class="screen__background__shape screen__background__shape4"></span>
+			<span class="screen__background__shape screen__background__shape3"></span>		
+			<span class="screen__background__shape screen__background__shape2"></span>
+			<span class="screen__background__shape screen__background__shape1"></span>
+		</div>		
+	</div>
+
 @if (IsInvalid)
 {
     <MudAlert Severity="Severity.Error" Dense="true" Class="my-2">@MassageText</MudAlert>

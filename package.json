@@ -1,0 +1,24 @@
+{
+  "name": "blazorhrmanagement",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zohreh-af/HRManagement.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/zohreh-af/HRManagement/issues"
+  },
+  "homepage": "https://github.com/zohreh-af/HRManagement#readme",
+  "devDependencies": {
+    "sass": "^1.92.1"
+  }
+}
