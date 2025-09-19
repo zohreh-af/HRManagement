@@ -1,58 +1,75 @@
 ﻿@using MudBlazor
 @page "/account/Login"
 
-
 <PageTitle>@TextResources.App_StringKeys_User_Login</PageTitle>
-<TitleSync Value="Dashboard" />
+<TitleSync Value="Login" />
 
-<div class="container">
-	<div class="screen">
-		<div class="screen__content">
-    <EditForm class="login" 
-			  Formname="UserLoginForm" 
-			  Model=_Request 
-			  OnValidSubmit="OnValidSubmit" 
-			  OnInvalidSubmit="OnInvalidSubmit">
+<div class="hold-transition login-page">
+    <div class="login-box">
+        <div class="login-logo">
+            <a href="../../index2.html"><b>Admin</b>LTE</a>
+        </div>
+        <!-- /.login-logo -->
+        <div class="card">
+            <div class="card-body login-card-body">
+                <p class="login-box-msg">Sign in to start your session</p>
 
-        <DataAnnotationsValidator />
+                <form action="../../index3.html" method="post">
+                    <div class="input-group mb-3">
+                        <input type="email" class="form-control" placeholder="Email">
+                        <div class="input-group-append">
+                            <div class="input-group-text">
+                                <span class="fas fa-envelope"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="input-group mb-3">
+                        <input type="password" class="form-control" placeholder="Password">
+                        <div class="input-group-append">
+                            <div class="input-group-text">
+                                <span class="fas fa-lock"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-8">
+                            <div class="icheck-primary">
+                                <input type="checkbox" id="remember">
+                                <label for="remember">
+                                    Remember Me
+                                </label>
+                            </div>
+                        </div>
+                        <!-- /.col -->
+                        <div class="col-4">
+                            <button type="submit" class="btn btn-primary btn-block btn-flat">Sign In</button>
+                        </div>
+                        <!-- /.col -->
+                    </div>
+                </form>
 
-						<div class="login__field">
+                <div class="social-auth-links text-center mb-3">
+                    <p>- OR -</p>
+                    <a href="#" class="btn btn-block btn-primary">
+                        <i class="fab fa-facebook mr-2"></i> Sign in using Facebook
+                    </a>
+                    <a href="#" class="btn btn-block btn-danger">
+                        <i class="fab fa-google-plus mr-2"></i> Sign in using Google+
+                    </a>
+                </div>
+                <!-- /.social-auth-links -->
 
-							<MudTextField Label="@TextResources.APP_StringKeys_Username"
-										  InputType="InputType.Text"
-										  @bind-Value="_Request.Username"
-										  Adornment="Adornment.Start" 
-										  AdornmentIcon="@Icons.Material.Filled.Person" 
-										  AdornmentColor="Color.Primary" />
-						</div>
-						<div class="login__field">
-
-							<MudTextField Label="@TextResources.APP_StringKeys_Password"
-										  InputType="InputType.Password"
-										  @bind-Value="_Request.Password"
-										  Adornment="Adornment.Start" 
-										  AdornmentIcon="@Icons.Material.Filled.Key" 
-										  AdornmentColor="Color.Primary" />
-						</div>
-						  <MudIconButton class="login__submit"
-							  ButtonType="ButtonType.Submit" 
-							  StartIcon ="@Icons.Material.Filled.ArrowForwardIos"
-							  Variant="Variant.Filled" 
-							  Color="Color.Primary">
-							  <span class="button__text">
-								  @TextResources.App_StringKeys_User_Login
-								  </span>
-								  </MudIconButton>				
-			  </EditForm>
-			</div>
-		</div>
-		<div class="screen__background">
-			<span class="screen__background__shape screen__background__shape4"></span>
-			<span class="screen__background__shape screen__background__shape3"></span>		
-			<span class="screen__background__shape screen__background__shape2"></span>
-			<span class="screen__background__shape screen__background__shape1"></span>
-		</div>		
-	</div>
+                <p class="mb-1">
+                    <a href="#">I forgot my password</a>
+                </p>
+                <p class="mb-0">
+                    <a href="register.html" class="text-center">Register a new membership</a>
+                </p>
+            </div>
+            <!-- /.login-card-body -->
+        </div>
+    </div>
+</div>
 
 @if (IsInvalid)
 {
@@ -72,4 +89,4 @@
         </MudProgressCircular>
     </MudOverlay>
 
-}                       
+}             

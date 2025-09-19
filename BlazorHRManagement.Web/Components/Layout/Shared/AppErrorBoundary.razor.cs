@@ -4,7 +4,7 @@ using Microsoft.JSInterop;
 using System.Diagnostics;
 using System.Security.Cryptography;
 
-namespace BlazorHRManagement.Web.Components.Shared;
+namespace BlazorHRManagement.Web.Components.Layout.Shared;
 
 public partial class AppErrorBoundary
 {
