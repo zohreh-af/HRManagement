@@ -1,13 +1,31 @@
 ﻿@inherits LayoutComponentBase
 
-<NavMenu />
-<Sidebar />
-<Header />
-                <main>
-                   
-                     <article>
-                        <AppErrorBoundary>
-                            @Body
-                        </AppErrorBoundary>
-                    </article>
-                </main>
+<div class="wrapper">
+    <NavMenu />
+    <Sidebar />
+  <div class="content-wrapper">
+        <section class="content-header">
+            <div class="container-fluid">
+                <div class="row mb-2">
+                    <div class="col-sm-6">
+                        <h1 class="m-0 text-dark">@currentTitle</h1>
+                    </div>
+                    <div class="col-sm-6">
+                        @* breadcrumb placeholder *@
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="content">
+            <div class="container-fluid">
+                <AppErrorBoundary>
+                    @Body
+                </AppErrorBoundary>
+            </div>
+        </section>
+    </div>
+
+    <ControlSidebar />
+    <Footer />
+</div>

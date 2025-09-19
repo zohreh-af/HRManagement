@@ -18,23 +18,19 @@
 </head>
 
 <body class="hold-transition sidebar-mini">
-<div class="wrapper">
-
     <CascadingAuthenticationState>
-        <Routes @rendermode="new InteractiveServerRenderMode(prerender: false)" />
+    <Routes @rendermode="new InteractiveServerRenderMode(prerender: false)" />
     <script src="_framework/blazor.web.js"></script>
+  
+    <!-- jQuery -->
+    <script src="plugins/jquery/jquery.min.js"></script>
+    <!-- Bootstrap 4 -->
+    <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <!-- AdminLTE App -->
+    <script src="js/adminlte.min.js"></script>
+
     <script src=@Assets["_content/MudBlazor/MudBlazor.min.js"]></script>
     </CascadingAuthenticationState>
-</div>
-<!-- ./wrapper -->
-
-<!-- jQuery -->
-<script src="plugins/jquery/jquery.min.js"></script>
-<!-- Bootstrap 4 -->
-<script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-<!-- AdminLTE App -->
-<script src="dist/js/adminlte.min.js"></script>
-
 </body>
 
 </html>

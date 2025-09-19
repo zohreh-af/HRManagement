@@ -31,7 +31,7 @@ public static partial class Program
 
         services.AddApplicationWebServices();
         services.AddInfrastructureWebServices(configuration);
-
+        services.AddPresentationServices();
         services.AddScoped<HttpClientHandler>();
 
         services.AddHttpClient("HRApi")
