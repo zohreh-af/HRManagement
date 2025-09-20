@@ -1,8 +1,12 @@
 ﻿@inherits LayoutComponentBase
 
 <div class="wrapper">
-    <NavMenu />
-    <Sidebar />
+            @if (IsAuthenticated)
+            {
+                <NavMenu />
+                <Sidebar />
+            }
+    
   <div class="content-wrapper">
         <section class="content-header">
             <div class="container-fluid">
@@ -11,7 +15,7 @@
                         <h1 class="m-0 text-dark">@currentTitle</h1>
                     </div>
                     <div class="col-sm-6">
-                        @* breadcrumb placeholder *@
+                        breadcrumb placeholder
                     </div>
                 </div>
             </div>
@@ -25,7 +29,8 @@
             </div>
         </section>
     </div>
-
+     @if (IsAuthenticated){
     <ControlSidebar />
     <Footer />
+     }
 </div>

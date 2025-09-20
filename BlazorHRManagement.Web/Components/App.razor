@@ -1,4 +1,7 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Components.Routing
+@using Microsoft.AspNetCore.Components.Authorization
+
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -20,9 +23,30 @@
 </head>
 
 <body class="hold-transition sidebar-mini">
-    <CascadingAuthenticationState>
-        <Routes @rendermode="new InteractiveServerRenderMode(prerender: false)" />
-        <script src="_framework/blazor.web.js"></script>
+
+<CascadingAuthenticationState>
+    <Router AppAssembly="@typeof(Program).Assembly">
+        <Found Context="routeData">
+            <AuthorizeRouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)">
+                <NotAuthorized>
+                    <Sade.United.Web.Pages.Account.Login />
+                </NotAuthorized>
+                <Authorizing>Loading..</Authorizing>
+            </AuthorizeRouteView>
+
+            <FocusOnNavigate RouteData="@routeData" Selector="h1" />
+        </Found>
+
+        <NotFound>
+            <PageTitle>Not found</PageTitle>
+            <LayoutView Layout="@typeof(MainLayout)">
+                <p role="alert">Nothing is here</p>
+            </LayoutView>
+        </NotFound>
+    </Router>
+</CascadingAuthenticationState>
+
+  <script src="_framework/blazor.web.js"></script>
 
         <!-- jQuery -->
         <script src="plugins/jquery/jquery.min.js"></script>
@@ -61,7 +85,6 @@
         <!-- AdminLTE for demo purposes -->
         <script src="js/demo.js"></script>
         <script src=@Assets["_content/MudBlazor/MudBlazor.min.js"]></script>
-    </CascadingAuthenticationState>
 </body>
 
 </html>
