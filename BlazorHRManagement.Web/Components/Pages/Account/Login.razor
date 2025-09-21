@@ -1,5 +1,6 @@
-﻿@using MudBlazor
+﻿@using Microsoft.AspNetCore.Authorization
 @page "/account/Login"
+@attribute [AllowAnonymous]
 
 <PageTitle>@TextResources.App_StringKeys_User_Login</PageTitle>
 <TitleSync Value="Login" />

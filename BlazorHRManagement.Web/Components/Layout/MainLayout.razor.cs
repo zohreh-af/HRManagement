@@ -2,6 +2,7 @@
 using HRManagement.Infrastructure.Web.Services;
 using HRManagement.Presentation;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Authorization;
 
 namespace BlazorHRManagement.Web.Components.Layout;
 
@@ -11,6 +12,7 @@ public partial class MainLayout
     public bool IsAuthenticated = false;
     [Inject] public AppTitleState TitleState { get; set; }
     [Inject] public AppAuthenticationStateProvider AuthState { get; set; }
+    [Inject] public NavigationManager navigation { get; set; }
     protected override async Task OnInitializedAsync()
     {
         currentTitle = TitleState.Title;

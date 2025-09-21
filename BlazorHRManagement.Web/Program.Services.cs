@@ -5,8 +5,7 @@ using HRManagement.Presentation;
 using Implementation.Mediator;
 using MudBlazor.Services;
 using System.Net;
-
-
+using HRManagement.Identity.Client; 
 namespace BlazorHRManagement.Web;
 
 public static partial class Program
@@ -30,6 +29,7 @@ public static partial class Program
         services.AddRazorComponents()
             .AddInteractiveServerComponents();
 
+        services.AddIdentityClientServices();
         services.AddApplicationWebServices();
         services.AddInfrastructureWebServices(configuration);
         services.AddPresentationServices();
@@ -43,7 +43,5 @@ public static partial class Program
                     client.BaseAddress = new Uri(baseUri!);
                 })
                 .ConfigurePrimaryHttpMessageHandler<HttpClientHandler>();
-
-
     }
 }

@@ -1,5 +1,6 @@
 ﻿@using Microsoft.AspNetCore.Components.Routing
 @using Microsoft.AspNetCore.Components.Authorization
+@using BlazorHRManagement.Web.Components.Pages
 
 <!DOCTYPE html>
 <html lang="en">
@@ -25,12 +26,11 @@
 <body class="hold-transition sidebar-mini">
 
 <CascadingAuthenticationState>
-    <Router AppAssembly="@typeof(Program).Assembly">
+    <Router AppAssembly="@typeof(App).Assembly">
         <Found Context="routeData">
             <AuthorizeRouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)">
                 <NotAuthorized>
-                    <Sade.United.Web.Pages.Account.Login />
-                </NotAuthorized>
+                 <RedirectToLogin />  @* navigates to /account/login *@</NotAuthorized>
                 <Authorizing>Loading..</Authorizing>
             </AuthorizeRouteView>
 
