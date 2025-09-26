@@ -1,11 +1,11 @@
 ﻿using Abstraction;
 using HRManagement.Application.Web;
+using HRManagement.Identity.Client; 
 using HRManagement.Infrastructure;
 using HRManagement.Presentation;
 using Implementation.Mediator;
 using MudBlazor.Services;
 using System.Net;
-using HRManagement.Identity.Client; 
 namespace BlazorHRManagement.Web;
 
 public static partial class Program
@@ -43,5 +43,16 @@ public static partial class Program
                     client.BaseAddress = new Uri(baseUri!);
                 })
                 .ConfigurePrimaryHttpMessageHandler<HttpClientHandler>();
+
+        services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+                .AddCookie(options =>
+                {
+                    options.LoginPath = "/account/login";       // must match your login route
+                    options.AccessDeniedPath = "/account/denied";
+                    // options.Cookie.Name = "BlazorHR.Auth";
+                });
+
+        services.AddAuthorization();
+
     }
 }

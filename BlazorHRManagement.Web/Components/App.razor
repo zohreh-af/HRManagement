@@ -30,7 +30,8 @@
         <Found Context="routeData">
             <AuthorizeRouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)">
                 <NotAuthorized>
-                 <RedirectToLogin />  @* navigates to /account/login *@</NotAuthorized>
+                    <BlazorHRManagement.Web.Components.Pages.Account.Login />
+                </NotAuthorized>
                 <Authorizing>Loading..</Authorizing>
             </AuthorizeRouteView>
 
