@@ -10,13 +10,11 @@ public static class IdentityClientServices
 {
     public static void AddIdentityClientServices(this IServiceCollection services)
     {
-        //services.AddAuthenticationCore();
-
         services.AddScoped<AuthenticationStateProvider, AppAuthenticationStateProvider>();
 
         services.AddScoped(sp => (AppAuthenticationStateProvider)sp.GetRequiredService<AuthenticationStateProvider>());
 
-        services.AddScoped<IAuthenticationService, AuthenticationService>();
+        services.AddScoped<HRManagement.Application.Web.Contracts.Identity.IAuthenticationService, HRManagement.Identity.Client.Services.AuthenticationService>();
 
     }
 }

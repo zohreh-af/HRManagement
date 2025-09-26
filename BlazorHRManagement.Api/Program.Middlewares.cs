@@ -18,14 +18,14 @@ public static partial class Program
             app.MapOpenApi();
         }
         app.UseSerilogRequestLogging();
+        
+        app.UseHttpsRedirection();
+
+        app.UseCors("MyPolicy");
 
         app.UseMiddleware<HttpLoggingMiddleware>();
 
         app.UseInfrastructureApiMiddlewares();
-
-        app.UseHttpsRedirection();
-
-        app.UseCors("MyPolicy");
 
         app.UseAuthentication();
         app.UseAuthorization();

@@ -8,13 +8,16 @@ namespace BlazorHRManagement.Api
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            builder.Services.ConfigureServices(builder.Configuration);
-            
             builder.Host.UseSerilog(Log.Logger);
 
+            Program.ConfigureServices(builder.Services, builder.Configuration);
+
             var app = builder.Build();
+            app.Services.GetRequiredService<Microsoft.AspNetCore.Authorization.IAuthorizationPolicyProvider>();
+            ;
 
             app.UseSerilogRequestLogging();
+                    Program.ConfigureServices(builder.Services, builder.Configuration);
 
             app.Configure();
 

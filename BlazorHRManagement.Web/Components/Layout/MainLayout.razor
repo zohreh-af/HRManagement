@@ -2,7 +2,7 @@
 @inherits LayoutComponentBase
 
 <div class="wrapper">
-            @if (IsAuthenticated)
+            @if (IsAutheticated)
             {
                 <NavMenu />
                 <Sidebar />
@@ -30,7 +30,7 @@
             </div>
         </section>
     </div>
-     @if (IsAuthenticated){
+     @if (IsAutheticated){
     <ControlSidebar />
     <Footer />
      }

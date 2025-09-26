@@ -4,7 +4,8 @@ using HRManagement.Infrastructure.Web.Services;
 
 namespace HRManagement.Identity.Client.Services;
 
-public class AuthenticationService(ApiHandler api, AppAuthenticationStateProvider appAuthenticationStateProvider) : IAuthenticationService
+public class AuthenticationService(ApiHandler api, AppAuthenticationStateProvider appAuthenticationStateProvider) 
+    : HRManagement.Application.Web.Contracts.Identity.IAuthenticationService
 {
     public async Task<LoginResult> Authenticate(LoginUserQuery query)
     {

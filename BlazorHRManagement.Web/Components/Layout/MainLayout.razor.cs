@@ -9,7 +9,7 @@ namespace BlazorHRManagement.Web.Components.Layout;
 public partial class MainLayout
 {
     private string currentTitle = string.Empty;
-    public bool IsAuthenticated = false;
+    public bool IsAutheticated = false;
     [Inject] public AppTitleState TitleState { get; set; }
     [Inject] public AppAuthenticationStateProvider AuthState { get; set; }
     [Inject] public NavigationManager navigation { get; set; }
@@ -19,14 +19,14 @@ public partial class MainLayout
         TitleState.Changed += OnTitleChanged;
 
         var state = await AuthState.GetAuthenticationStateAsync();
-        if (state.User.Identity.IsAuthenticated)
-        {
-            IsAuthenticated =true;
-        }
+
+        IsAutheticated = state.User.Identity.IsAuthenticated;
+
+        AuthState.AuthenticationStateChanged += AuthState_AuthenticationStateChanged;
     }
     private void AuthState_AuthenticationStateChanged(Task<Microsoft.AspNetCore.Components.Authorization.AuthenticationState> task)
     {
-        IsAuthenticated = task.GetAwaiter().GetResult().User.Identity.IsAuthenticated;
+        IsAutheticated = task.GetAwaiter().GetResult().User.Identity.IsAuthenticated;
 
         StateHasChanged();
     }

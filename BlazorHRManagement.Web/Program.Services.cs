@@ -4,6 +4,7 @@ using HRManagement.Identity.Client;
 using HRManagement.Infrastructure;
 using HRManagement.Presentation;
 using Implementation.Mediator;
+using Microsoft.AspNetCore.Components.Authorization;
 using MudBlazor.Services;
 using System.Net;
 namespace BlazorHRManagement.Web;
@@ -13,8 +14,7 @@ public static partial class Program
     public static void ConfigureServices(this IServiceCollection services
     , IConfiguration configuration)
     {
-        var baseApiUri = "https://localhost:7072";
-   
+        var baseApiUri = configuration["Api:BaseUrl"];
         services.AddDistributedMemoryCache();
         services.AddSession(options =>
         {
@@ -28,7 +28,6 @@ public static partial class Program
 
         services.AddRazorComponents()
             .AddInteractiveServerComponents();
-
         services.AddIdentityClientServices();
         services.AddApplicationWebServices();
         services.AddInfrastructureWebServices(configuration);
@@ -43,15 +42,6 @@ public static partial class Program
                     client.BaseAddress = new Uri(baseUri!);
                 })
                 .ConfigurePrimaryHttpMessageHandler<HttpClientHandler>();
-
-        services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-                .AddCookie(options =>
-                {
-                    options.LoginPath = "/account/login";       // must match your login route
-                    options.AccessDeniedPath = "/account/denied";
-                    // options.Cookie.Name = "BlazorHR.Auth";
-                });
-
         services.AddAuthorization();
 
     }
