@@ -44,14 +44,7 @@ public static partial class Program
                 })
                 .ConfigurePrimaryHttpMessageHandler<HttpClientHandler>();
 
-        services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-                .AddCookie(options =>
-                {
-                    options.LoginPath = "/account/login";       // must match your login route
-                    options.AccessDeniedPath = "/account/denied";
-                    // options.Cookie.Name = "BlazorHR.Auth";
-                });
-
+        
         services.AddAuthorization();
 
     }
