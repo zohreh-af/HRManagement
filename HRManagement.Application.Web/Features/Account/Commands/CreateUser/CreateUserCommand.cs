@@ -9,7 +9,7 @@ public class CreateUserCommand : ICommand<CreateUserVm>
 
     public string Username { get; set; }
 
-    //public string Email { get; set; }
+    public string Email { get; set; }
 
     //public bool? EmailConfirmed { get; set; }
 
@@ -27,6 +27,6 @@ public class CreateUserCommand : ICommand<CreateUserVm>
 
     //public string Name { get; set; }
     public string Password { get; set; }
-
-    //public string? Details { get; set; }
+    public string Password2 { get; set; }
+    public bool IsAgreedTerms { get; set; }
 }

@@ -7,30 +7,33 @@
 
 <div class="hold-transition login-page">
     <div class="login-box">
-        <div class="login-logo">
-            <a href="../../index2.html"><b>Admin</b>LTE</a>
-        </div>
-        <!-- /.login-logo -->
+         <NavLink class="register-logo" href="/">
+                <b>Admin</b>LTE
+            </NavLink>
         <div class="card">
             <div class="card-body login-card-body">
                 <p class="login-box-msg">Sign in to start your session</p>
 
-                <form action="../../index3.html" method="post">
+                       <EditForm FormName="LoginUserForm" Model=_Request OnValidSubmit="OnValidSubmit" OnInvalidSubmit="OnInvalidSubmit">
+      <DataAnnotationsValidator />
                     <div class="input-group mb-3">
-                        <input type="email" class="form-control" placeholder="Email">
-                        <div class="input-group-append">
-                            <div class="input-group-text">
-                                <span class="fas fa-envelope"></span>
-                            </div>
-                        </div>
+                        <MudTextField @bind-Value="_Request.Email"
+                                     Label="Email"  
+                                     class="form-control"  
+                                     InputType ="InputType.Email"
+                                     Variant="Variant.Outlined" 
+                                     Adornment="Adornment.Start" 
+                                     AdornmentIcon="@Icons.Material.Filled.Email" />
                     </div>
                     <div class="input-group mb-3">
                         <input type="password" class="form-control" placeholder="Password">
-                        <div class="input-group-append">
-                            <div class="input-group-text">
-                                <span class="fas fa-lock"></span>
-                            </div>
-                        </div>
+                        <MudTextField @bind-Value="_Request.Password"
+                                      Label="Password"  
+                                      class="form-control"
+                                      InputType ="InputType.Password"
+                                      Variant="Variant.Outlined" 
+                                      Adornment="Adornment.Start" 
+                                      AdornmentIcon="@Icons.Material.Filled.Key" />
                     </div>
                     <div class="row">
                         <div class="col-8">
@@ -43,11 +46,16 @@
                         </div>
                         <!-- /.col -->
                         <div class="col-4">
-                            <button type="submit" class="btn btn-primary btn-block btn-flat">Sign In</button>
+                            <MudIconButton ButtonType="ButtonType.Submit"
+                                            Variant="Variant.Filled" 
+                                            Color="Color.Primary" 
+                                            Class="btn btn-primary btn-block btn-flat">
+                                            @TextResources.APP_StringKeys_LoginUser
+                             </MudIconButton>
                         </div>
                         <!-- /.col -->
                     </div>
-                </form>
+                                </EditForm>
 
                 <div class="social-auth-links text-center mb-3">
                     <p>- OR -</p>

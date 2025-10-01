@@ -13,11 +13,10 @@ namespace BlazorHRManagement.Api
             Program.ConfigureServices(builder.Services, builder.Configuration);
 
             var app = builder.Build();
-            app.Services.GetRequiredService<Microsoft.AspNetCore.Authorization.IAuthorizationPolicyProvider>();
-            ;
 
+            app.Services.GetRequiredService<Microsoft.AspNetCore.Authorization.IAuthorizationPolicyProvider>();
+            
             app.UseSerilogRequestLogging();
-                    Program.ConfigureServices(builder.Services, builder.Configuration);
 
             app.Configure();
 

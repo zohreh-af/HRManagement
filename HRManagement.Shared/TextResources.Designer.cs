@@ -61,6 +61,15 @@ namespace HRManagement.Shared {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to ایمیل.
+        /// </summary>
+        public static string APP_StringKeys_Email {
+            get {
+                return ResourceManager.GetString("APP_StringKeys_Email", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to  در انجام عملیات مشکلی بوجود آمده است..
         /// </summary>
         public static string APP_StringKeys_Error_Unexpected {
@@ -115,11 +124,29 @@ namespace HRManagement.Shared {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to ورود به سایت.
+        /// </summary>
+        public static string APP_StringKeys_LoginUser {
+            get {
+                return ResourceManager.GetString("APP_StringKeys_LoginUser", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to رمز عبور.
         /// </summary>
         public static string APP_StringKeys_Password {
             get {
                 return ResourceManager.GetString("APP_StringKeys_Password", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ثبت نام.
+        /// </summary>
+        public static string APP_StringKeys_Register_User {
+            get {
+                return ResourceManager.GetString("APP_StringKeys_Register_User", resourceCulture);
             }
         }
         

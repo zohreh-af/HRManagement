@@ -7,8 +7,8 @@ namespace HRManagement.Application.Web.Features;
 public class LoginUserQuery : IQuery<LoginUserVm>
 {
     [Required(ErrorMessageResourceType = typeof(TextResources), ErrorMessageResourceName = nameof(TextResources.APP_StringKeys_Validation_Required))]
-    [Display(ResourceType = typeof(TextResources), Name = nameof(TextResources.APP_StringKeys_Username))]
-    public string Username { get; set; }
+    [Display(ResourceType = typeof(TextResources), Name = nameof(TextResources.APP_StringKeys_Email))]
+    public string Email { get; set; }
 
     [Required(ErrorMessageResourceType = typeof(TextResources), ErrorMessageResourceName = nameof(TextResources.APP_StringKeys_Validation_Required))]
     [Display(ResourceType = typeof(TextResources), Name = nameof(TextResources.APP_StringKeys_Password))]

@@ -18,7 +18,7 @@ public class LoginUserHandler(HRManagementContext context,IConfiguration configu
     public async Task<LoginUserVm> HandleAsync(LoginUserQuery query, CancellationToken cancellationToken)
     {
         var user = await context.Users.FirstOrDefaultAsync
-                            (u => u.Username.ToLower() == query.Username.ToLower(),
+                            (u => u.Username.ToLower() == query.Email.ToLower(),
                              cancellationToken);
 
         if (user is null)

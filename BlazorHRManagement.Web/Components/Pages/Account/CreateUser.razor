@@ -8,49 +8,18 @@
 <TitleSync Value="@TextResources.App_StringKeys_User_Register" />
 
 
-@* <div>
-
-    <EditForm FormName="CreateUserForm" Model=_Request OnValidSubmit="OnValidSubmit" OnInvalidSubmit="OnInvalidSubmit">
-        <DataAnnotationsValidator />
-        <MudGrid>
-            <MudItem xs="12" sm="7">
-                <MudCard>
-                    <MudCardContent>
-                        <MudTextField Label="First name" HelperText="Max. 8 characters"
-                        @bind-Value="_Request.Username" />
-                        <MudTextField Label="Password" HelperText="Choose a strong password" Class="mt-3"
-                                      @bind-Value="_Request.Password" InputType="InputType.Password" />
-
-                    </MudCardContent>
-                    <MudCardActions>
-                        <MudIconButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto">Register</MudIconButton>
-                    </MudCardActions>
-                </MudCard>
-            </MudItem>
-
-        </MudGrid>
-    </EditForm>
-</div>  *@
 
 <div class="hold-transition register-page">
     <div class="register-box">
-        <div class="register-logo">
-            <a href="../../index2.html"><b>Admin</b>LTE</a>
-        </div>
 
+         <NavLink class="register-logo" href="/">
+                  <b>Admin</b>LTE
+            </NavLink>
         <div class="card">
             <div class="card-body register-card-body">
                 <p class="login-box-msg">Register a new membership</p>
    <EditForm FormName="CreateUserForm" Model=_Request OnValidSubmit="OnValidSubmit" OnInvalidSubmit="OnInvalidSubmit">
       <DataAnnotationsValidator />
-                    <div class="input-group mb-3">
-                        <InputText type="text" class="form-control" placeholder="Full name"/>
-                        <div class="input-group-append">
-                            <div class="input-group-text">
-                                <span class="fas fa-user"></span>
-                            </div>
-                        </div>
-                    </div>
                          <div class="input-group mb-3">
                        <MudTextField @bind-Value="_Request.Username"
                                      Label="Full name"  
@@ -61,41 +30,53 @@
                         
                     </div>
                     <div class="input-group mb-3">
-                        <InputText type="email" class="form-control" placeholder="Email"/>
-                        <div class="input-group-append">
-                            <div class="input-group-text">
-                                <span class="fas fa-envelope"></span>
-                            </div>
-                        </div>
+                        <MudTextField @bind-Value="_Request.Email"
+                                     Label="Email"  
+                                     class="form-control"  
+                                     InputType ="InputType.Email"
+                                     Variant="Variant.Outlined" 
+                                     Adornment="Adornment.Start" 
+                                     AdornmentIcon="@Icons.Material.Filled.Email" />
                     </div>
                     <div class="input-group mb-3">
-                        <InputText type="password" class="form-control" placeholder="Password"/>
-                        <div class="input-group-append">
-                            <div class="input-group-text">
-                                <span class="fas fa-lock"></span>
-                            </div>
-                        </div>
+                        <MudTextField @bind-Value="_Request.Password"
+                                      Label="Password"  
+                                      class="form-control"
+                                      InputType ="InputType.Password"
+                                      Variant="Variant.Outlined" 
+                                      Adornment="Adornment.Start" 
+                                      AdornmentIcon="@Icons.Material.Filled.Key" />
                     </div>
                     <div class="input-group mb-3">
-                        <InputText type="password" class="form-control" placeholder="Retype password"/>
-                        <div class="input-group-append">
-                            <div class="input-group-text">
-                                <span class="fas fa-lock"></span>
-                            </div>
-                        </div>
+                        <MudTextField @bind-Value="_Request.Password2"
+                                      Label="Retype password"  
+                                      class="form-control"
+                                      InputType ="InputType.Password"
+                                      Variant="Variant.Outlined" 
+                                      Adornment="Adornment.Start" 
+                                      AdornmentIcon="@Icons.Material.Filled.Key" />
                     </div>
                     <div class="row">
                         <div class="col-8">
                             <div class="icheck-primary">
-                                <InputCheckbox type="checkbox" id="agreeTerms" name="terms" />
-                                <label for="agreeTerms">
-                                    I agree to the <a href="#">terms</a>
-                                </label>
+                                <MudCheckBox @bind-Value="IsAgreedTerms"
+                                            id="agreeTerms"
+                                            name="terms"
+                                            Label="Default">
+                                     <label for="agreeTerms">
+                                            I agree to the <a href="#">terms</a>
+                                     </label>
+                                </MudCheckBox>
                             </div>
                         </div>
                         <!-- /.col -->
                         <div class="col-4">
-                            <button type="submit" class="btn btn-primary btn-block btn-flat">Register</button>
+                             <MudIconButton ButtonType="ButtonType.Submit"
+                                            Variant="Variant.Filled" 
+                                            Color="Color.Primary" 
+                                            Class="btn btn-primary btn-block btn-flat">
+                                            @TextResources.APP_StringKeys_Register_User
+                             </MudIconButton>
                         </div>
                         <!-- /.col -->
                     </div>
@@ -112,8 +93,10 @@
                         Sign up using Google+
                     </a>
                 </div>
-
-                <a href="login.html" class="text-center">I already have a membership</a>
+                <NavLink class="register-logo" href="/Account/Login">
+                I already have a membership
+            </NavLink>
+                <a href="login.html" class="text-center"></a>
             </div>
             <!-- /.form-box -->
         </div><!-- /.card -->
