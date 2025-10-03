@@ -2,6 +2,8 @@
 @page "/account/Login"
 @attribute [AllowAnonymous]
 
+
+
 <PageTitle>@TextResources.App_StringKeys_User_Login</PageTitle>
 <TitleSync Value="Login" />
 
@@ -19,17 +21,14 @@
                     <div class="input-group mb-3">
                         <MudTextField @bind-Value="_Request.Email"
                                      Label="Email"  
-                                     class="form-control"  
                                      InputType ="InputType.Email"
                                      Variant="Variant.Outlined" 
                                      Adornment="Adornment.Start" 
                                      AdornmentIcon="@Icons.Material.Filled.Email" />
                     </div>
                     <div class="input-group mb-3">
-                        <input type="password" class="form-control" placeholder="Password">
                         <MudTextField @bind-Value="_Request.Password"
                                       Label="Password"  
-                                      class="form-control"
                                       InputType ="InputType.Password"
                                       Variant="Variant.Outlined" 
                                       Adornment="Adornment.Start" 
@@ -46,12 +45,12 @@
                         </div>
                         <!-- /.col -->
                         <div class="col-4">
-                            <MudIconButton ButtonType="ButtonType.Submit"
+                            <MudButton ButtonType="ButtonType.Submit"
                                             Variant="Variant.Filled" 
                                             Color="Color.Primary" 
                                             Class="btn btn-primary btn-block btn-flat">
                                             @TextResources.APP_StringKeys_LoginUser
-                             </MudIconButton>
+                             </MudButton>
                         </div>
                         <!-- /.col -->
                     </div>

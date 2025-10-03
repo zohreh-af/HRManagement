@@ -1,6 +1,8 @@
 ﻿@using  MudBlazor
 @using Microsoft.AspNetCore.Components.Forms
-
+@using Microsoft.AspNetCore.Authorization
+@inherits BasePage
+@attribute [Authorize]
 @page "/account/createuser"
 
 
@@ -20,37 +22,32 @@
                 <p class="login-box-msg">Register a new membership</p>
    <EditForm FormName="CreateUserForm" Model=_Request OnValidSubmit="OnValidSubmit" OnInvalidSubmit="OnInvalidSubmit">
       <DataAnnotationsValidator />
-                         <div class="input-group mb-3">
+                         <div class="mb-3">
                        <MudTextField @bind-Value="_Request.Username"
-                                     Label="Full name"  
-                                     class="form-control"  
-                                     Variant="Variant.Outlined" 
+                                     Label="Full name"                                       Variant="Variant.Outlined" 
                                      Adornment="Adornment.Start" 
                                      AdornmentIcon="@Icons.Material.Filled.Person" />
                         
                     </div>
-                    <div class="input-group mb-3">
+                    <div class="mb-3">
                         <MudTextField @bind-Value="_Request.Email"
                                      Label="Email"  
-                                     class="form-control"  
                                      InputType ="InputType.Email"
                                      Variant="Variant.Outlined" 
                                      Adornment="Adornment.Start" 
                                      AdornmentIcon="@Icons.Material.Filled.Email" />
                     </div>
-                    <div class="input-group mb-3">
+                    <div class="mb-3">
                         <MudTextField @bind-Value="_Request.Password"
                                       Label="Password"  
-                                      class="form-control"
                                       InputType ="InputType.Password"
                                       Variant="Variant.Outlined" 
                                       Adornment="Adornment.Start" 
                                       AdornmentIcon="@Icons.Material.Filled.Key" />
                     </div>
-                    <div class="input-group mb-3">
+                    <div class="mb-3">
                         <MudTextField @bind-Value="_Request.Password2"
                                       Label="Retype password"  
-                                      class="form-control"
                                       InputType ="InputType.Password"
                                       Variant="Variant.Outlined" 
                                       Adornment="Adornment.Start" 
@@ -59,24 +56,21 @@
                     <div class="row">
                         <div class="col-8">
                             <div class="icheck-primary">
-                                <MudCheckBox @bind-Value="IsAgreedTerms"
+                                <MudCheckBox @bind-Checked="_Request.IsAgreedTerms"
                                             id="agreeTerms"
-                                            name="terms"
-                                            Label="Default">
-                                     <label for="agreeTerms">
-                                            I agree to the <a href="#">terms</a>
-                                     </label>
+                                            T="bool"
+                                            Label="I agree to the terms" >
                                 </MudCheckBox>
                             </div>
                         </div>
                         <!-- /.col -->
                         <div class="col-4">
-                             <MudIconButton ButtonType="ButtonType.Submit"
+                             <MudButton ButtonType="ButtonType.Submit"
                                             Variant="Variant.Filled" 
                                             Color="Color.Primary" 
                                             Class="btn btn-primary btn-block btn-flat">
                                             @TextResources.APP_StringKeys_Register_User
-                             </MudIconButton>
+                             </MudButton>
                         </div>
                         <!-- /.col -->
                     </div>

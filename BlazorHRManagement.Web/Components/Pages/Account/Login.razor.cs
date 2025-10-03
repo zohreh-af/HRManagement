@@ -3,11 +3,11 @@ using HRManagement.Infrastructure.Web.Services;
 using HRManagement.Shared;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
-
+using HRManagement.Identity.Client.Base;
 namespace BlazorHRManagement.Web.Components.Pages.Account;
 
 
-public partial class Login
+public partial class Login 
 {
     public ResponseResult Response { get; set; } = new();
     public bool IsInvalid = false;

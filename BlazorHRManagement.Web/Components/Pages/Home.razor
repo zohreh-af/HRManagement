@@ -1,5 +1,11 @@
 ﻿@page "/"
+@using HRManagement.Identity.Client.Base;
+@using BlazorHRManagement.Web.Components.Layout
+@layout BlankLayout
 @using Microsoft.AspNetCore.Authorization
+@inherits BasePage
+@attribute [Authorize]
+
 
 <PageTitle>Home</PageTitle>
 <!-- Main content -->

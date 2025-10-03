@@ -10,6 +10,7 @@ public static class IdentityClientServices
 {
     public static void AddIdentityClientServices(this IServiceCollection services)
     {
+        services.AddAuthenticationCore();
         services.AddScoped<AuthenticationStateProvider, AppAuthenticationStateProvider>();
 
         services.AddScoped(sp => (AppAuthenticationStateProvider)sp.GetRequiredService<AuthenticationStateProvider>());
