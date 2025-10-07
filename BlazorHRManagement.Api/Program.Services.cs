@@ -1,10 +1,5 @@
-﻿using Abstraction;
-using BlazorHRManagement.Infrastructure.Api.Utilities;
+﻿using BlazorHRManagement.Infrastructure.Api.Utilities;
 using HRManagement.Application.Api;
-using HRManagement.Application.Api.Features;
-using HRManagement.Application.Api.Features.Account.Queries.LoginUser;
-using HRManagement.Application.Web;
-using HRManagement.Domain.Entities;
 using HRManagement.Implementation;
 using HRManagement.Infrastructure.Api;
 using HRManagement.Persistence.Contexts;
@@ -73,7 +68,7 @@ public static partial class Program
                 }
                 else
                 {
-                    builder.AllowAnyOrigin() // fallback
+                    builder.AllowAnyOrigin() 
                            .AllowAnyHeader()
                            .AllowAnyMethod();
                 }

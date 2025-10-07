@@ -4,9 +4,8 @@ using HRManagement.Identity.Client;
 using HRManagement.Infrastructure;
 using HRManagement.Presentation;
 using Implementation.Mediator;
-using Microsoft.AspNetCore.Components.Authorization;
 using MudBlazor.Services;
-using System.Net;
+
 namespace BlazorHRManagement.Web;
 
 public static partial class Program
@@ -15,23 +14,32 @@ public static partial class Program
     , IConfiguration configuration)
     {
         var baseApiUri = configuration["Api:BaseUrl"];
+        services.AddRazorPages();
+
+        services.AddServerSideBlazor();
+
         services.AddDistributedMemoryCache();
-        services.AddSession(options =>
-        {
-            options.IdleTimeout = TimeSpan.FromMinutes(20);
-            options.Cookie.HttpOnly = true;
-            options.Cookie.IsEssential = true;
-        });
-
+       
         services.AddScoped<IMediator, Mediator>();
-        services.AddMudServices();
-
+       
         services.AddRazorComponents()
             .AddInteractiveServerComponents();
+
+        services.AddMudServices();
+
+        //services.AddAntiforgery();
+        services.AddAntiforgery(options =>
+        {
+            options.FormFieldName = "__RequestVerificationToken"; // hidden input name
+            options.HeaderName = "RequestVerificationToken";   // header for AJAX
+                                                               // options.Cookie.Name = "XSRF-TOKEN";                 // optional custom cookie
+        });
+
         services.AddIdentityClientServices();
         services.AddApplicationWebServices();
         services.AddInfrastructureWebServices(configuration);
         services.AddPresentationServices();
+
         services.AddScoped<HttpClientHandler>();
 
         services.AddHttpClient("HRApi")
@@ -42,7 +50,5 @@ public static partial class Program
                     client.BaseAddress = new Uri(baseUri!);
                 })
                 .ConfigurePrimaryHttpMessageHandler<HttpClientHandler>();
-        services.AddAuthorization();
-
     }
 }

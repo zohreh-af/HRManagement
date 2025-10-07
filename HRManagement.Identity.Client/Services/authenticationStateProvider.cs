@@ -1,13 +1,19 @@
 ﻿using Blazored.LocalStorage;
 using HRManagement.Infrastructure.Web.Utilities;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Web;
+using Microsoft.AspNetCore.Http;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 
 namespace HRManagement.Identity.Client.Services;
 
-public class AppAuthenticationStateProvider(ILocalStorageService localStorage) : AuthenticationStateProvider
+public class AppAuthenticationStateProvider(
+            ILocalStorageService localStorage,
+            AppAuthenticationStateProvider authState,
+            IHttpContextAccessor httpContextAccessor) : AuthenticationStateProvider
 {
     public override async Task<AuthenticationState> GetAuthenticationStateAsync()
     {
@@ -37,7 +43,7 @@ public class AppAuthenticationStateProvider(ILocalStorageService localStorage) :
 
     public async Task SetUserAuthenticated(string token)
     {
-        var claims = GetClaims(token); // after loginig in the user vm return jwt token that will pass to the SetUserAuthenticated method . get claim will decode the token and read its data 
+        var claims = GetClaims(token);
 
         string signTime = DateTime.Now.ToString();
 
@@ -45,10 +51,7 @@ public class AppAuthenticationStateProvider(ILocalStorageService localStorage) :
 
         string username = claims.FirstOrDefault(p => p.Type == "unique_name").Value;
 
-        //add this for local storage <!-- Components/App.razor -->
-        //< HeadOutlet @rendermode = "new InteractiveServerRenderMode(prerender: false)" />
-        //< Routes     @rendermode = "new InteractiveServerRenderMode(prerender: false)" />
-
+      
         await localStorage.SetItemAsync(SessionStorageKeys.SecureToken, userId);
 
         await localStorage.SetItemAsync(SessionStorageKeys.AuthToken, token);
@@ -57,17 +60,22 @@ public class AppAuthenticationStateProvider(ILocalStorageService localStorage) :
 
         await localStorage.SetItemAsync(SessionStorageKeys.SessionStart, signTime);
 
-
-        //  await ClaimManager.ClearDataLists();
-
         var authUser = new ClaimsPrincipal(new ClaimsIdentity(claims, "jwt"));
 
         var authState = Task.FromResult(new AuthenticationState(authUser));
-        // we need to sent this token to  NotifyAuthenticationStateChanged in a async way but now we already have this value 
-        //(Task<AuthenticationState> task); ==> so we need to transform it to a async value and then give it to the method.
+        var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+        var principal = new ClaimsPrincipal(identity);
+
+        await httpContextAccessor.HttpContext!.SignInAsync(
+        CookieAuthenticationDefaults.AuthenticationScheme,
+        principal,
+        new AuthenticationProperties
+        {
+            IsPersistent = true,
+            ExpiresUtc = DateTimeOffset.UtcNow.AddHours(2)
+        });
 
         NotifyAuthenticationStateChanged(authState);
-
     }
 
     public async Task SetUserLoggedOut()
@@ -80,22 +88,14 @@ public class AppAuthenticationStateProvider(ILocalStorageService localStorage) :
 
         await localStorage.RemoveItemAsync(SessionStorageKeys.SessionStart);
 
+        await authState.SetUserLoggedOut();
+        await httpContextAccessor.HttpContext!.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
 
         var anonUser = new ClaimsPrincipal(new ClaimsIdentity());
-        //An empty ClaimsIdentity means IsAuthenticated == false.
 
-        // Wrapping it in ClaimsPrincipal gives you a “no logged-in user” object.
+        var authenticationState = Task.FromResult(new AuthenticationState(anonUser));
 
-        var authState = Task.FromResult(new AuthenticationState(anonUser));
-
-        NotifyAuthenticationStateChanged(authState);
-        // Task.FromResult wraps the AuthenticationState in a completed task(since this isn’t async work).
-
-        //NotifyAuthenticationStateChanged tells Blazor:
-
-        //“The authentication state has changed — update the UI.”
-
-        //All<AuthorizeView> components and[Authorize] checks will now reflect a logged-out state.
+        NotifyAuthenticationStateChanged(authenticationState);
     }
 
     private IEnumerable<Claim> GetClaims(string token)

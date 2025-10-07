@@ -7,77 +7,30 @@
 <PageTitle>@TextResources.App_StringKeys_User_Login</PageTitle>
 <TitleSync Value="Login" />
 
-<div class="hold-transition login-page">
-    <div class="login-box">
-         <NavLink class="register-logo" href="/">
-                <b>Admin</b>LTE
-            </NavLink>
-        <div class="card">
-            <div class="card-body login-card-body">
-                <p class="login-box-msg">Sign in to start your session</p>
 
-                       <EditForm FormName="LoginUserForm" Model=_Request OnValidSubmit="OnValidSubmit" OnInvalidSubmit="OnInvalidSubmit">
-      <DataAnnotationsValidator />
-                    <div class="input-group mb-3">
-                        <MudTextField @bind-Value="_Request.Email"
-                                     Label="Email"  
-                                     InputType ="InputType.Email"
-                                     Variant="Variant.Outlined" 
-                                     Adornment="Adornment.Start" 
-                                     AdornmentIcon="@Icons.Material.Filled.Email" />
-                    </div>
-                    <div class="input-group mb-3">
-                        <MudTextField @bind-Value="_Request.Password"
-                                      Label="Password"  
-                                      InputType ="InputType.Password"
-                                      Variant="Variant.Outlined" 
-                                      Adornment="Adornment.Start" 
-                                      AdornmentIcon="@Icons.Material.Filled.Key" />
-                    </div>
-                    <div class="row">
-                        <div class="col-8">
-                            <div class="icheck-primary">
-                                <input type="checkbox" id="remember">
-                                <label for="remember">
-                                    Remember Me
-                                </label>
-                            </div>
-                        </div>
-                        <!-- /.col -->
-                        <div class="col-4">
-                            <MudButton ButtonType="ButtonType.Submit"
-                                            Variant="Variant.Filled" 
-                                            Color="Color.Primary" 
-                                            Class="btn btn-primary btn-block btn-flat">
-                                            @TextResources.APP_StringKeys_LoginUser
-                             </MudButton>
-                        </div>
-                        <!-- /.col -->
-                    </div>
-                                </EditForm>
+<div>
 
-                <div class="social-auth-links text-center mb-3">
-                    <p>- OR -</p>
-                    <a href="#" class="btn btn-block btn-primary">
-                        <i class="fab fa-facebook mr-2"></i> Sign in using Facebook
-                    </a>
-                    <a href="#" class="btn btn-block btn-danger">
-                        <i class="fab fa-google-plus mr-2"></i> Sign in using Google+
-                    </a>
-                </div>
-                <!-- /.social-auth-links -->
+    <EditForm Formname="UserLoginForm" Model=_Request OnValidSubmit="OnValidSubmit" OnInvalidSubmit="OnInvalidSubmit">
+        <DataAnnotationsValidator />
+        <MudGrid>
+            <MudItem xs="12" sm="7">
+                <MudCard>
+                    <MudCardContent>
+                        <MudTextField Label="First name" HelperText="Max. 8 characters"
+                                      @bind-Value="_Request.Username" />
 
-                <p class="mb-1">
-                    <a href="#">I forgot my password</a>
-                </p>
-                <p class="mb-0">
-                    <a href="register.html" class="text-center">Register a new membership</a>
-                </p>
-            </div>
-            <!-- /.login-card-body -->
-        </div>
-    </div>
-</div>
+                        <MudTextField Label="Password" Class="mt-3"
+                                      @bind-Value="_Request.Password" InputType="InputType.Password" />
+
+                    </MudCardContent>
+                    <MudCardActions>
+                        <MudIconButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto">Register</MudIconButton>
+                    </MudCardActions>
+                </MudCard>
+            </MudItem>
+
+        </MudGrid>
+    </EditForm>
 
 @if (IsInvalid)
 {

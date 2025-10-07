@@ -9,96 +9,30 @@
 <PageTitle>@TextResources.App_StringKeys_User_Register</PageTitle>
 <TitleSync Value="@TextResources.App_StringKeys_User_Register" />
 
+<div>
 
+    <EditForm FormName="CreateUserForm" Model=_Request OnValidSubmit="OnValidSubmit" OnInvalidSubmit="OnInvalidSubmit">
+        <DataAnnotationsValidator />
+        <MudGrid>
+            <MudItem xs="12" sm="7">
+                <MudCard>
+                    <MudCardContent>
+                        <MudTextField Label="First name" HelperText="Max. 8 characters"
+                        @bind-Value="_Request.Username" />
+                        <MudTextField Label="Password" HelperText="Choose a strong password" Class="mt-3"
+                                      @bind-Value="_Request.Password" InputType="InputType.Password" />
 
-<div class="hold-transition register-page">
-    <div class="register-box">
+                    </MudCardContent>
+                    <MudCardActions>
+                        <MudIconButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto">Register</MudIconButton>
+                    </MudCardActions>
+                </MudCard>
+            </MudItem>
 
-         <NavLink class="register-logo" href="/">
-                  <b>Admin</b>LTE
-            </NavLink>
-        <div class="card">
-            <div class="card-body register-card-body">
-                <p class="login-box-msg">Register a new membership</p>
-   <EditForm FormName="CreateUserForm" Model=_Request OnValidSubmit="OnValidSubmit" OnInvalidSubmit="OnInvalidSubmit">
-      <DataAnnotationsValidator />
-                         <div class="mb-3">
-                       <MudTextField @bind-Value="_Request.Username"
-                                     Label="Full name"                                       Variant="Variant.Outlined" 
-                                     Adornment="Adornment.Start" 
-                                     AdornmentIcon="@Icons.Material.Filled.Person" />
-                        
-                    </div>
-                    <div class="mb-3">
-                        <MudTextField @bind-Value="_Request.Email"
-                                     Label="Email"  
-                                     InputType ="InputType.Email"
-                                     Variant="Variant.Outlined" 
-                                     Adornment="Adornment.Start" 
-                                     AdornmentIcon="@Icons.Material.Filled.Email" />
-                    </div>
-                    <div class="mb-3">
-                        <MudTextField @bind-Value="_Request.Password"
-                                      Label="Password"  
-                                      InputType ="InputType.Password"
-                                      Variant="Variant.Outlined" 
-                                      Adornment="Adornment.Start" 
-                                      AdornmentIcon="@Icons.Material.Filled.Key" />
-                    </div>
-                    <div class="mb-3">
-                        <MudTextField @bind-Value="_Request.Password2"
-                                      Label="Retype password"  
-                                      InputType ="InputType.Password"
-                                      Variant="Variant.Outlined" 
-                                      Adornment="Adornment.Start" 
-                                      AdornmentIcon="@Icons.Material.Filled.Key" />
-                    </div>
-                    <div class="row">
-                        <div class="col-8">
-                            <div class="icheck-primary">
-                                <MudCheckBox @bind-Checked="_Request.IsAgreedTerms"
-                                            id="agreeTerms"
-                                            T="bool"
-                                            Label="I agree to the terms" >
-                                </MudCheckBox>
-                            </div>
-                        </div>
-                        <!-- /.col -->
-                        <div class="col-4">
-                             <MudButton ButtonType="ButtonType.Submit"
-                                            Variant="Variant.Filled" 
-                                            Color="Color.Primary" 
-                                            Class="btn btn-primary btn-block btn-flat">
-                                            @TextResources.APP_StringKeys_Register_User
-                             </MudButton>
-                        </div>
-                        <!-- /.col -->
-                    </div>
-                </EditForm>
-
-                <div class="social-auth-links text-center">
-                    <p>- OR -</p>
-                    <a href="#" class="btn btn-block btn-primary">
-                        <i class="fab fa-facebook mr-2"></i>
-                        Sign up using Facebook
-                    </a>
-                    <a href="#" class="btn btn-block btn-danger">
-                        <i class="fab fa-google-plus mr-2"></i>
-                        Sign up using Google+
-                    </a>
-                </div>
-                <NavLink class="register-logo" href="/Account/Login">
-                I already have a membership
-            </NavLink>
-                <a href="login.html" class="text-center"></a>
-            </div>
-            <!-- /.form-box -->
-        </div><!-- /.card -->
-    </div>
-    <!-- /.register-box -->
-   </div>
-
- @if (IsInvalid) 
+        </MudGrid>
+    </EditForm>
+</div>
+@if (IsInvalid)
 {
     <MudAlert Severity="Severity.Error" Dense="true" Class="my-2">@MassageText</MudAlert>
 }
