@@ -27,6 +27,4 @@ public class CreateUserCommand : ICommand<CreateUserVm>
 
     //public string Name { get; set; }
     public string Password { get; set; }
-    public string Password2 { get; set; }
-    public bool IsAgreedTerms { get; set; } = false;
 }

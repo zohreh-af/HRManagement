@@ -14,8 +14,6 @@ public class AuthService(HttpContext httpContext)
         var token = new JwtSecurityTokenHandler().ReadJwtToken(jwt);
         var claims = token.Claims.ToList();
 
-        // (optional) normalize claim types, add roles, etc.
-
         var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
         var principal = new ClaimsPrincipal(identity);
 

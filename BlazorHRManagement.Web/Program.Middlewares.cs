@@ -15,9 +15,6 @@ public static partial class Program
         app.MapStaticAssets();
         app.UseStaticFiles();
         app.UseRouting();
-        app.UseAuthentication();
-
-        app.UseAuthorization();
         app.UseAntiforgery();
 
         //Configure the HTTP request pipeline.

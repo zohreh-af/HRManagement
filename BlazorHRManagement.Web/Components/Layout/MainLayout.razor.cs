@@ -1,8 +1,6 @@
 ﻿using HRManagement.Identity.Client.Services;
-using HRManagement.Infrastructure.Web.Services;
 using HRManagement.Presentation;
 using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Authorization;
 namespace BlazorHRManagement.Web.Components.Layout;
 
 public partial class MainLayout

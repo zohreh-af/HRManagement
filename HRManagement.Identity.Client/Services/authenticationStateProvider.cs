@@ -1,10 +1,11 @@
 ﻿using Blazored.LocalStorage;
+using HRManagement.Application.Api.Features;
 using HRManagement.Infrastructure.Web.Utilities;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Components.Authorization;
-using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Http;
+using System.Data;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 
@@ -12,9 +13,9 @@ namespace HRManagement.Identity.Client.Services;
 
 public class AppAuthenticationStateProvider(
             ILocalStorageService localStorage,
-            AppAuthenticationStateProvider authState,
             IHttpContextAccessor httpContextAccessor) : AuthenticationStateProvider
 {
+    private List<GetUserClaimsByTokenDto> claims;
     public override async Task<AuthenticationState> GetAuthenticationStateAsync()
     {
         try
@@ -28,7 +29,7 @@ public class AppAuthenticationStateProvider(
             {
                 string? signTime = (await localStorage.GetItemAsync<string>(SessionStorageKeys.SessionStart));
 
-                if ((DateTime.Now - DateTime.Parse(signTime)).TotalHours > 10)
+                if (string.IsNullOrWhiteSpace(signTime) || (DateTime.Now - DateTime.Parse(signTime)).TotalHours > 10)
                 {
                     return new(new(new ClaimsIdentity()));
                 }
@@ -37,6 +38,7 @@ public class AppAuthenticationStateProvider(
         }
         catch (Exception ex)
         {
+            //logger
             return new(new(new ClaimsIdentity()));
         }
     }
@@ -44,51 +46,41 @@ public class AppAuthenticationStateProvider(
     public async Task SetUserAuthenticated(string token)
     {
         var claims = GetClaims(token);
-
-        string signTime = DateTime.Now.ToString();
-
-        string userId = claims.FirstOrDefault(p => p.Type == "nameid").Value;
-
-        string username = claims.FirstOrDefault(p => p.Type == "unique_name").Value;
-
-      
-        await localStorage.SetItemAsync(SessionStorageKeys.SecureToken, userId);
-
         await localStorage.SetItemAsync(SessionStorageKeys.AuthToken, token);
+        await localStorage.SetItemAsync(SessionStorageKeys.UserAlias, claims.FirstOrDefault(c => c.Type == "unique_name")?.Value);
+        await localStorage.SetItemAsync(SessionStorageKeys.SessionStart, DateTime.Now.ToString());
 
-        await localStorage.SetItemAsync(SessionStorageKeys.UserAlias, username);
+        //var authUser = new ClaimsPrincipal(new ClaimsIdentity(claims, "jwt"));
 
-        await localStorage.SetItemAsync(SessionStorageKeys.SessionStart, signTime);
-
-        var authUser = new ClaimsPrincipal(new ClaimsIdentity(claims, "jwt"));
+        var authUser = new ClaimsPrincipal(new ClaimsIdentity(claims));
 
         var authState = Task.FromResult(new AuthenticationState(authUser));
-        var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
-        var principal = new ClaimsPrincipal(identity);
+     //   var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+        //var principal = new ClaimsPrincipal(identity);
 
-        await httpContextAccessor.HttpContext!.SignInAsync(
-        CookieAuthenticationDefaults.AuthenticationScheme,
-        principal,
-        new AuthenticationProperties
-        {
-            IsPersistent = true,
-            ExpiresUtc = DateTimeOffset.UtcNow.AddHours(2)
-        });
+        //await GetUserClaims();
+        //await httpContextAccessor.HttpContext!.SignInAsync(
+        //CookieAuthenticationDefaults.AuthenticationScheme,
+        //principal,
+        //new AuthenticationProperties
+        //{
+        //    IsPersistent = true,
+        //    ExpiresUtc = DateTimeOffset.UtcNow.AddHours(2)
+        //});
 
         NotifyAuthenticationStateChanged(authState);
     }
 
     public async Task SetUserLoggedOut()
     {
-        await localStorage.RemoveItemAsync(SessionStorageKeys.AuthToken);
-
         await localStorage.RemoveItemAsync(SessionStorageKeys.UserAlias);
 
         await localStorage.RemoveItemAsync(SessionStorageKeys.AuthToken);
 
         await localStorage.RemoveItemAsync(SessionStorageKeys.SessionStart);
 
-        await authState.SetUserLoggedOut();
+        await ClearDataLists();
+
         await httpContextAccessor.HttpContext!.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
 
         var anonUser = new ClaimsPrincipal(new ClaimsIdentity());
@@ -97,7 +89,12 @@ public class AppAuthenticationStateProvider(
 
         NotifyAuthenticationStateChanged(authenticationState);
     }
+    public async Task<string> GetAuthenticatedUsername()
+    {
+        var username = await localStorage.GetItemAsync<string>(SessionStorageKeys.UserAlias);
 
+        return username;
+    }
     private IEnumerable<Claim> GetClaims(string token)
     {
         var handler = new JwtSecurityTokenHandler();// JwtSecurityTokenHandler is a method that contain a method for reading the body of jwt token (ReadToken)
@@ -108,4 +105,13 @@ public class AppAuthenticationStateProvider(
 
         return claims;
     }
+    public async Task ClearDataLists()
+    {
+        claims = null;
+
+        //roles = null;
+
+        //isAdmin = null;
+    }
+
 }
