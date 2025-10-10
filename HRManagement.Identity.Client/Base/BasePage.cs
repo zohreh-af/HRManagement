@@ -11,7 +11,7 @@ public class BasePage : ComponentBase
 
     private static readonly HashSet<string> AllowedAnonymous = new(StringComparer.OrdinalIgnoreCase)
     {
-        "/account/login"
+        "/account/login",  "/login"
     };
 
     protected override async Task OnAfterRenderAsync(bool firstRender)

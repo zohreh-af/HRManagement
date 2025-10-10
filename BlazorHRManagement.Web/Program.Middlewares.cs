@@ -6,7 +6,6 @@ public static partial class Program
 {
     public static void Configure(this WebApplication app, IConfiguration configuration)
     {
-
         app.UseHttpsRedirection();
 #if DEBUG
         app.UseDeveloperExceptionPage();
@@ -16,17 +15,13 @@ public static partial class Program
             app.UseExceptionHandler("/Error");
             app.UseHsts();
         }
-
-
+        app.UseAuthorization();
         app.MapStaticAssets();
         app.UseStaticFiles();
         app.UseRouting();
-        app.UseAuthentication();   // required for server-side auth
-        app.UseAuthorization();
 
         app.UseAntiforgery();
 
-        //Configure the HTTP request pipeline.
         if (!app.Environment.IsDevelopment())
         {
             app.UseExceptionHandler("/Error");
@@ -35,14 +30,6 @@ public static partial class Program
 
         app.MapRazorPages();
         app.MapRazorComponents<App>()
-           .AddInteractiveServerRenderMode();
-
-        ////app.MapRazorComponents<App>()
-        //    .AddInteractiveServerRenderMode()
-        //    .RequireAuthorization();
-        // app.UseCors();
-        //app.UseSession();
-
-
+   .AddInteractiveServerRenderMode();
     }
 }

@@ -4,6 +4,7 @@ using HRManagement.Identity.Client;
 using HRManagement.Infrastructure;
 using HRManagement.Presentation;
 using Implementation.Mediator;
+using Microsoft.AspNetCore.Authorization;
 using MudBlazor.Services;
 
 namespace BlazorHRManagement.Web;
@@ -25,15 +26,19 @@ public static partial class Program
         services.AddScoped<IMediator, Mediator>();
         services.AddMudServices();
 
-
-        services.AddAuthorization();
+        services.AddAuthorization(options =>
+        {
+            // Allow all by default—prevents server challenge/exception
+            options.FallbackPolicy = new AuthorizationPolicyBuilder()
+                .RequireAssertion(_ => true)
+                .Build();
+        });
         services.AddCascadingAuthenticationState();
 
         services.AddIdentityClientServices();
         services.AddApplicationWebServices();
         services.AddInfrastructureWebServices(configuration);
         services.AddPresentationServices();
-
 
         services.AddAntiforgery(options =>
         {

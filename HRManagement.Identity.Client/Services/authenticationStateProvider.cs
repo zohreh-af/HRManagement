@@ -12,8 +12,7 @@ using System.Security.Claims;
 namespace HRManagement.Identity.Client.Services;
 
 public class AppAuthenticationStateProvider(
-            ILocalStorageService localStorage,
-            IHttpContextAccessor httpContextAccessor) : AuthenticationStateProvider
+            ILocalStorageService localStorage) : AuthenticationStateProvider
 {
     private List<GetUserClaimsByTokenDto> claims;
     public override async Task<AuthenticationState> GetAuthenticationStateAsync()
@@ -34,7 +33,7 @@ public class AppAuthenticationStateProvider(
                     return new(new(new ClaimsIdentity()));
                 }
             }
-            return new(new(new ClaimsIdentity(GetClaims(token), SessionStorageKeys.AuthToken)));
+            return new(new(new ClaimsIdentity(GetClaims(token), authenticationType: "jwt")));
         }
         catch (Exception ex)
         {
@@ -52,7 +51,7 @@ public class AppAuthenticationStateProvider(
 
         //var authUser = new ClaimsPrincipal(new ClaimsIdentity(claims, "jwt"));
 
-        var authUser = new ClaimsPrincipal(new ClaimsIdentity(claims));
+        var authUser = new ClaimsPrincipal(new ClaimsIdentity(GetClaims(token), authenticationType: "jwt"));
 
         var authState = Task.FromResult(new AuthenticationState(authUser));
      //   var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
@@ -80,8 +79,6 @@ public class AppAuthenticationStateProvider(
         await localStorage.RemoveItemAsync(SessionStorageKeys.SessionStart);
 
         await ClearDataLists();
-
-        await httpContextAccessor.HttpContext!.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
 
         var anonUser = new ClaimsPrincipal(new ClaimsIdentity());
 
