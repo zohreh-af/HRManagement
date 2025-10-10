@@ -56,23 +56,13 @@ public static partial class Program
         services.AddAuthorization();
         services.AddOpenApi();
 
-        services.AddCors(options =>
+        services.AddCors(o =>
         {
-            options.AddPolicy("MyPolicy", builder =>
-            {
-                if (!string.IsNullOrWhiteSpace(apiBaseUrl))
-                {
-                    builder.WithOrigins(apiBaseUrl)
-                           .AllowAnyHeader()
-                           .AllowAnyMethod();
-                }
-                else
-                {
-                    builder.AllowAnyOrigin() 
-                           .AllowAnyHeader()
-                           .AllowAnyMethod();
-                }
-            });
+            o.AddPolicy("AllowWeb",
+                p => p.WithOrigins("https://localhost:7270", "http://localhost:5129")
+                      .AllowAnyHeader()
+                      .AllowAnyMethod()
+                      .AllowCredentials());
         });
     }
 }

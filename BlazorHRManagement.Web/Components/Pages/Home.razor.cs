@@ -6,6 +6,6 @@ public partial class Home : BasePage
 {
     protected override async Task OnInitializedAsync()
     {
-        await CheckAccess();
+        //await CheckAccess();
     }
 }

@@ -1,51 +1,47 @@
 ﻿using HRManagement.Identity.Client.Services;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
-using System.Text.RegularExpressions;
 
 namespace HRManagement.Identity.Client.Base;
 
 public class BasePage : ComponentBase
 {
-    [Inject] public AppAuthenticationStateProvider AuthState { get; set; }
-    [Inject] public NavigationManager navigationManager { get; set; }
-    public async Task CheckAccess()
-    {
-        if (await IsLoginTimeout(await AuthState.GetAuthenticationStateAsync()))
-        {
-            navigationManager.NavigateTo("/Account/Login", true);
+    [Inject] public AppAuthenticationStateProvider AuthState { get; set; } = default!;
+    [Inject] public NavigationManager Nav { get; set; } = default!;
 
+    private static readonly HashSet<string> AllowedAnonymous = new(StringComparer.OrdinalIgnoreCase)
+    {
+        "/account/login"
+    };
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (!firstRender) return;
+
+        var state = await AuthState.GetAuthenticationStateAsync();
+
+        // اگر لاگین نیست، فقط صفحات مجاز ناشناس را ببیند
+        if (!state.User.Identity?.IsAuthenticated ?? true)
+        {
+            if (!IsAllowedForAnonymous(CurrentPath()))
+                Nav.NavigateTo("/account/login", forceLoad: true);
             return;
         }
 
-        IsUserHaveAccess();
+        // در صورت نیاز: اینجا بررسی دسترسی‌های کاربر (Claims/Roles) را بگذار
+        // if (!UserHasAccess(state.User, CurrentPath())) Nav.NavigateTo("/account/login", true);
     }
 
-    private async Task<bool> IsLoginTimeout(AuthenticationState state)
+    private string CurrentPath()
     {
-        if (!state.User.Claims.Any())
-        {
-            return true;
-        }
-
-        return false;
+        // "account/login?x=1#y" -> "/account/login"
+        var rel = Nav.ToBaseRelativePath(Nav.Uri);
+        var path = "/" + rel.Split('?', '#')[0].Trim('/'); // همیشه با / شروع شود
+        return string.IsNullOrEmpty(path) ? "/" : path.ToLowerInvariant();
     }
-    public async Task<bool> IsUserHaveAccess () 
-    {
-        string currentUrl = navigationManager.Uri;
-        var relativePath = navigationManager.ToBaseRelativePath(currentUrl);
 
-        var allowedLinks = new List<string>
-        {
-            "/account/login",
-            "/account/createuser"
-        };
+    private static bool IsAllowedForAnonymous(string path) => AllowedAnonymous.Contains(path);
 
-        if (allowedLinks.Contains(relativePath, StringComparer.OrdinalIgnoreCase))
-        {
-            return true; 
-        }
-        navigationManager.NavigateTo("/account/login", true);
-        return false;
-    }
+    // نمونه برای آینده:
+    // private static bool UserHasAccess(ClaimsPrincipal user, string path) { ... }
 }

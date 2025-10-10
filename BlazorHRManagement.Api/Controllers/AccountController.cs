@@ -1,5 +1,5 @@
-﻿
-using Abstraction;
+﻿using Abstraction;
+using Microsoft.AspNetCore.Authorization;
 
 namespace BlazorHRManagement.Api.Controllers;
 
@@ -16,6 +16,7 @@ public class AccountController(IMediator mediator) : HRManagementBaseController
     });
 
     [HttpPost("[action]")]
+    [AllowAnonymous]
     [ProducesDefaultResponseType(typeof(ApiResponse))]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<IActionResult> LoginUser([FromBody] LoginUserQuery query, CancellationToken cancellationToken)
@@ -25,10 +26,10 @@ public class AccountController(IMediator mediator) : HRManagementBaseController
         Data = await mediator.SendQueryAsync<LoginUserQuery, LoginUserVm>(query, cancellationToken)
     });
 
-    [HttpGet]
-    public async Task<IActionResult> GetUsers(CancellationToken cancellationToken)
-    {
+    //[HttpGet]
+    //public async Task<IActionResult> GetUsers(CancellationToken cancellationToken)
+    //{
 
-        return Ok("successful");
-    }
+    //    return Ok("successful");
+    //}
 }

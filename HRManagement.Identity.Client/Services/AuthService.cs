@@ -1,33 +1,29 @@
-﻿using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Http;
-using System.IdentityModel.Tokens.Jwt;
-using System.Net.Http;
-using System.Security.Claims;
+﻿using HRManagement.Application.Web.Features;
+using HRManagement.Infrastructure.Web.Services;
+using HRManagement.Application.Web.Contracts.Identity;
 
 namespace HRManagement.Identity.Client.Services;
 
-public class AuthService(HttpContext httpContext)
+public class AuthService(ApiHandler Api
+                         , AppAuthenticationStateProvider AuthenticationStateProvider)
+                        : IAuthenticationService
 {
-    public async Task SignInWithJwtAsync(string jwt)
+    public async Task<LoginResult> Authenticate(LoginUserQuery query)
     {
-        var token = new JwtSecurityTokenHandler().ReadJwtToken(jwt);
-        var claims = token.Claims.ToList();
+        var authenticationResponse = await Api.SendAsyncObjectByUri<LoginUserVm>(HttpMethod.Post
+            , "Account/UserLogin"
+            , query);
 
-        var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
-        var principal = new ClaimsPrincipal(identity);
+        if (authenticationResponse.Data.Result == LoginResult.Success)
+        {
+            await AuthenticationStateProvider.SetUserAuthenticated(authenticationResponse.Data.JwtToken);
+        }
 
-        await httpContext.SignInAsync(
-            CookieAuthenticationDefaults.AuthenticationScheme,
-            principal,
-            new AuthenticationProperties
-            {
-                IsPersistent = true,
-                ExpiresUtc = DateTimeOffset.UtcNow.AddHours(10)
-            });
+        return authenticationResponse.Data.Result;
     }
-    public async Task SetUserLoggedOut()
+
+    public async Task Logout()
     {
-        await httpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+        await AuthenticationStateProvider.SetUserLoggedOut();
     }
 }

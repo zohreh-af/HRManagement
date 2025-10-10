@@ -17,7 +17,7 @@ public partial class CreateUser :BasePage
     [Inject] public ApiHandler Api { get; set; }
     protected override async Task OnInitializedAsync()
     {
-        await CheckAccess();
+        //await CheckAccess();
     }
     public async Task OnValidSubmit(EditContext context)
     {

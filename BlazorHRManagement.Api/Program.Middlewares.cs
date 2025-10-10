@@ -20,8 +20,7 @@ public static partial class Program
         app.UseSerilogRequestLogging();
         
         app.UseHttpsRedirection();
-
-        app.UseCors("MyPolicy");
+        app.UseCors("AllowWeb");
 
         app.UseMiddleware<HttpLoggingMiddleware>();
 

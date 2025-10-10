@@ -1,5 +1,4 @@
 ﻿using HRManagement.Identity.Client.Services;
-using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -15,7 +14,10 @@ public static class IdentityClientServices
 
         services.AddScoped(sp => (AppAuthenticationStateProvider)sp.GetRequiredService<AuthenticationStateProvider>());
 
-       // services.AddScoped<HRManagement.Application.Web.Contracts.Identity.IAuthenticationService, HRManagement.Identity.Client.Services.AuthenticationService>();
+        services.AddScoped<HRManagement.Application.Web.Contracts.Identity.IAuthenticationService,
+                            HRManagement.Identity.Client.Services.AuthenticationService>();
+
+        // services.AddScoped<HRManagement.Application.Web.Contracts.Identity.IAuthenticationService, HRManagement.Identity.Client.Services.AuthenticationService>();
         services.AddHttpContextAccessor();
 
     }

@@ -15,30 +15,32 @@ public static partial class Program
     {
         var baseApiUri = configuration["Api:BaseUrl"];
         services.AddRazorPages();
+        services.AddRazorComponents()
+               .AddInteractiveServerComponents();
 
         services.AddServerSideBlazor();
 
         services.AddDistributedMemoryCache();
        
         services.AddScoped<IMediator, Mediator>();
-       
-        services.AddRazorComponents()
-            .AddInteractiveServerComponents();
-
         services.AddMudServices();
 
-        //services.AddAntiforgery();
+
+        services.AddAuthorization();
+        services.AddCascadingAuthenticationState();
+
+        services.AddIdentityClientServices();
+        services.AddApplicationWebServices();
+        services.AddInfrastructureWebServices(configuration);
+        services.AddPresentationServices();
+
+
         services.AddAntiforgery(options =>
         {
             options.FormFieldName = "__RequestVerificationToken"; // hidden input name
             options.HeaderName = "RequestVerificationToken";   // header for AJAX
                                                                // options.Cookie.Name = "XSRF-TOKEN";                 // optional custom cookie
         });
-
-        services.AddIdentityClientServices();
-        services.AddApplicationWebServices();
-        services.AddInfrastructureWebServices(configuration);
-        services.AddPresentationServices();
 
         services.AddScoped<HttpClientHandler>();
 

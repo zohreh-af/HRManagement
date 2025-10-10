@@ -5,7 +5,7 @@ namespace BlazorHRManagement.Api.Controllers;
 
 [ApiController]
 [EnableCors("OpenCors")]
-[Route("HR/[controller]")]
+[Route("[controller]")]
 
 public class HRManagementBaseController : ControllerBase
 {
