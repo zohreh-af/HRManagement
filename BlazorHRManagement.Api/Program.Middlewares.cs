@@ -11,6 +11,7 @@ public static partial class Program
         app.UseSwagger();
         app.UseSwaggerUI();
 #endif
+        app.MapIdentityApi<User>();
 
         // Configure the HTTP request pipeline.
         if (app.Environment.IsDevelopment())

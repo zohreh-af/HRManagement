@@ -19,6 +19,8 @@ public static partial class Program
         var apiBaseUrl = configuration["Api:BaseUrl"];
 
         var connectionString = configuration.GetConnectionString("SqlDefaultConnectionString");
+        
+        services.AddIdentityCore<User>();
 
         services.AddControllers().AddJsonOptions(o =>
         o.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()));
