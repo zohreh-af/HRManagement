@@ -3,12 +3,12 @@ using Microsoft.OpenApi.Models;
 using Serilog.Formatting.Compact;
 using Serilog.Sinks.MSSqlServer;
 using Serilog;
-using System.Reflection;
 using Microsoft.Extensions.Configuration;
 using Serilog.Events;
 using Serilog.Exceptions;
 using System.Globalization;
 using System.Collections.ObjectModel;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 namespace HRManagement.Infrastructure.Api;
 
@@ -18,46 +18,37 @@ public static class InfrastructureApiServices
     {
         //Swagger setting 
         #region Swagger
-        services.AddSwaggerGen(options =>
+
+        services.AddSwaggerGen(o =>
         {
-            options.SwaggerDoc("v1", new OpenApiInfo
+            var securityScheme = new OpenApiSecurityScheme
             {
-                Title = "BlazorHRManagement API",
-                Version = "v1"
-            });
-
-            // XML comments (optional but recommended)
-            var xmlName = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
-            var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlName);
-            if (File.Exists(xmlPath))
-                options.IncludeXmlComments(xmlPath, includeControllerXmlComments: true);
-
-            // JWT Bearer support (if you use [Authorize])
-            options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
-            {
-                Name = "Authorization",
+                Name = "JWT Auth",
+                Description = "Place JWT token",
                 In = ParameterLocation.Header,
                 Type = SecuritySchemeType.Http,
-                Scheme = "bearer",
-                BearerFormat = "JWT",
-                Reference = new OpenApiReference { Type = ReferenceType.SecurityScheme, Id = "Bearer" },
-                Description = "Enter: Bearer {your JWT token}"
-            });
-            options.AddSecurityRequirement(new OpenApiSecurityRequirement
-            {
-                {
-                    new OpenApiSecurityScheme
-                    {
-                        Reference = new OpenApiReference
-                        {
-                            Type = ReferenceType.SecurityScheme,
-                            Id = "Bearer"
-                        }
-                    },
-                    Array.Empty<string>()
-                }
-            });
+                Scheme = JwtBearerDefaults.AuthenticationScheme,
+                BearerFormat = "JWT"
+            };
 
+            o.AddSecurityDefinition(JwtBearerDefaults.AuthenticationScheme, securityScheme);
+
+            var securityRequirement = new OpenApiSecurityRequirement
+    {
+        {
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference
+                {
+                    Type = ReferenceType.SecurityScheme,
+                    Id = JwtBearerDefaults.AuthenticationScheme
+                }
+            },
+            []
+        }
+    };
+
+            o.AddSecurityRequirement(securityRequirement);
         });
         #endregion
         #region Serilog
@@ -74,7 +65,7 @@ public static class InfrastructureApiServices
         var seqUrl = configuration["Logging:Serilog:SeqUrl"];
 
         var rollingInterval = configuration["Logging:File:rollingInterval"];
-       
+
         var rollOnFileSizeLimit = configuration["Logging:File:rollOnFileSizeLimit"];
 
         var logRoot = configuration["Logging:File:Path"];
@@ -87,7 +78,7 @@ public static class InfrastructureApiServices
         var infoDir = Path.Combine(logRoot, "Information");
         Directory.CreateDirectory(exceptionsDir);
         Directory.CreateDirectory(infoDir);
-        
+
         // Optional: file size limit in MiB (defaults to 100 MiB if not set/invalid)
         long fileSizeLimitBytes = 100L * 1024 * 1024;
         if (int.TryParse(configuration["Logging:File:MaxFileSize"], out var maxMiB) && maxMiB > 0)
@@ -152,7 +143,7 @@ public static class InfrastructureApiServices
                     .WriteTo.File(
                         path: Path.Combine(exceptionsDir, $"Log-{PersianFileDate()}.log"),
                         rollOnFileSizeLimit: true,
-                        fileSizeLimitBytes: fileSizeLimitBytes, 
+                        fileSizeLimitBytes: fileSizeLimitBytes,
                         rollingInterval: RollingInterval.Day,
                         outputTemplate: WarningOutputTemplate,
                         shared: true))

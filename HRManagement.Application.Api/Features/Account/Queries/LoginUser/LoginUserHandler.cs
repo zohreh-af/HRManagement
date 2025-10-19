@@ -1,7 +1,7 @@
 ﻿using Abstraction;
+using Abstraction.Abstraction;
 using BlazorHRManagement.Infrastructure.Api.Utilities;
 using HRManagement.Application.Web.Features;
-using HRManagement.Domain.Entities;
 using HRManagement.Persistence.Contexts;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -44,33 +44,33 @@ public class LoginUserHandler(HRManagementContext context,IConfiguration configu
 
         return new()
         {
-            JwtToken = GetJwtToken(claimsIdentity),
+            JwtToken = IJwtGenerator.Generate(claimsIdentity),
             Result = LoginResult.Success
         };
 
     }
 
-    private string GetJwtToken(ClaimsIdentity? claimsIdentity)
-    {
-        SecurityTokenDescriptor descriptor = new()
-        {
-            Issuer = "HRIdentity",
-            Audience = "HRTicketIdentityUser",
-            IssuedAt = DateTime.UtcNow,
-            NotBefore = DateTime.UtcNow.AddMinutes(0),
-            Expires = DateTime.UtcNow.AddHours(10),
-            SigningCredentials = CryptoTools.GetJwtCredential(configuration["Jwt:Key"]),
-            Claims = claimsIdentity.Claims.ToDictionary(c => c.Type, c => (object)c.Value)
-        };
+    //private string GetJwtToken(ClaimsIdentity? claimsIdentity)
+    //{
+    //    SecurityTokenDescriptor descriptor = new()
+    //    {
+    //        Issuer = "HRIdentity",
+    //        Audience = "HRTicketIdentityUser",
+    //        IssuedAt = DateTime.UtcNow,
+    //        NotBefore = DateTime.UtcNow.AddMinutes(0),
+    //        Expires = DateTime.UtcNow.AddHours(10),
+    //        SigningCredentials = CryptoTools.GetJwtCredential(configuration["Jwt:Key"]),
+    //        Claims = claimsIdentity.Claims.ToDictionary(c => c.Type, c => (object)c.Value)
+    //    };
 
-        JwtSecurityTokenHandler tokenHandler = new();
+    //    JwtSecurityTokenHandler tokenHandler = new();
 
-        SecurityToken securityToken = tokenHandler.CreateToken(descriptor);
+    //    SecurityToken securityToken = tokenHandler.CreateToken(descriptor);
 
-        string jwt = tokenHandler.WriteToken(securityToken);
+    //    string jwt = tokenHandler.WriteToken(securityToken);
 
-        return jwt;
-    }
+    //    return jwt;
+    //}
 
     private async Task<ClaimsIdentity> GetUserClaims(User user)
     {
