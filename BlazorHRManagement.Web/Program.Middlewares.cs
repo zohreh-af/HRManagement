@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
-
+﻿
 namespace BlazorHRManagement.Web;
 
 public static partial class Program
@@ -15,6 +14,8 @@ public static partial class Program
             app.UseExceptionHandler("/Error");
             app.UseHsts();
         }
+        app.UseCookiePolicy();
+
         app.UseAuthorization();
         app.MapStaticAssets();
         app.UseStaticFiles();

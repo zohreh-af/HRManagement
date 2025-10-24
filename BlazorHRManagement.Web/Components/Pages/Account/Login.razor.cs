@@ -24,7 +24,6 @@ public partial class Login
     [Inject] public ApiHandler Api { get; set; }
     protected override async Task OnInitializedAsync()
     {
-        //IsCaptchaActive = bool.Parse(Configuration["CaptchaSettings:IsCaptchaActive"]);
 #if DEBUG
         _Request.Username = "admin";
 

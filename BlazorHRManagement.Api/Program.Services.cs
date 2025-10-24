@@ -1,7 +1,9 @@
-﻿using BlazorHRManagement.Infrastructure.Api.Utilities;
+﻿using Abstraction.Abstraction;
+using BlazorHRManagement.Infrastructure.Api.Utilities;
 using HRManagement.Application.Api;
 using HRManagement.Implementation;
 using HRManagement.Infrastructure.Api;
+using HRManagement.Infrastructure.Api.Authentication;
 using HRManagement.Persistence.Contexts;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
@@ -21,6 +23,8 @@ public static partial class Program
         var connectionString = configuration.GetConnectionString("SqlDefaultConnectionString");
         
         services.AddIdentityCore<User>();
+
+        services.AddScoped<IJwtGenerator, JwtGenerator>();
 
         services.AddControllers().AddJsonOptions(o =>
         o.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()));
@@ -43,7 +47,22 @@ public static partial class Program
                 ValidateIssuerSigningKey = true,
                 IssuerSigningKey = CryptoTools.GetSymmetricKey("L11wA7R4JD2SqlMObNYDXeXtB0tvreWxp5UA7w_XT6E"),
             };
+            option.Events = new JwtBearerEvents
+            {
+                OnMessageReceived = ctx =>
+                {
+                    if (string.IsNullOrEmpty(ctx.Token) &&
+                        ctx.HttpContext.Request.Cookies.TryGetValue("access_token", out var cookie))
+                    {
+                        ctx.Token = cookie;
+                    }
+                    return Task.CompletedTask;
+                }
+            };
         });
+
+        services.Configure<JwtOptions>(configuration.GetSection("Jwt"));
+
         services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
 
         services.AddInfrastructureApiServices(configuration);

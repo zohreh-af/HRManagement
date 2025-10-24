@@ -1,4 +1,5 @@
 ﻿using HRManagement.Infrastructure.Api;
+using Scalar.AspNetCore;
 using Serilog;
 
 namespace BlazorHRManagement.Api;
@@ -17,6 +18,7 @@ public static partial class Program
         if (app.Environment.IsDevelopment())
         {
             app.MapOpenApi();
+            app.MapScalarApiReference();
         }
         app.UseSerilogRequestLogging();
         

@@ -1,23 +1,35 @@
 ﻿using Abstraction;
 using Abstraction.Abstraction;
-using BlazorHRManagement.Infrastructure.Api.Utilities;
 using HRManagement.Application.Web.Features;
 using HRManagement.Persistence.Contexts;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
-using Microsoft.IdentityModel.Tokens;
-using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 
 namespace HRManagement.Application.Api.Features.Account.Queries.LoginUser;
 
-public class LoginUserHandler(HRManagementContext context,IConfiguration configuration
-    , IPasswordHasher<User> passwordHasher): IQueryHandler<LoginUserQuery, LoginUserVm>
+public class LoginUserHandler: IQueryHandler<LoginUserQuery, LoginUserVm>
 {
-    public async Task<LoginUserVm> HandleAsync(LoginUserQuery query, CancellationToken cancellationToken)
+    private readonly HRManagementContext _context;
+    //private readonly IConfiguration _configuration;
+    private readonly IPasswordHasher<User> _passwordHasher;
+    private readonly IJwtGenerator _jwtGenerator;
+
+    public LoginUserHandler(
+        HRManagementContext context,
+        IConfiguration configuration,
+        IPasswordHasher<User> passwordHasher,
+        IJwtGenerator jwtGenerator)
     {
-        var user = await context.Users.FirstOrDefaultAsync
+        _context = context;
+        //_configuration = configuration;
+        _passwordHasher = passwordHasher;
+        _jwtGenerator = jwtGenerator;
+    }
+    public async Task<LoginUserVm> HandleAsync(LoginUserQuery query, CancellationToken cancellationToken )
+    {
+        var user = await _context.Users.FirstOrDefaultAsync
                             (u => u.Username.ToLower() == query.Email.ToLower(),
                              cancellationToken);
 
@@ -29,14 +41,14 @@ public class LoginUserHandler(HRManagementContext context,IConfiguration configu
                 Result = LoginResult.UserNotFound
             };
         }
-        var isPasswordValid = passwordHasher.VerifyHashedPassword(user, user.PasswordHash, query.Password);
+        var isPasswordValid = _passwordHasher.VerifyHashedPassword(user, user.PasswordHash, query.Password);
 
         if (isPasswordValid != PasswordVerificationResult.Success)
         {
             return new()
             {
                 JwtToken = null,
-                Result = LoginResult.FailedToLogin
+                Result = LoginResult.UserNotFound
             };
         }
 
@@ -44,11 +56,12 @@ public class LoginUserHandler(HRManagementContext context,IConfiguration configu
 
         return new()
         {
-            JwtToken = IJwtGenerator.Generate(claimsIdentity),
+            JwtToken = _jwtGenerator.Generate(user.Id,claimsIdentity),
             Result = LoginResult.Success
         };
 
     }
+
 
     //private string GetJwtToken(ClaimsIdentity? claimsIdentity)
     //{

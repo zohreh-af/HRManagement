@@ -8,12 +8,14 @@ using System.Text;
 
 namespace HRManagement.Infrastructure.Api.Authentication;
 
-internal sealed class JwtGenerator : IJwtGenerator
+public class JwtGenerator : IJwtGenerator
 {
     private readonly JwtOptions _jwtOptions;
 
     public JwtGenerator(IOptions<JwtOptions> jwtOptions) =>
         _jwtOptions = jwtOptions.Value;
+
+    public int ExpiresInMinutes => throw new NotImplementedException();
 
     public string Generate(Guid id, ClaimsIdentity? claimsIdentity)
     {
@@ -26,7 +28,7 @@ internal sealed class JwtGenerator : IJwtGenerator
         var claims = new Claim[]
         {
             new(JwtRegisteredClaimNames.Sub, id.ToString()),
-            new(JwtRegisteredClaimNames.Email, email)
+          //  new(JwtRegisteredClaimNames.Email, email)
         };
 
         var tokenDescriptor = new SecurityTokenDescriptor
