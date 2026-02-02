@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
-using Microsoft.Extensions.Configuration;
 
 namespace HRManagement.Persistence.Contexts;
 
@@ -8,16 +7,10 @@ public class HRManagementContextFactory : IDesignTimeDbContextFactory<HRManageme
 {
     public HRManagementContext CreateDbContext(string[] args)
     {
-        IConfigurationRoot configuration = new ConfigurationBuilder()
-            .SetBasePath(Directory.GetCurrentDirectory())
-            .AddJsonFile("appsettings.json")
-            .Build();
+        var optionsBuilder = new DbContextOptionsBuilder<HRManagementContext>();
 
-        var builder = new DbContextOptionsBuilder<HRManagementContext>();
-        var connectionString = configuration.GetConnectionString("SqlDefaultConnectionString");
+        optionsBuilder.UseSqlServer("Server=(localdb)\\MSSQLLocalDB;Database=HRManagement;Trusted_Connection=True;TrustServerCertificate=True");
 
-        builder.UseSqlServer(connectionString);
-
-        return new HRManagementContext(builder.Options);
+        return new HRManagementContext(optionsBuilder.Options);
     }
 }

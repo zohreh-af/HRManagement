@@ -16,10 +16,10 @@
             <MudItem xs="12" sm="7">
                 <MudCard>
                     <MudCardContent>
-                        <MudTextField Label="First name" HelperText="Max. 8 characters"
-                        @bind-Value="_Request.Username" />
-                        <MudTextField Label="Password" HelperText="Choose a strong password" Class="mt-3"
-                                      @bind-Value="_Request.Password" InputType="InputType.Password" />
+                        <MudTextField T="string" Label="First name" HelperText="Max. 8 characters"
+                        @bind="_Request.Username" />
+                        <MudTextField T="string" Label="Password" HelperText="Choose a strong password" Class="mt-3"
+                                      @bind="_Request.Password" InputType="InputType.Password" />
 
                     </MudCardContent>
                     <MudCardActions>

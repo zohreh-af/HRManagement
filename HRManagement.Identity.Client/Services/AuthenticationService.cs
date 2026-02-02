@@ -1,5 +1,4 @@
-﻿using HRManagement.Application.Web.Contracts.Identity;
-using HRManagement.Application.Web.Features;
+﻿using HRManagement.Application.Web.Features;
 using HRManagement.Infrastructure.Web.Services;
 
 namespace HRManagement.Identity.Client.Services;

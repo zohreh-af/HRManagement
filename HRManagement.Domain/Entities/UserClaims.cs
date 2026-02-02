@@ -19,7 +19,7 @@ public class UserClaim
 
     [Column("UserId")]
     [StringLength(50)]
-    public string UserId { get; set; }
+    public Guid UserId { get; set; }
     public User UserNavigation { get; set; }
 
 }

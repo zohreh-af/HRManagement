@@ -11,7 +11,6 @@ public class UserLogin
     [StringLength(100)]
     public string LoginProvider { get; set; }
 
-    [Key]
     [Column("ProviderKey")]
     [StringLength(150)]
     public string ProviderKey { get; set; }
@@ -22,6 +21,6 @@ public class UserLogin
 
     [Column("UserId")]
     [StringLength(50)]
-    public string UserId { get; set; }
+    public Guid UserId { get; set; }
     public User UserNavigation { get; set; }
 }

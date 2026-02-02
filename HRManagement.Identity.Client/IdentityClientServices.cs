@@ -1,4 +1,5 @@
-﻿using HRManagement.Identity.Client.Services;
+﻿using Blazored.LocalStorage;
+using HRManagement.Identity.Client.Services;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -10,14 +11,15 @@ public static class IdentityClientServices
     {
         services.AddAuthenticationCore();
 
-        services.AddScoped<AuthenticationStateProvider, AppAuthenticationStateProvider>();
+        services.AddCascadingAuthenticationState();
 
-        services.AddScoped(sp => (AppAuthenticationStateProvider)sp.GetRequiredService<AuthenticationStateProvider>());
+        services.AddBlazoredLocalStorage();
 
-        services.AddScoped<HRManagement.Application.Web.Contracts.Identity.IAuthenticationService,
-                            HRManagement.Identity.Client.Services.AuthenticationService>();
+        services.AddScoped<AppAuthenticationStateProvider>();
 
-        // services.AddScoped<HRManagement.Application.Web.Contracts.Identity.IAuthenticationService, HRManagement.Identity.Client.Services.AuthenticationService>();
+        services.AddScoped<AuthenticationStateProvider>(
+            sp => sp.GetRequiredService<AppAuthenticationStateProvider>());
+
         services.AddHttpContextAccessor();
 
     }

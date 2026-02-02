@@ -11,7 +11,6 @@ public class RoleClaim
     [StringLength(100)]
     public string Id { get; set; }
 
-    [Key]
     [Column("RoleId")]
     [StringLength(150)]
     public string RoleId { get; set; }
@@ -20,7 +19,6 @@ public class RoleClaim
     [StringLength(100)]
     public string ClaimType { get; set; }
 
-    [Key]
     [Column("ClaimValue")]
     [StringLength(150)]
     public string ClaimValue { get; set; }

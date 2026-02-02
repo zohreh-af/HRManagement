@@ -19,6 +19,8 @@ public static partial class Program
         {
             app.MapOpenApi();
             app.MapScalarApiReference();
+            app.UseExceptionHandler("/Error");
+            app.UseHsts();
         }
         app.UseSerilogRequestLogging();
         

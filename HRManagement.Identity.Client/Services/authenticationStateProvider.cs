@@ -15,22 +15,21 @@ public class AppAuthenticationStateProvider(
     {
         try
         {
-            //StartCookies();
-           //var token = await localStorage.GetItemAsync<string>(SessionStorageKeys.AuthToken);
-           // if (string.IsNullOrEmpty(token))
-           // {
-           //     return new AuthenticationState(new ClaimsPrincipal(new ClaimsIdentity()));
-           // }
-           // else
-           // {
-           //     string? signTime = (await localStorage.GetItemAsync<string>(SessionStorageKeys.SessionStart));
+            var token = await localStorage.GetItemAsync<string>(SessionStorageKeys.AuthToken);
+            if (string.IsNullOrEmpty(token))
+            {
+                return new AuthenticationState(new ClaimsPrincipal(new ClaimsIdentity()));
+            }
+            else
+            {
+                string? signTime = (await localStorage.GetItemAsync<string>(SessionStorageKeys.SessionStart));
 
-           //     if (string.IsNullOrWhiteSpace(signTime) || (DateTime.Now - DateTime.Parse(signTime)).TotalHours > 10)
-           //     {
-           //         return new(new(new ClaimsIdentity()));
-           //     }
-           // }
-         //   return new(new(new ClaimsIdentity(GetClaims(token), authenticationType: "jwt")));
+                if (string.IsNullOrWhiteSpace(signTime) || (DateTime.Now - DateTime.Parse(signTime)).TotalHours > 10)
+                {
+                    return new(new(new ClaimsIdentity()));
+                }
+            }
+            return new(new(new ClaimsIdentity(GetClaims(token), authenticationType: "jwt")));
         }
         catch (Exception ex)
         {
@@ -42,9 +41,9 @@ public class AppAuthenticationStateProvider(
     public async Task SetUserAuthenticated(string token)
     {
         var claims = GetClaims(token);
-        //await localStorage.SetItemAsync(SessionStorageKeys.AuthToken, token);
-        //await localStorage.SetItemAsync(SessionStorageKeys.UserAlias, claims.FirstOrDefault(c => c.Type == "unique_name")?.Value);
-        //await localStorage.SetItemAsync(SessionStorageKeys.SessionStart, DateTime.Now.ToString());
+        await localStorage.SetItemAsync(SessionStorageKeys.AuthToken, token);
+        await localStorage.SetItemAsync(SessionStorageKeys.UserAlias, claims.FirstOrDefault(c => c.Type == "unique_name")?.Value);
+        await localStorage.SetItemAsync(SessionStorageKeys.SessionStart, DateTime.Now.ToString());
 
         var authUser = new ClaimsPrincipal(new ClaimsIdentity(GetClaims(token), authenticationType: "jwt"));
 
