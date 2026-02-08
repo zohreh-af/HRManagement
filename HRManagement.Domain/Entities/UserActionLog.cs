@@ -16,5 +16,5 @@ public  class UserActionLog
 
     public string ShamsiDate { get; set; }
 
-    public string DeviceIp { get; set; }
+    public User UserNavigation {  get; set;  }
 }

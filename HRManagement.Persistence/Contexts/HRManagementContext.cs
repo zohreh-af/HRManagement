@@ -38,27 +38,57 @@ public class HRManagementContext : DbContext
              .OnDelete(DeleteBehavior.Restrict);
         });
 
+        modelBuilder.Entity<UserToken>()
+                    .HasKey(t => new { t.UserId, t.LoginProvider, t.Name });
+
+        modelBuilder.Entity<UserClaim>()
+                    .HasKey(d => d.Id);
+
+        modelBuilder.Entity<UserRole>()
+                    .HasKey(ur => new { ur.UserId, ur.RoleId });
+
+        modelBuilder.Entity<UserActionLog>()
+                    .HasKey(d => d.Id);
+
+        modelBuilder.Entity<UserLoginLog>()
+                    .HasKey(d => d.Id);
+
+        modelBuilder.Entity<UserLogin>()
+                    .HasKey(l => new { l.LoginProvider, l.ProviderKey });
+
+        modelBuilder.Entity<Role>()
+                    .HasKey(d => d.Id);
+
+        modelBuilder.Entity<User>()
+                    .HasKey(d => d.Id);
+
+        modelBuilder.Entity<Employee>()
+                    .HasKey(d => d.EmployeeId);
+
+        modelBuilder.Entity<RoleClaim>()
+                    .HasKey(d => d.Id);
+
         modelBuilder.Entity<UserClaim>()
             .HasOne(uc => uc.UserNavigation)
-            .WithMany(u => u.UserClaim)
+            .WithMany(u => u.UserClaimUsers)
             .HasForeignKey(uc => uc.UserId)
             .HasPrincipalKey(u => u.Id);
 
         modelBuilder.Entity<UserLogin>()
             .HasOne(uc => uc.UserNavigation)
-            .WithMany(u => u.UserLogin)
+            .WithMany(u => u.UserLoginUsers)
             .HasForeignKey(uc => uc.UserId)
             .HasPrincipalKey(u => u.Id);
 
         modelBuilder.Entity<UserToken>()
             .HasOne(uc => uc.UserNavigation)
-            .WithMany(u => u.UserToken)
+            .WithMany(u => u.UserTokenUsers)
             .HasForeignKey(uc => uc.UserId)
             .HasPrincipalKey(u => u.Id);
 
         modelBuilder.Entity<UserRole>()
             .HasOne(uc => uc.UserNavigation)
-            .WithMany(u => u.UserRole)
+            .WithMany(u => u.UserRoleUsers)
             .HasForeignKey(uc => uc.UserId)
             .HasPrincipalKey(u => u.Id);
 
