@@ -1,17 +1,23 @@
 ﻿using HRManagement.Domain.Entities;
+using System.ComponentModel.DataAnnotations;
 
 public class User
 {
+    [Key]
     public Guid Id { get; set; }
 
+    [StringLength(100)]
     public string Username { get; set; } = default!;
 
+    [StringLength(50)]
     public string? Email { get; set; }
+
 
     public bool EmailConfirmed { get; set; }
 
     public DateTime CreateDate { get; set; } = DateTime.UtcNow;
 
+    [StringLength(50)]
     public string? PhoneNumber { get; set; } 
 
     public bool PhoneNumberConfirmed { get; set; }
@@ -26,6 +32,7 @@ public class User
 
     public User? LastModifier { get; set; }
 
+    [StringLength(50)]
     public string PersianName { get; set; } = default!;
 
     public string PasswordHash { get; set; } = default!;
