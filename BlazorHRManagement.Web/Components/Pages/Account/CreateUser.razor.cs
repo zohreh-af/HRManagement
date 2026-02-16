@@ -3,10 +3,10 @@ using HRManagement.Infrastructure.Web.Services;
 using HRManagement.Shared;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
-using HRManagement.Identity.Client.Base;
+
 namespace BlazorHRManagement.Web.Components.Pages.Account;
 
-public partial class CreateUser :BasePage
+public partial class CreateUser 
 {
     public ResponseResult Response { get; set; } = new();
     public bool IsInvalid = false;
@@ -17,7 +17,7 @@ public partial class CreateUser :BasePage
     [Inject] public ApiHandler Api { get; set; }
     protected override async Task OnInitializedAsync()
     {
-        //await CheckAccess();
+        await CheckAccess();
     }
     public async Task OnValidSubmit(EditContext context)
     {

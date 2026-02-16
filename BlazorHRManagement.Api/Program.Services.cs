@@ -7,6 +7,7 @@ using HRManagement.Infrastructure.Api.Authentication;
 using HRManagement.Persistence.Contexts;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 
@@ -69,12 +70,20 @@ public static partial class Program
         services.AddApplicationApiServices();
         services.AddImplementationServices();
 
-        services.AddDbContext<HRManagementContext>(option =>
+        services.AddDbContext<HRContext>(option =>
         {
             option.UseSqlServer(connectionString);
         });
-
+        services.AddIdentity<User, IdentityRole<Guid>>(options =>
+        {
+            options.Password.RequireNonAlphanumeric = false;
+            options.Password.RequireUppercase = false;
+        })
+        .AddEntityFrameworkStores<HRContext>()  
+        .AddDefaultTokenProviders();
+   
         services.AddAuthorization();
+
         services.AddOpenApi();
 
         services.AddCors(o =>

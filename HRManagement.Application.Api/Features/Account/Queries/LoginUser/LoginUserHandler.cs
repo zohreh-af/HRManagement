@@ -11,13 +11,13 @@ namespace HRManagement.Application.Api.Features.Account.Queries.LoginUser;
 
 public class LoginUserHandler: IQueryHandler<LoginUserQuery, LoginUserVm>
 {
-    private readonly HRManagementContext _context;
+    private readonly HRContext _context;
     //private readonly IConfiguration _configuration;
     private readonly IPasswordHasher<User> _passwordHasher;
     private readonly IJwtGenerator _jwtGenerator;
 
     public LoginUserHandler(
-        HRManagementContext context,
+        HRContext context,
         IConfiguration configuration,
         IPasswordHasher<User> passwordHasher,
         IJwtGenerator jwtGenerator)
@@ -30,7 +30,7 @@ public class LoginUserHandler: IQueryHandler<LoginUserQuery, LoginUserVm>
     public async Task<LoginUserVm> HandleAsync(LoginUserQuery query, CancellationToken cancellationToken )
     {
         var user = await _context.Users.FirstOrDefaultAsync
-                            (u => u.Username.ToLower() == query.Email.ToLower(),
+                            (u => u.UserName.ToLower() == query.Email.ToLower(),
                              cancellationToken);
 
         if (user is null)
@@ -54,7 +54,7 @@ public class LoginUserHandler: IQueryHandler<LoginUserQuery, LoginUserVm>
 
         ClaimsIdentity claimsIdentity = await GetUserClaims(user);
 
-        return new()
+         return new()
         {
             JwtToken = _jwtGenerator.Generate(user.Id,claimsIdentity),
             Result = LoginResult.Success
@@ -89,7 +89,7 @@ public class LoginUserHandler: IQueryHandler<LoginUserQuery, LoginUserVm>
     {
         var claims = new List<Claim>();
 
-        claims.Add(new(ClaimTypes.Name, user.Username));
+        claims.Add(new(ClaimTypes.Name, user.UserName));
         claims.Add(new(ClaimTypes.NameIdentifier, user.Id.ToString()));
         //user rolle 
         claims.Add(new(ClaimTypes.Surname, user.PersianName));

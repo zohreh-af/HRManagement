@@ -32,6 +32,7 @@
 
 	<ItemGroup>
 		<ProjectReference Include="..\Abstraction\Abstraction.csproj" />
+		<ProjectReference Include="..\HRManagement.Persistence\HRManagement.Persistence.csproj" />
 		<ProjectReference Include="..\HRManagement.Shared\HRManagement.Shared.csproj" />
 	</ItemGroup>
 

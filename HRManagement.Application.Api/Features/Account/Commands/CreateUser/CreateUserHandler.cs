@@ -1,17 +1,15 @@
 ﻿using Abstraction;
 using HRManagement.Application.Web.Features;
-using HRManagement.Domain.Entities;
 using HRManagement.Persistence.Contexts;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using Serilog.Core;
 namespace HRManagement.Application.Api.Features;
 
 public class CreateUserHandler(
       IMapper mapper
     , ILogger<CreateUserHandler> logger
-    , HRManagementContext dbContext
+    , HRContext dbContext
     , IPasswordHasher<User> passwordHasher) 
     : ICommandHandler<CreateUserCommand, CreateUserVm>
 {
@@ -28,7 +26,7 @@ public class CreateUserHandler(
 
             // 3) Duplicate check
             var exists = await dbContext.Users
-                .AnyAsync(u => u.Username == command.Username, cancellationToken);
+                .AnyAsync(u => u.UserName == command.Username, cancellationToken);
 
             if (exists)
                 return new CreateUserVm { Result = CreateUserResult.DuplicateUsername };
@@ -38,7 +36,7 @@ public class CreateUserHandler(
             var newUser = new User
             {
                 Id = Guid.NewGuid(),
-                Username = command.Username,
+                UserName = command.Username,
                 IsActive = true,
                 PersianName = "Zohreh Abbasifar",
             };

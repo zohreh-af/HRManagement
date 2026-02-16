@@ -1,14 +1,16 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using Microsoft.OpenApi.Models;
-using Serilog.Formatting.Compact;
-using Serilog.Sinks.MSSqlServer;
-using Serilog;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.OpenApi.Models;
+using Serilog;
 using Serilog.Events;
 using Serilog.Exceptions;
-using System.Globalization;
+using Serilog.Formatting.Compact;
+using Serilog.Sinks.MSSqlServer;
 using System.Collections.ObjectModel;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
+using System.Globalization;
 
 namespace HRManagement.Infrastructure.Api;
 
@@ -16,6 +18,8 @@ public static class InfrastructureApiServices
 {
     public static void AddInfrastructureApiServices(this IServiceCollection services, IConfiguration configuration)
     {
+        services.AddSingleton<IEmailSender<User>, TestEmailSender>();
+
         //Swagger setting 
         #region Swagger
 
@@ -128,9 +132,9 @@ public static class InfrastructureApiServices
                             AdditionalColumns = new Collection<SqlColumn>
                             {
                                 new SqlColumn("UserId",   System.Data.SqlDbType.NVarChar,dataLength : 128),
-                                new SqlColumn("UserName", System.Data.SqlDbType.NVarChar,dataLength: 256),
-                                new SqlColumn("IP",       System.Data.SqlDbType.NVarChar,dataLength: 64),
-                                new SqlColumn("Success",  System.Data.SqlDbType.Bit)
+                                //new SqlColumn("UserName", System.Data.SqlDbType.NVarChar,dataLength: 256),
+                                new SqlColumn("DeviceIp",       System.Data.SqlDbType.NVarChar,dataLength: 64),
+                                new SqlColumn("LoginDateTime",  System.Data.SqlDbType.DateTime)
                             }
                         }))
 
