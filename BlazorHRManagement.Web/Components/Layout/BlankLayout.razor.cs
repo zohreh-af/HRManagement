@@ -9,7 +9,7 @@ namespace BlazorHRManagement.Web.Components.Layout;
 public partial class BlankLayout : LayoutComponentBase, IDisposable
 {
     private string currentTitle = string.Empty;
-    public bool IsAutheticated = false;
+    public bool IsAutheticated = false; 
 
     [Inject] public AppTitleState TitleState { get; set; } = default!;
     [Inject] public AppAuthenticationStateProvider AuthState { get; set; } = default!;
@@ -19,11 +19,18 @@ public partial class BlankLayout : LayoutComponentBase, IDisposable
     {
         currentTitle = TitleState.Title;
         TitleState.Changed += OnTitleChanged;
+    }
 
-        var state = await AuthState.GetAuthenticationStateAsync();
-        IsAutheticated = state.User.Identity?.IsAuthenticated == true;
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            var state = await AuthState.GetAuthenticationStateAsync();
+            IsAutheticated = state.User.Identity?.IsAuthenticated == true;
 
-        AuthState.AuthenticationStateChanged += AuthState_AuthenticationStateChanged;
+            AuthState.AuthenticationStateChanged += AuthState_AuthenticationStateChanged;
+            StateHasChanged();
+        }
     }
 
     private void AuthState_AuthenticationStateChanged(Task<AuthenticationState> task)

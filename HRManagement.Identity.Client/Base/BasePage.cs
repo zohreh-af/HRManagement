@@ -9,7 +9,7 @@ public class BasePage : ComponentBase
 {
     [Inject] public NavigationManager NavigationManager { get; set; }
     [Inject] public AppAuthenticationStateProvider AuthState { get; set; }
-    [Inject] public IClaimManager ClaimManager { get; set; }
+   // [Inject] public IClaimManager ClaimManager { get; set; }
 
     public async Task CheckAccess()
     {

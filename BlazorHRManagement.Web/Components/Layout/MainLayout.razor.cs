@@ -14,13 +14,17 @@ public partial class MainLayout
     {
         currentTitle = TitleState.Title;
         TitleState.Changed += OnTitleChanged;
+    }
 
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
         var state = await AuthState.GetAuthenticationStateAsync();
 
         IsAutheticated = state.User.Identity.IsAuthenticated;
 
         AuthState.AuthenticationStateChanged += AuthState_AuthenticationStateChanged;
     }
+
     private void AuthState_AuthenticationStateChanged(Task<Microsoft.AspNetCore.Components.Authorization.AuthenticationState> task)
     {
         IsAutheticated = task.GetAwaiter().GetResult().User.Identity.IsAuthenticated;
