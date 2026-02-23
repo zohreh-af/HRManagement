@@ -1,10 +1,11 @@
 ﻿using Abstraction;
 using HRManagement.Application.Web;
+using HRManagement.Identity.Client; 
 using HRManagement.Infrastructure;
+using HRManagement.Presentation;
 using Implementation.Mediator;
+using Microsoft.AspNetCore.Authorization;
 using MudBlazor.Services;
-using System.Net;
-
 
 namespace BlazorHRManagement.Web;
 
@@ -13,37 +14,38 @@ public static partial class Program
     public static void ConfigureServices(this IServiceCollection services
     , IConfiguration configuration)
     {
-        var baseApiUri = "https://localhost:7072";
-   
-        //services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-        //        .AddJwtBearer(options =>
-        //        {
-        //            options.TokenValidationParameters = new TokenValidationParameters
-        //            {
-        //                ValidateIssuer = false,
-        //                ValidateAudience = false,
-        //                ValidateLifetime = true,
-        //                ValidateIssuerSigningKey = true,
-        //                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("YourSuperSecretKeyHere"))
-        //            };
-        //        });
+        var baseApiUri = configuration["Api:BaseUrl"];
+        services.AddRazorPages();
+        services.AddRazorComponents()
+               .AddInteractiveServerComponents();
+
+        services.AddServerSideBlazor();
 
         services.AddDistributedMemoryCache();
-        services.AddSession(options =>
-        {
-            options.IdleTimeout = TimeSpan.FromMinutes(20);
-            options.Cookie.HttpOnly = true;
-            options.Cookie.IsEssential = true;
-        });
-
+       
         services.AddScoped<IMediator, Mediator>();
         services.AddMudServices();
 
-        services.AddRazorComponents()
-            .AddInteractiveServerComponents();
+        services.AddAuthorization(options =>
+        {
+            // Allow all by default—prevents server challenge/exception
+            options.FallbackPolicy = new AuthorizationPolicyBuilder()
+                .RequireAssertion(_ => true)
+                .Build();
+        });
+        services.AddCascadingAuthenticationState();
 
+        services.AddIdentityClientServices();
         services.AddApplicationWebServices();
         services.AddInfrastructureWebServices(configuration);
+        services.AddPresentationServices();
+
+        services.AddAntiforgery(options =>
+        {
+            options.FormFieldName = "__RequestVerificationToken"; // hidden input name
+            options.HeaderName = "RequestVerificationToken";   // header for AJAX
+                                                               // options.Cookie.Name = "XSRF-TOKEN";                 // optional custom cookie
+        });
 
         services.AddScoped<HttpClientHandler>();
 
@@ -55,7 +57,5 @@ public static partial class Program
                     client.BaseAddress = new Uri(baseUri!);
                 })
                 .ConfigurePrimaryHttpMessageHandler<HttpClientHandler>();
-
-
     }
 }

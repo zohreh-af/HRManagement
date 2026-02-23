@@ -1,28 +1,36 @@
-﻿using BlazorHRManagement.Web.Components;
-
+﻿
 namespace BlazorHRManagement.Web;
 
 public static partial class Program
 {
     public static void Configure(this WebApplication app, IConfiguration configuration)
     {
-        // Configure the HTTP request pipeline.
+        app.UseHttpsRedirection();
+#if DEBUG
+        app.UseDeveloperExceptionPage();
+#endif
         if (!app.Environment.IsDevelopment())
         {
             app.UseExceptionHandler("/Error");
-            // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
             app.UseHsts();
         }
-        app.MapRazorComponents<App>()
-                    .AddInteractiveServerRenderMode();
-        //app.UseCors();
+        app.UseCookiePolicy();
 
-        app.UseHttpsRedirection();
-
-        app.UseSession();
+        app.UseAuthorization();
+        app.MapStaticAssets();
+        app.UseStaticFiles();
+        app.UseRouting();
 
         app.UseAntiforgery();
 
-        app.MapStaticAssets();
+        if (!app.Environment.IsDevelopment())
+        {
+            app.UseExceptionHandler("/Error");
+            app.UseHsts();
+        }
+
+        app.MapRazorPages();
+        app.MapRazorComponents<App>()
+   .AddInteractiveServerRenderMode();
     }
 }

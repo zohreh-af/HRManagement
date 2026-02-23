@@ -1,11 +1,10 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Cors;
+﻿using Microsoft.AspNetCore.Cors;
 
 namespace BlazorHRManagement.Api.Controllers;
 
 [ApiController]
 [EnableCors("OpenCors")]
-[Route("HR/[controller]")]
+[Route("[controller]")]
 
 public class HRManagementBaseController : ControllerBase
 {

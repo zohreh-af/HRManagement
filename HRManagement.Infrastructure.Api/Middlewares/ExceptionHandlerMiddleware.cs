@@ -6,19 +6,20 @@ using HRManagement.Shared.Dtos;
 using Newtonsoft.Json;
 using Microsoft.AspNetCore.Http;
 using HRManagement.Infrastructure.Api.Exceptions;
+using Microsoft.Extensions.Logging;
 
 namespace HRManagement.Infrastructure.Api.Middlewares;
 
 public class ExceptionHandlerMiddleware
 {
     private readonly RequestDelegate _next;
-   // private readonly ILogger<ExceptionHandlerMiddleware> logger;
+    private readonly ILogger<ExceptionHandlerMiddleware> logger;
 
     public ExceptionHandlerMiddleware(RequestDelegate next
-      /*  , ILogger<ExceptionHandlerMiddleware> logger*/)
+       ,ILogger<ExceptionHandlerMiddleware> logger)
     {
         _next = next;
-       // this.logger = logger;
+       this.logger = logger;
     }
 
     public async Task Invoke(HttpContext context)
@@ -35,7 +36,7 @@ public class ExceptionHandlerMiddleware
 
     private Task ConvertException(HttpContext context, Exception exception)
     {
-        //  logger.LogWarning(exception, exception.Message);
+        logger.LogWarning(exception, exception.Message);
 
         HttpStatusCode httpStatusCode = HttpStatusCode.InternalServerError;
 

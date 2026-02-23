@@ -9,8 +9,6 @@ public static class InfrastructureWebServices
 {
     public static void AddInfrastructureWebServices(this IServiceCollection services, IConfiguration configuration)
     {
-        services.AddBlazoredLocalStorage();
         services.AddScoped<ApiHandler>();
-
     }
 }

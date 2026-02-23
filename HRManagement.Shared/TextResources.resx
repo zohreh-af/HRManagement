@@ -156,4 +156,13 @@
   <data name="App_StringKeys_ٍFailed_Message_PasswordValidation" xml:space="preserve">
     <value>رمز عبور باید شامل حداقل یک عدد، یک حرف بزرگ و یک علامت خاص (!@#$&amp;*) باشد</value>
   </data>
+  <data name="APP_StringKeys_Register_User" xml:space="preserve">
+    <value>ثبت نام</value>
+  </data>
+  <data name="APP_StringKeys_Email" xml:space="preserve">
+    <value>ایمیل</value>
+  </data>
+  <data name="APP_StringKeys_LoginUser" xml:space="preserve">
+    <value>ورود به سایت</value>
+  </data>
 </root>

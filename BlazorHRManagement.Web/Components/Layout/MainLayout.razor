@@ -13,15 +13,19 @@
 
 <MudThemeProvider Theme="@_theme" IsDarkMode="_isDarkMode" />
 <MudLayout>
+     <h1 class="m-0 text-dark">@currentTitle</h1>
     <MudAppBar Elevation="1">
         <MudText Typo="Typo.h5" Class="ml-3">Application</MudText>
     </MudAppBar>
     <MudDrawer id="nav-drawer" @bind-Open="_drawerOpen" ClipMode="DrawerClipMode.Always" Elevation="2">
-        <NavMenu />
+                  @if (IsAutheticated)
+            {
+                //navmenu
+            }
     </MudDrawer>
     <MudMainContent Class="pt-16 pa-4">
                 <main>
-                   
+
                      <article class="content px-4">
                         <AppErrorBoundary>
                             @Body
@@ -110,5 +114,3 @@
         false => Icons.Material.Outlined.DarkMode,
     };
 }
-
-

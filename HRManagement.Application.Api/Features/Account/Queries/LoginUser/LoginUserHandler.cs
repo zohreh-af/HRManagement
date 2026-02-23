@@ -1,24 +1,36 @@
 ﻿using Abstraction;
-using BlazorHRManagement.Infrastructure.Api.Utilities;
+using Abstraction.Abstraction;
 using HRManagement.Application.Web.Features;
-using HRManagement.Domain.Entities;
 using HRManagement.Persistence.Contexts;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
-using Microsoft.IdentityModel.Tokens;
-using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 
 namespace HRManagement.Application.Api.Features.Account.Queries.LoginUser;
 
-public class LoginUserHandler(HRManagementContext context,IConfiguration configuration
-    , IPasswordHasher<User> passwordHasher): IQueryHandler<LoginUserQuery, LoginUserVm>
+public class LoginUserHandler: IQueryHandler<LoginUserQuery, LoginUserVm>
 {
-    public async Task<LoginUserVm> HandleAsync(LoginUserQuery query, CancellationToken cancellationToken)
+    private readonly HRContext _context;
+    //private readonly IConfiguration _configuration;
+    private readonly IPasswordHasher<User> _passwordHasher;
+    private readonly IJwtGenerator _jwtGenerator;
+
+    public LoginUserHandler(
+        HRContext context,
+        IConfiguration configuration,
+        IPasswordHasher<User> passwordHasher,
+        IJwtGenerator jwtGenerator)
     {
-        var user = await context.Users.FirstOrDefaultAsync
-                            (u => u.Username.ToLower() == query.Username.ToLower(),
+        _context = context;
+        //_configuration = configuration;
+        _passwordHasher = passwordHasher;
+        _jwtGenerator = jwtGenerator;
+    }
+    public async Task<LoginUserVm> HandleAsync(LoginUserQuery query, CancellationToken cancellationToken )
+    {
+        var user = await _context.Users.FirstOrDefaultAsync
+                            (u => u.UserName.ToLower() == query.Email.ToLower(),
                              cancellationToken);
 
         if (user is null)
@@ -29,54 +41,55 @@ public class LoginUserHandler(HRManagementContext context,IConfiguration configu
                 Result = LoginResult.UserNotFound
             };
         }
-        var isPasswordValid = passwordHasher.VerifyHashedPassword(user, user.PasswordHash, query.Password);
+        var isPasswordValid = _passwordHasher.VerifyHashedPassword(user, user.PasswordHash, query.Password);
 
         if (isPasswordValid != PasswordVerificationResult.Success)
         {
             return new()
             {
                 JwtToken = null,
-                Result = LoginResult.FailedToLogin
+                Result = LoginResult.UserNotFound
             };
         }
 
         ClaimsIdentity claimsIdentity = await GetUserClaims(user);
 
-        return new()
+         return new()
         {
-            JwtToken = GetJwtToken(claimsIdentity),
+            JwtToken = _jwtGenerator.Generate(user.Id,claimsIdentity),
             Result = LoginResult.Success
         };
 
     }
 
-    private string GetJwtToken(ClaimsIdentity? claimsIdentity)
-    {
-        SecurityTokenDescriptor descriptor = new()
-        {
-            Issuer = "HRIdentity",
-            Audience = "HRTicketIdentityUser",
-            IssuedAt = DateTime.UtcNow,
-            NotBefore = DateTime.UtcNow.AddMinutes(0),
-            Expires = DateTime.UtcNow.AddHours(10),
-            SigningCredentials = CryptoTools.GetJwtCredential(configuration["Jwt:Key"]),
-            Claims = claimsIdentity.Claims.ToDictionary(c => c.Type, c => (object)c.Value)
-        };
 
-        JwtSecurityTokenHandler tokenHandler = new();
+    //private string GetJwtToken(ClaimsIdentity? claimsIdentity)
+    //{
+    //    SecurityTokenDescriptor descriptor = new()
+    //    {
+    //        Issuer = "HRIdentity",
+    //        Audience = "HRTicketIdentityUser",
+    //        IssuedAt = DateTime.UtcNow,
+    //        NotBefore = DateTime.UtcNow.AddMinutes(0),
+    //        Expires = DateTime.UtcNow.AddHours(10),
+    //        SigningCredentials = CryptoTools.GetJwtCredential(configuration["Jwt:Key"]),
+    //        Claims = claimsIdentity.Claims.ToDictionary(c => c.Type, c => (object)c.Value)
+    //    };
 
-        SecurityToken securityToken = tokenHandler.CreateToken(descriptor);
+    //    JwtSecurityTokenHandler tokenHandler = new();
 
-        string jwt = tokenHandler.WriteToken(securityToken);
+    //    SecurityToken securityToken = tokenHandler.CreateToken(descriptor);
 
-        return jwt;
-    }
+    //    string jwt = tokenHandler.WriteToken(securityToken);
+
+    //    return jwt;
+    //}
 
     private async Task<ClaimsIdentity> GetUserClaims(User user)
     {
         var claims = new List<Claim>();
 
-        claims.Add(new(ClaimTypes.Name, user.Username));
+        claims.Add(new(ClaimTypes.Name, user.UserName));
         claims.Add(new(ClaimTypes.NameIdentifier, user.Id.ToString()));
         //user rolle 
         claims.Add(new(ClaimTypes.Surname, user.PersianName));

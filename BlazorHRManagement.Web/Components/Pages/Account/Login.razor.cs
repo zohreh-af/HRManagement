@@ -1,13 +1,16 @@
-﻿using HRManagement.Application.Web.Features;
+﻿using Azure.Core;
+using HRManagement.Application.Web.Contracts.Identity;
+using HRManagement.Application.Web.Features;
+using HRManagement.Identity.Client.Base;
+using HRManagement.Identity.Client.Services;
 using HRManagement.Infrastructure.Web.Services;
 using HRManagement.Shared;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
-
 namespace BlazorHRManagement.Web.Components.Pages.Account;
 
 
-public partial class Login
+public partial class Login 
 {
     public ResponseResult Response { get; set; } = new();
     public bool IsInvalid = false;
@@ -16,12 +19,22 @@ public partial class Login
 
     public LoginUserQuery _Request { get; set; } = new();
 
+    [Inject] public IAuthenticationService AuthService { get; set; } = default!;
     [Inject] public NavigationManager NavigationManager { get; set; }
     [Inject] public ApiHandler Api { get; set; }
+    protected override async Task OnInitializedAsync()
+    {
+#if DEBUG
+        _Request.Username = "admin";
+
+        _Request.Password = "rfidadmin";
+#endif
+    }
+
 
     public async Task OnValidSubmit(EditContext context)
     {
-        await LoginUser();
+        await LoginUser(_Request);
     }
 
     public async Task OnInvalidSubmit(EditContext context)
@@ -34,24 +47,35 @@ public partial class Login
         }
     }
 
-    public async Task LoginUser()
+    public async Task LoginUser(LoginUserQuery _Request)
     {
         IsLoading = true;
 
-        var result = await Api.SendAsyncObjectByUri<LoginUserVm>(
-            HttpMethod.Post,
-            "Account/LoginUser",
-            _Request);
-        if (result.Data.Result == LoginResult.Success)
-        {
-            NavigationManager.NavigateTo("/");
-        }
-        else
-        {
-            Response.Message = TextResources.App_StringKeys_ٍFailed_Message;
-            Response.Result = false;
-        }
+        var result = await AuthService.Authenticate(_Request);
 
         IsLoading = false;
+
+        switch (result)
+        {
+            case LoginResult.Success:
+                NavigationManager.NavigateTo("/", true);
+                break;
+
+            //case LoginResult.InvalidCredentials:
+            //    Notification.AddNotification(TextResources.APP_StringKeys_Message_LoginFailed
+            //        , NotificationType.Error);
+            //    break;
+
+            //case LoginResult.IpBanned:
+            //    Notification.AddNotification(TextResources.APP_StringKeys_Ip_Banned
+            //        , NotificationType.Error);
+            //    break;
+
+            //case LoginResult.UserLocked:
+            //    Notification.AddNotification(TextResources.APP_StringKeys_User_Locked
+            //       , NotificationType.Error);
+            //    break;
+        }
+                IsLoading = false;
     }
 }

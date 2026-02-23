@@ -1,10 +1,11 @@
-﻿@using MudBlazor
+﻿@using Microsoft.AspNetCore.Authorization
 @page "/account/Login"
+@page "/login"
+@attribute [AllowAnonymous]
 
 
 <PageTitle>@TextResources.App_StringKeys_User_Login</PageTitle>
-
-<div>
+<TitleSync Value="Login" />
 
     <EditForm Formname="UserLoginForm" Model=_Request OnValidSubmit="OnValidSubmit" OnInvalidSubmit="OnInvalidSubmit">
         <DataAnnotationsValidator />
@@ -24,10 +25,9 @@
                     </MudCardActions>
                 </MudCard>
             </MudItem>
-
         </MudGrid>
     </EditForm>
-</div>
+
 @if (IsInvalid)
 {
     <MudAlert Severity="Severity.Error" Dense="true" Class="my-2">@MassageText</MudAlert>
@@ -46,4 +46,4 @@
         </MudProgressCircular>
     </MudOverlay>
 
-}                       
+}             

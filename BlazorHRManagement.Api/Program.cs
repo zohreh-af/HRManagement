@@ -1,3 +1,5 @@
+using Serilog;
+
 namespace BlazorHRManagement.Api
 {
     public static partial class Program
@@ -6,9 +8,15 @@ namespace BlazorHRManagement.Api
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            builder.Services.ConfigureServices(builder.Configuration);
+            builder.Host.UseSerilog(Log.Logger);
+
+            Program.ConfigureServices(builder.Services, builder.Configuration);
 
             var app = builder.Build();
+
+            app.Services.GetRequiredService<Microsoft.AspNetCore.Authorization.IAuthorizationPolicyProvider>();
+            
+            app.UseSerilogRequestLogging();
 
             app.Configure();
 

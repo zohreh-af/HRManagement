@@ -22,24 +22,27 @@ public partial class ApiHandler(IConfiguration configuration
     public async Task<ApiResponse<T>> SendAsyncObjectByUri<T>(HttpMethod method, string uri, object data = null)
     {
         baseUri = baseUri = configuration["Api:BaseUrl"]?.Trim();
-       
+
         if (string.IsNullOrWhiteSpace(baseUri))
+        {
+            logger.LogError("Api:BaseUrl is not configured.");
+
             throw new InvalidOperationException("Api:BaseUrl is not configured.");
-       
+        }
         JsonSerializerOptions option = new()
         {
             PropertyNameCaseInsensitive = true,
             NumberHandling = JsonNumberHandling.AllowReadingFromString,
             DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull,
-            //Converters =
-            //{
-            //    new NullableDateTimeConverter()
-            //}
         };
 
 
         if (method == HttpMethod.Get || data is null)
+        {
+            logger.LogError("Invalid Get Request or Null Data");
+
             throw new InvalidOperationException($"Invalid Get Request or Null Data");
+        }
 
         var passedDataJsonString = JsonSerializer.Serialize(data, option);
         var buffer = Encoding.UTF8.GetBytes(passedDataJsonString);
@@ -65,17 +68,32 @@ public partial class ApiHandler(IConfiguration configuration
             }
             else
             {
+                logger.LogError($"HTTP {(int)response.StatusCode} {response.ReasonPhrase}. Expected JSON but got '{mediaType ?? "no content"}'. Body: {Truncate(body, 200)}");
+
                 throw new HttpRequestException(
                     $"HTTP {(int)response.StatusCode} {response.ReasonPhrase}. Expected JSON but got '{mediaType ?? "no content"}'. Body: {Truncate(body, 200)}");
             }
         }
         if (!string.Equals(mediaType, "application/json", StringComparison.OrdinalIgnoreCase) || string.IsNullOrWhiteSpace(body))
+        {
+            logger.LogError($"Expected JSON response but got '{mediaType ?? "no content"}'. Body: {Truncate(body, 200)}");
+
             throw new InvalidOperationException($"Expected JSON response but got '{mediaType ?? "no content"}'. Body: {Truncate(body, 200)}");
+        }
 
+        try
+        {
+            var result = JsonSerializer.Deserialize<ApiResponse<T>>(body, option)
+                         ?? throw new InvalidOperationException("Failed to deserialize server response.");
+            logger.LogInformation("Successfully deserialized response into {Type}", typeof(T).Name);
 
-        var result = JsonSerializer.Deserialize<ApiResponse<T>>(body, option)
-                 ?? throw new InvalidOperationException("Failed to deserialize server response.");
-        return result;
+            return result;
+        }
+        catch (Exception ex)
+        {
+            logger.LogError(ex, "Error deserializing response into {Type}. Body: {Body}", typeof(T).Name, body);
+            throw; // rethrow so your logic still fails as before
+        }
     }
 
     protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
@@ -89,7 +107,9 @@ public partial class ApiHandler(IConfiguration configuration
             if (response.Content.Headers.ContentType?.MediaType == "application/json")
             {
                 var errorResult = await response.Content.ReadFromJsonAsync<ApiResponse<string>>(cancellationToken: cancellationToken);
+                
                 logger.LogWarning($"Auth log error: {errorResult}");
+                
                 if (response.StatusCode == HttpStatusCode.Unauthorized)
                 {
                     localStorage.RemoveItemAsync(SessionStorageKeys.AuthToken, cancellationToken);
@@ -99,16 +119,12 @@ public partial class ApiHandler(IConfiguration configuration
 
                     navigationManager.NavigateTo("/account/login", true);
                 }
-                //if (response.StatusCode == HttpStatusCode.Ambiguous)
-                //{
-                //    navigationManager.NavigateTo("/settings/apisettings");
-                //}
             }
         }
         return response;
     }
 
-    private async Task ManageHeader(HttpRequestMessage request)
+    public async Task ManageHeader(HttpRequestMessage request)
     {
         var token = await localStorage.GetItemAsync<string>(SessionStorageKeys.AuthToken);
 

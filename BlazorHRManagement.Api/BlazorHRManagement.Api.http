@@ -1,4 +1,4 @@
-@BlazorHRManagement.Api_HostAddress = http://localhost:5258
+@BlazorHRManagement.Api_HostAddress = https://localhost:7072
 
 GET {{BlazorHRManagement.Api_HostAddress}}/weatherforecast/
 Accept: application/json

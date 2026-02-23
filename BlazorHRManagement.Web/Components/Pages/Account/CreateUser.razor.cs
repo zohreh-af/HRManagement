@@ -1,5 +1,4 @@
-﻿
-using HRManagement.Application.Web.Features;
+﻿using HRManagement.Application.Web.Features;
 using HRManagement.Infrastructure.Web.Services;
 using HRManagement.Shared;
 using Microsoft.AspNetCore.Components;
@@ -7,15 +6,30 @@ using Microsoft.AspNetCore.Components.Forms;
 
 namespace BlazorHRManagement.Web.Components.Pages.Account;
 
-public partial class CreateUser
+public partial class CreateUser 
 {
     public ResponseResult Response { get; set; } = new();
     public bool IsInvalid = false;
     public bool IsLoading = false;
     public string MassageText = string.Empty;
+    private bool _checked;
 
     public CreateUserCommand _Request { get; set; } = new();
     [Inject] public ApiHandler Api { get; set; }
+    protected override async Task OnInitializedAsync()
+    {
+       
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await CheckAccess();
+            _checked = true;
+            StateHasChanged();
+        }
+    }
 
     public async Task OnValidSubmit(EditContext context)
     {
